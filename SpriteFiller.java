@@ -1,8 +1,8 @@
 package femto.mode;
 
-public class SpriteFiller implements Linefiller {
-    @Override
-    public void fillLine(byte[] line, int y) {
+public class SpriteFiller implements LineFiller {
+
+    public void fillLine(short[] line, int y) {
 
     }
 }
