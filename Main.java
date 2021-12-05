@@ -12,12 +12,14 @@ class Main extends State {
     TASMode screen;
     int color = 0xD81F;
     Dog dog = new Dog();
+    
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
     }
     
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
+        dog.run();
     }
     
     void shutdown(){

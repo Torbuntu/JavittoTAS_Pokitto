@@ -91,8 +91,32 @@ public class TASMode extends ScreenMode implements __stub__ {
     
     */
     
-    public void addSprite(pointer frame, int width, int height){
-        //TODO: Somehow add frame to some sort of sprite buffer
+    //TODO: Somehow add frame image data to some sort of sprite buffer that will render in SpriteFiller.fillLine
+    public void addSprite(pointer frame){
+        
+        System.out.println("Begin populating sprite buffer: ");
+        
+        __inline_cpp__("
+            printf(\"in C++ land \\n\");
+            const uint8_t *img = (uint8_t *)frame+2;
+            
+            int frameWidth = ((char*)frame)[0];
+		    int frameHeight= ((char*)frame)[1];
+            for(int y = 0; y < frameHeight; ++y){
+                for(int x = 0; x < frameWidth; ++x){
+                    //TODO: printf isn't doing anything as far as I can tell...
+                    printf(\"data: %c  \\n\",((char*)img)[x+y*frameWidth]);
+                }
+            }
+        ");
+        int dat;
+        for(int i =0; i < 200; i++){
+            __inline_cpp__("
+            dat = ((char*)frame)[i];
+            ");
+            System.out.print("," + dat);
+        }
+        
     }
     
     
