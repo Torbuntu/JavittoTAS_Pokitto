@@ -70,20 +70,17 @@ public class TASMode extends ScreenMode implements __stub__ {
             x -= screen.cameraX;
             y -= screen.cameraY;
         }
-        
-        int frameWidth;
-        int frameHeight;
+
 		pointer frame;
         __inline_cpp__("
-		const auto &f = *(const up_femto::uc_FrameRef*)getFrameDataForScreen(currentFrame, screen);
-		frameWidth = ((char*)f.frame)[0];
-		frameHeight= ((char*)f.frame)[1];
+		const auto &f = *(const up_femto::uc_FrameRef*)getFrameDataForScreen(currentFrame, (up_femto::up_mode::uc_LowRes256Color*)nullptr);
+
 		frame = f.frame;
 		
 		");
-		screen.addSprite(frame, frameWidth, frameHeight);
+		screen.addSprite(frame);
         return;
-        getFrameDataForScreen(0, (TASMode)null);
+        getFrameDataForScreen(0, (LowRes256Color)null);
         width();
         height();
     }
@@ -96,27 +93,40 @@ public class TASMode extends ScreenMode implements __stub__ {
         
         System.out.println("Begin populating sprite buffer: ");
         
-        __inline_cpp__("
-            printf(\"in C++ land \\n\");
-            const uint8_t *img = (uint8_t *)frame+2;
+    //     __inline_cpp__("
+    //         printf(\"in C++ land \\n\");
+    //         const uint8_t *img = (uint8_t *)frame+2;
             
-            int frameWidth = ((char*)frame)[0];
-		    int frameHeight= ((char*)frame)[1];
-            for(int y = 0; y < frameHeight; ++y){
-                for(int x = 0; x < frameWidth; ++x){
-                    //TODO: printf isn't doing anything as far as I can tell...
-                    printf(\"data: %c  \\n\",((char*)img)[x+y*frameWidth]);
-                }
-            }
-        ");
+    //         int frameWidth = ((char*)frame)[0];
+		  //  int frameHeight= ((char*)frame)[1];
+    //         for(int y = 0; y < frameHeight; ++y){
+    //             for(int x = 0; x < frameWidth; ++x){
+    //                 //TODO: printf isn't doing anything as far as I can tell...
+    //                 printf(\"data: %c  \\n\",((char*)img)[x+y*frameWidth]);
+    //             }
+    //         }
+    //     ");
         int dat;
-        for(int i =0; i < 200; i++){
-            __inline_cpp__("
-            dat = ((char*)frame)[i];
-            ");
-            System.out.print("," + dat);
+        int[] data;
+        int width;
+        int height;
+        __inline_cpp__("
+            width = ((char*)frame)[0];
+            height = ((char*)frame)[1];
+            const uint8_t *img = (uint8_t *)frame+2;
+        ");
+        data = new int[width*height];
+        for(int y = 0; y < height; ++y){
+            for(int x = 0; x < width; ++x){
+                __inline_cpp__("
+                dat = ((char*)img)[x+y*width];
+                ");
+                data[x+y*width] = palette[dat];
+                System.out.print(","+data[x+y*width]);
+            }
         }
         
+        spriteFiller.setSprite(data, 100, 70, width, height);
     }
     
     
