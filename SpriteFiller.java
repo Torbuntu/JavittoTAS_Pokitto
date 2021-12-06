@@ -15,6 +15,8 @@ public class SpriteFiller implements LineFiller {
         data = sprite;
     }
     
+    //TODO: Fix the position if off the screen. 
+    //      We can't draw off the screen.
     public void fillLine(short[] line, int y) {
         if(y < this.y) return;
         if(y >= this.y+height) return;

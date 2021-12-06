@@ -166,8 +166,8 @@
 	},
 	"meta": {
 		"ColorFiller.java": {},
-		"JavittoTAS.bin": {},
 		"JavittoTAS.elf": {},
+		"JavittoTAS.bin": {},
 		"LineFiller.java": {},
 		"Main.java": {},
 		"README.md": {},
@@ -175,9 +175,9 @@
 		"TASMode.java": {},
 		"project.json": {},
 		"sprites": {},
+		"": {},
 		"sprites/Dog.json": {},
-		"sprites/dog.png": {},
-		"": {}
+		"sprites/dog.png": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
