@@ -17,10 +17,10 @@ public class SpriteFiller implements LineFiller {
     
     public void fillLine(short[] line, int y) {
         if(y < this.y) return;
-        if(y > this.y+height) return;
+        if(y >= this.y+height) return;
         for(int i = 0; i < width; ++i){
             if(data[i+(y-this.y)*width] <= 0)continue;
-            System.out.println("data:"+data[i+(y-this.y)*width]);
+            //System.out.println("data:"+data[i+(y-this.y)*width]);
             line[x+i]=data[i+(y-this.y)*width];
         }
     }

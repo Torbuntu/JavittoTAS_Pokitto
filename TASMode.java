@@ -11,6 +11,8 @@ public class TASMode extends ScreenMode implements __stub__ {
     /// The screen mode's palette.
     public ushort[] palette;
     
+    short[] line;
+    
     // oh boy, here we go. Lots to do here. *deep breaths* 
     public LineFiller[] fillers = new LineFiller[4];
     ColorFiller colorFiller = new ColorFiller();
@@ -29,6 +31,7 @@ public class TASMode extends ScreenMode implements __stub__ {
     
     protected void initialize( pointer pal ){
         this.font = font;
+        line = new short[220];
         buffer = new byte[(this.width()>>1)*this.height()];
         palette = new ushort[256]; // needs to be significantly larger for TASMode
         loadPalette( pal );
@@ -78,7 +81,7 @@ public class TASMode extends ScreenMode implements __stub__ {
 		frame = f.frame;
 		
 		");
-		screen.addSprite(frame);
+		screen.addSprite(frame, x, y);
         return;
         getFrameDataForScreen(0, (LowRes256Color)null);
         width();
@@ -88,45 +91,27 @@ public class TASMode extends ScreenMode implements __stub__ {
     
     */
     
+    int dat;
+    int[] data;
+    int frameWidth;
+    int frameHeight;
     //TODO: Somehow add frame image data to some sort of sprite buffer that will render in SpriteFiller.fillLine
-    public void addSprite(pointer frame){
-        
-        System.out.println("Begin populating sprite buffer: ");
-        
-    //     __inline_cpp__("
-    //         printf(\"in C++ land \\n\");
-    //         const uint8_t *img = (uint8_t *)frame+2;
-            
-    //         int frameWidth = ((char*)frame)[0];
-		  //  int frameHeight= ((char*)frame)[1];
-    //         for(int y = 0; y < frameHeight; ++y){
-    //             for(int x = 0; x < frameWidth; ++x){
-    //                 //TODO: printf isn't doing anything as far as I can tell...
-    //                 printf(\"data: %c  \\n\",((char*)img)[x+y*frameWidth]);
-    //             }
-    //         }
-    //     ");
-        int dat;
-        int[] data;
-        int width;
-        int height;
+    public void addSprite(pointer frame, float x, float y){
         __inline_cpp__("
-            width = ((char*)frame)[0];
-            height = ((char*)frame)[1];
+            frameWidth = ((char*)frame)[0];
+            frameHeight = ((char*)frame)[1];
             const uint8_t *img = (uint8_t *)frame+2;
         ");
-        data = new int[width*height];
-        for(int y = 0; y < height; ++y){
-            for(int x = 0; x < width; ++x){
+        data = new int[frameWidth*frameHeight];
+        for(int y = 0; y < frameHeight; ++y){
+            for(int x = 0; x < frameWidth; ++x){
                 __inline_cpp__("
-                dat = ((char*)img)[x+y*width];
+                dat = ((char*)img)[x+y*frameWidth];
                 ");
-                data[x+y*width] = palette[dat];
-                System.out.print(","+data[x+y*width]);
+                data[x+y*frameWidth] = palette[dat];
             }
         }
-        
-        spriteFiller.setSprite(data, 100, 70, width, height);
+        spriteFiller.setSprite(data, (int)x, (int)y, frameWidth, frameHeight);
     }
     
     
@@ -139,7 +124,7 @@ public class TASMode extends ScreenMode implements __stub__ {
     }
     
     void flush() {
-        short[] line = new short[220];
+       
         for(int y = 0; y < 176; ++y){
             for(LineFiller lf : fillers){
                 if(null == lf)continue;

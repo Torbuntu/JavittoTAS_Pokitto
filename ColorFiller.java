@@ -7,7 +7,7 @@ public class ColorFiller implements LineFiller {
     }
     public void fillLine(short[] line, int y) {
         for(int x = 0; x < 220; ++x){
-            line[x] = Math.random(0, 2147483647);
+            line[x] = color;
         }
     }
 }

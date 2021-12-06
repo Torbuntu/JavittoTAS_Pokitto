@@ -20,6 +20,7 @@ class Main extends State {
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         dog.run();
+        dog.setPosition(10, 10);
     }
     
     void shutdown(){
@@ -27,17 +28,25 @@ class Main extends State {
     }
     
     void update(){
+        screen.clear(0);
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
-        if(Button.Down.justPressed())color+=0xDff0;
-        if(Button.Up.justPressed())color=0xD0f0;
+        if(Button.Down.isPressed())dog.y=dog.y+1;
+        if(Button.Up.isPressed())dog.y=dog.y-1;
+        if(Button.Right.isPressed()){
+            dog.x=dog.x+1;
+            dog.setMirrored(false);
+        }
+        if(Button.Left.isPressed()){
+            dog.x=dog.x-1;
+            dog.setMirrored(true);   
+        }
         //0xD81F
-        dog.setPosition(10, 10);
+        
         dog.draw(screen);
         
         screen.flush();
-        
     }
     
 }
