@@ -62,38 +62,6 @@ public class TASMode extends ScreenMode implements __stub__ {
         return 176;
     }
     
-    
-    /* within femto.Sprite.java
-    
-    public void draw( TASMode screen ){
-        updateTasAnimation();
-        float x = this.x;
-        float y = this.y;
-        boolean mirror = (flags&2) != 0;
-        boolean flip = (flags&4) != 0;
-
-        if( (flags&1) == 0 ){
-            x -= screen.cameraX;
-            y -= screen.cameraY;
-        }
-
-	    pointer frame;
-        __inline_cpp__("
-	    const auto &f = *(const up_femto::uc_FrameRef*)getFrameDataForScreen(currentFrame, (up_femto::up_mode::uc_LowRes256Color*)nullptr);
-
-	    frame = f.frame;
-	    
-	    ");
-	    screen.addSprite(frame, x, y, mirror, flip);
-        return;
-        getFrameDataForScreen(0, (LowRes256Color)null);
-        width();
-        height();
-    }
-    
-    
-    */
-    
     int dat;
     int[] data;
     int frameWidth;
@@ -106,13 +74,23 @@ public class TASMode extends ScreenMode implements __stub__ {
             const uint8_t *img = (uint8_t *)frame+2;
         ");
         data = new int[frameWidth*frameHeight];
-        
-        for(int y = 0; y < frameHeight; ++y){
-            for(int x = 0; x < frameWidth; ++x){
-                __inline_cpp__("
-                dat = ((char*)img)[x+y*frameWidth];
-                ");
-                data[x+y*frameWidth] = palette[dat];
+        if(mirror){
+            for(int y = 0; y < frameHeight; ++y){
+                for(int x = frameWidth-1; x >= 0; --x){
+                    __inline_cpp__("
+                    dat = ((char*)img)[x+y*frameWidth];
+                    ");
+                    data[frameWidth-1-x+y*frameWidth] = palette[dat];
+                }
+            }
+        }else{
+            for(int y = 0; y < frameHeight; ++y){
+                for(int x = 0; x < frameWidth; ++x){
+                    __inline_cpp__("
+                    dat = ((char*)img)[x+y*frameWidth];
+                    ");
+                    data[x+y*frameWidth] = palette[dat];
+                }
             }
         }
         
