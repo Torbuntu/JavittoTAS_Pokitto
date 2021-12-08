@@ -7,13 +7,13 @@ import femto.palette.Miloslav;
 import sprites.Dog;
 
 class Main extends State {
-
+    
+    //0xD81F - Magenta
     // the screenmode we want to draw with
     TASMode screen;
-    int color = 0;
+    int color = 6000;
     Dog dog = new Dog();
-    Dog dog2 = new Dog();
-    Dog dog3 = new Dog();
+    Dog[] dogs = new Dog[16];
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
     }
@@ -21,11 +21,13 @@ class Main extends State {
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         dog.run();
-        dog2.run();
-        dog3.run();
         dog.setPosition(10, 10);
-        dog2.setPosition(10, 25);
-        dog3.setPosition(10, 40);
+        
+        for(int i = 0; i < 14; i++){
+            dogs[i] = new Dog();
+            dogs[i].run();
+            dogs[i].setPosition(10+i*15, 32+i*4);
+        }        
     }
     
     void shutdown(){
@@ -41,24 +43,26 @@ class Main extends State {
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
-        if(Button.Down.isPressed())dog.y=dog.y+1;
-        if(Button.Up.isPressed())dog.y=dog.y-1;
+        if(Button.Down.isPressed())dog.y=dog.y+2;
+        if(Button.Up.isPressed())dog.y=dog.y-2;
         if(Button.Right.isPressed()){
-            dog.x=dog.x+1;
+            dog.x=dog.x+2;
             dog.setMirrored(false);
         }
         if(Button.Left.isPressed()){
-            dog.x=dog.x-1;
+            dog.x=dog.x-2;
             dog.setMirrored(true);   
         }
-        //0xD81F
         
-        //TODO: Currently, only the final sprite will be drawn.
-        //      Need to add all sprites to a buffer to be drawn
-        //      in the correct order of call.
+        
         dog.draw(screen);
-        dog2.draw(screen);
-        dog3.draw(screen);
+        for(int i = 0; i < 14; i++){
+            dogs[i].y=dogs[i].y+1.5f;
+            if(dogs[i].y > 176)dogs[i].y = -12;
+            dogs[i].x = dogs[i].x + 1.8f;
+            if(dogs[i].x > 220)dogs[i].x = -15;
+            dogs[i].draw(screen);
+        }  
         
         screen.flush();
         
