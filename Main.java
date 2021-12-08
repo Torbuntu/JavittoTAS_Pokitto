@@ -25,7 +25,7 @@ class Main extends State {
         dog3.run();
         dog.setPosition(10, 10);
         dog2.setPosition(10, 25);
-        dog3.setPosition(10, 50);
+        dog3.setPosition(10, 40);
     }
     
     void shutdown(){
