@@ -14,6 +14,7 @@ class Main extends State {
     int color = 6000;
     Dog dog = new Dog();
     Dog[] dogs = new Dog[16];
+    
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
     }
@@ -43,8 +44,14 @@ class Main extends State {
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
-        if(Button.Down.isPressed())dog.y=dog.y+2;
-        if(Button.Up.isPressed())dog.y=dog.y-2;
+        if(Button.Down.isPressed()){
+            dog.y=dog.y+2;
+            dog.setFlipped(false);
+        }
+        if(Button.Up.isPressed()){
+            dog.y=dog.y-2;
+            dog.setFlipped(true);
+        }
         if(Button.Right.isPressed()){
             dog.x=dog.x+2;
             dog.setMirrored(false);

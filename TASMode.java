@@ -75,23 +75,46 @@ public class TASMode extends ScreenMode implements __stub__ {
         ");
         data = new int[frameWidth*frameHeight];
         if(mirror){
-            for(int y = 0; y < frameHeight; ++y){
-                for(int x = frameWidth-1; x >= 0; --x){
-                    __inline_cpp__("
-                    dat = ((char*)img)[x+y*frameWidth];
-                    ");
-                    data[frameWidth-1-x+y*frameWidth] = palette[dat];
+            if(flip){
+                for(int y = frameHeight-1; y >= 0; --y){
+                    for(int x = frameWidth-1; x >= 0; --x){
+                        __inline_cpp__("
+                        dat = ((char*)img)[x+y*frameWidth];
+                        ");
+                        data[(frameWidth-1-x)+(frameHeight-1-y)*frameWidth] = palette[dat];
+                    }
+                }
+            }else{
+                for(int y = 0; y < frameHeight; ++y){
+                    for(int x = frameWidth-1; x >= 0; --x){
+                        __inline_cpp__("
+                        dat = ((char*)img)[x+y*frameWidth];
+                        ");
+                        data[frameWidth-1-x+y*frameWidth] = palette[dat];
+                    }
                 }
             }
         }else{
-            for(int y = 0; y < frameHeight; ++y){
-                for(int x = 0; x < frameWidth; ++x){
-                    __inline_cpp__("
-                    dat = ((char*)img)[x+y*frameWidth];
-                    ");
-                    data[x+y*frameWidth] = palette[dat];
+            if(flip){
+                for(int y = frameHeight-1; y >= 0; --y){
+                    for(int x = 0; x < frameWidth; ++x){
+                        __inline_cpp__("
+                        dat = ((char*)img)[x+y*frameWidth];
+                        ");
+                        data[x+(frameHeight-1-y)*frameWidth] = palette[dat];
+                    }
+                }
+            }else{
+                for(int y = 0; y < frameHeight; ++y){
+                    for(int x = 0; x < frameWidth; ++x){
+                        __inline_cpp__("
+                        dat = ((char*)img)[x+y*frameWidth];
+                        ");
+                        data[x+y*frameWidth] = palette[dat];
+                    }
                 }
             }
+            
         }
         
         spriteFiller.addSprite(data, x, y, frameWidth, frameHeight);
