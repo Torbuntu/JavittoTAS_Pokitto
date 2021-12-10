@@ -165,22 +165,25 @@
 		]
 	},
 	"meta": {
-		"JavittoTAS_Pokitto.bin": {},
-		"ColorFiller.java": {},
 		"JavittoTAS.elf": {},
 		"JavittoTAS.bin": {},
+		"JavittoTAS_Pokitto.bin": {},
 		"JavittoTAS_Pokitto.elf": {},
-		"Main.java": {},
+		"ColorFiller.java": {},
 		"LineFiller.java": {},
 		"README.md": {},
+		"Main.java": {},
 		"SpriteData.java": {},
 		"project.json": {},
+		"SpriteFiller.java": {},
 		"sprites": {},
 		"TASMode.java": {},
-		"SpriteFiller.java": {},
-		"sprites/Dog.json": {},
 		"sprites/dog.png": {},
-		"": {}
+		"sprites/Dog.json": {},
+		"": {},
+		"scripts": {},
+		"scripts/SpriteConverter.js": {},
+		"scripts/TilemapConverter.js": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
