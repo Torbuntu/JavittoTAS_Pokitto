@@ -7,7 +7,7 @@ import femto.palette.Miloslav;
 import sprites.Dog;
 
 class Main extends State {
-    
+
     //0xD81F - Magenta
     // the screenmode we want to draw with
     TASMode screen;
@@ -20,6 +20,7 @@ class Main extends State {
     }
     
     void init(){
+        System.out.println(TileMaps.getTile(1));
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         dog.run();
         dog.setPosition(10, 10);
@@ -40,7 +41,7 @@ class Main extends State {
     }
     
     void update(){
-        screen.clear(color);
+        screen.clear(TileMaps.getTile(136*(int)dog.x+120));
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
@@ -73,7 +74,7 @@ class Main extends State {
         
         screen.flush();
         
-        System.out.println(screen.fps());
+        //System.out.println(screen.fps());
     }
     
 }

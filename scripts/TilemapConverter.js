@@ -79,22 +79,41 @@ let maps = dir("maps")
     {}
 );
 
+function capitalize(name){
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
 //TODO: Write data to .bin 
 Promise.all(promises)
     .then(_=>{
         let acc = "";
+        let bin = "";
         let inits = [];
         let keys = {};
-
+        
         for( let name in maps ){
             let {str, special} = processTMX(maps[name], name);
-            acc += `inline const uint8_t ${name}[] = {\n`;
-            acc += `${str[0].length}, ${str.length},\n`;
-            acc += str.map(l=>l.map(m=>"0x"+((m||1)-1).toString(16).padStart(2, "0")).join(", ")).join(",\n");
-            acc += `\n};\n`;
-            acc += `inline MapEnum ${name}Enum(uint32_t x, uint32_t y){
-static const MapEnum parameters[] = {\n\t`;
-            acc += special.map(l => {
+            
+            // get map details. Width, height, tiles
+            bin += `
+    public static pointer get${capitalize(name)}(){
+        pointer ptr;
+        __inline_cpp__("
+        static const uint8_t ${name}[] = {
+        ${str[0].length}, ${str.length},
+        ${str.map(l=>l.map(m=>"0x"+((m||1)-1).toString(16).padStart(2, "0")).join(", ")).join(",\n")}
+        };
+        ptr = ${name};
+        ");
+        return ptr;
+    }\n\n`;
+            
+            // the map enum
+            bin += `
+    public static byte ${name}Data(int x, int y){
+        byte ptr;
+        __inline_cpp__("
+        static const signed char parameters[] = {
+            ${special.map(l => {
                 l.forEach(l => keys[l] = l);
                 let v = "EMPTY";
                 if(l.length == 1)
@@ -102,36 +121,47 @@ static const MapEnum parameters[] = {\n\t`;
                 else if(l.length > 1)
                     v = "MapEnum(" + [...new Set(l)].join("|") + ")";
                 return v;
-            }).join(",\n\t");
-            acc += `
-    };
-    return (x >= ${str[0].length} || y >= ${str.length}) ? EMPTY : parameters[y * ${str[0].length} + x];
-}
-`;
+            }).join(",\n\t")
+            }
+        };
+            
+        ptr = (x >= ${str[0].length} || y >= ${str.length}) ? EMPTY : parameters[y * ${str[0].length} + x];
+        ");
+        return ptr;
+    }\n\n`;
+    
         }
 
-        acc =
+        
+        bin =
 `// Generated File - DO NOT EDIT
-#pragma once
+public class TileMaps {
+\tstatic byte EMPTY = 0;
+\t${Object.keys(keys).map((o, i) => `static byte ${o} = 1 << ${i}`).join(";\n\t")};
 
-enum MapEnum {
-\tEMPTY = 0,
-\t${Object.keys(keys).map((o, i) => `${o} = 1 << ${i}`).join(",\n\t")}
-};
-
-${acc}
-
-inline const uint8_t tiles[] = {
+    // get Map 0:width, 1:height, map...
+    ${bin}
+    
+    public static int getTile(int id){
+        int ptr;
+        __inline_cpp__("
+        static const uint8_t tiles[] = {
 `;
-        let id=0;
+        let idx=0;
         for( let composite of compositeList ){
-            acc += `// ${(id++).toString(16)}: ${composite.key}\n`;
-            acc += APP.convertImage(composite, palette);
-            acc += ",\n\n";
+            bin += `// ${(idx++).toString(16)}: ${composite.key}\n`;
+            bin += APP.convertImage(composite, palette);
         }
-        acc += `};\n`;
+bin += `       };
+        ptr = (char)tiles[id];
+        ");
+        return ptr;
+    }
+}
 
-        write("maps.h", acc);
+`;
+
+        write("TileMaps.java", bin);
         log("Conversion complete!");
     })
     .catch(ex=>{

@@ -62,6 +62,7 @@ public class TASMode extends ScreenMode implements __stub__ {
         return 176;
     }
     
+    //TODO: these should probably be renamed to something more useful. And put somewhere more obvious.
     int dat;
     int[] data;
     int frameWidth;
