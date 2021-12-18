@@ -137,23 +137,28 @@ Promise.all(promises)
 `// Generated File - DO NOT EDIT
 public class TileMaps {
 \tstatic byte EMPTY = 0;
-\t${Object.keys(keys).map((o, i) => `static byte ${o} = 1 << ${i}`).join(";\n\t")};
+\t${Object.keys(keys).map((o, i) => `static byte ${o} = ${i+1}`).join(";\n\t")};
 
     // get Map 0:width, 1:height, map...
     ${bin}
     
-    public static int getTile(int id){
-        int ptr;
+    // Number of tiles
+    public static int tileSetSize = ${compositeList.length};
+    // Used in TileFiller to get tiles.
+    public static pointer getTile(int id){
+        pointer ptr;
         __inline_cpp__("
-        static const uint8_t tiles[] = {
+        static const uint8_t tiles[][256] = {
 `;
         let idx=0;
         for( let composite of compositeList ){
             bin += `// ${(idx++).toString(16)}: ${composite.key}\n`;
+            bin += `{`;
             bin += APP.convertImage(composite, palette);
+            bin += `},`
         }
 bin += `       };
-        ptr = (char)tiles[id];
+        ptr = tiles[id];
         ");
         return ptr;
     }

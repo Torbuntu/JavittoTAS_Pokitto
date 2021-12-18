@@ -20,7 +20,6 @@ class Main extends State {
     }
     
     void init(){
-        System.out.println(TileMaps.getTile(1));
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         dog.run();
         dog.setPosition(10, 10);
@@ -29,7 +28,8 @@ class Main extends State {
             dogs[i] = new Dog();
             dogs[i].run();
             dogs[i].setPosition(10+i*15, 32+i*4);
-        }        
+        }
+        System.out.println(TileMaps.gardenPathData(0,0));
     }
     
     void shutdown(){
@@ -41,7 +41,7 @@ class Main extends State {
     }
     
     void update(){
-        screen.clear(TileMaps.getTile(136*(int)dog.x+120));
+        screen.clear(10);
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
@@ -64,7 +64,7 @@ class Main extends State {
         
         
         dog.draw(screen);
-        for(int i = 0; i < 14; i++){
+        for(byte i = 0; i < 14; i++){
             dogs[i].y=dogs[i].y+1.5f;
             if(dogs[i].y > 176)dogs[i].y = -12;
             dogs[i].x = dogs[i].x + 1.8f;
@@ -74,7 +74,7 @@ class Main extends State {
         
         screen.flush();
         
-        //System.out.println(screen.fps());
+        System.out.println(screen.fps());
     }
     
 }

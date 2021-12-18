@@ -1,8 +1,15 @@
 package femto.mode;
 
 public class SpriteFiller implements LineFiller {
-    SpriteData[] spriteBuffer = new SpriteData[32];// lol, only 10 sprites.
+    SpriteData[] spriteBuffer = new SpriteData[32];// lol, only 32 sprites.
     int buffer = 0;
+    ushort[] palette;
+    
+    SpriteFiller(ushort[] palette){
+        this.palette = palette;
+    }
+    
+    
     public void addSprite(int[] sprite, float x, float y, int w, int h){
         if(buffer > 32)return;
         spriteBuffer[buffer] = new SpriteData(sprite, x, y, w, h);

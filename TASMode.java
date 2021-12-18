@@ -15,16 +15,13 @@ public class TASMode extends ScreenMode implements __stub__ {
     
     // oh boy, here we go. Lots to do here. *deep breaths* 
     public LineFiller[] fillers = new LineFiller[4];
-    ColorFiller colorFiller = new ColorFiller();
-    SpriteFiller spriteFiller = new SpriteFiller();
+    ColorFiller colorFiller;
+    SpriteFiller spriteFiller;
     // TileFiller tileFiller = new TileFiller();
     
     protected TASMode(){}
     
     public TASMode( pointer pal, pointer font ){
-        fillers[0] = colorFiller;
-        //fillers[1] = tilesFiller;
-        fillers[2] = spriteFiller;
         initialize(pal);
     }
     
@@ -32,8 +29,13 @@ public class TASMode extends ScreenMode implements __stub__ {
         this.font = font;
         line = new short[220];
         //buffer = new byte[(this.width()>>1)*this.height()];
-        palette = new ushort[256]; // needs to be significantly larger for TASMode
+        palette = new ushort[256];
         loadPalette( pal );
+        spriteFiller = new SpriteFiller(palette);
+        colorFiller = new ColorFiller(palette);
+        fillers[0] = colorFiller;
+        //fillers[1] = tilesFiller;
+        fillers[2] = spriteFiller;
         clear(0);
         textRightLimit = width();
         return;
