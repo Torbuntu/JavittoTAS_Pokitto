@@ -17,7 +17,7 @@ public class TASMode extends ScreenMode implements __stub__ {
     public LineFiller[] fillers = new LineFiller[4];
     ColorFiller colorFiller;
     SpriteFiller spriteFiller;
-    // TileFiller tileFiller = new TileFiller();
+    TileFiller tileFiller;
     
     protected TASMode(){}
     
@@ -33,8 +33,9 @@ public class TASMode extends ScreenMode implements __stub__ {
         loadPalette( pal );
         spriteFiller = new SpriteFiller(palette);
         colorFiller = new ColorFiller(palette);
+        tileFiller = new TileFiller(palette);
         fillers[0] = colorFiller;
-        //fillers[1] = tilesFiller;
+        fillers[1] = tileFiller;
         fillers[2] = spriteFiller;
         clear(0);
         textRightLimit = width();

@@ -29,7 +29,8 @@ class Main extends State {
             dogs[i].run();
             dogs[i].setPosition(10+i*15, 32+i*4);
         }
-        System.out.println(TileMaps.gardenPathData(0,0));
+        
+        screen.tileFiller.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
     }
     
     void shutdown(){
@@ -42,6 +43,7 @@ class Main extends State {
     
     void update(){
         screen.clear(10);
+        
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             

@@ -198,9 +198,9 @@ public class TileMaps {
 
     
     // Number of tiles
-    int tileSetSize = 17;
+    public static int tileSetSize = 17;
     // Used in TileFiller to get tiles.
-    public static pointer getTile(int id){
+    public static pointer getTiles(){
         pointer ptr;
         __inline_cpp__("
         static const uint8_t tiles[][256] = {
@@ -494,7 +494,7 @@ public class TileMaps {
 0x89,0x91,0x99,0x11,0x99,0x98,0x9c,0xc8,
 0x99,0x99,0x99,0x91,0x11,0x19,0x99,0x99,
 },       };
-        ptr = tiles[id];
+        ptr = tiles;
         ");
         return ptr;
     }

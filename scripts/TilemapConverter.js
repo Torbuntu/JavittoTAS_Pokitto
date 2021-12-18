@@ -145,7 +145,7 @@ public class TileMaps {
     // Number of tiles
     public static int tileSetSize = ${compositeList.length};
     // Used in TileFiller to get tiles.
-    public static pointer getTile(int id){
+    public static pointer getTiles(){
         pointer ptr;
         __inline_cpp__("
         static const uint8_t tiles[][256] = {
@@ -158,7 +158,7 @@ public class TileMaps {
             bin += `},`
         }
 bin += `       };
-        ptr = tiles[id];
+        ptr = tiles;
         ");
         return ptr;
     }
