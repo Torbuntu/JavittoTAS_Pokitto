@@ -22,13 +22,15 @@ public class TileFiller implements LineFiller {
             if(id>17)id=0;
             return;
         }
-        for(int i = 0; i < 220; ++i){
+        int color = 0;
+        int color2 = 0;
+        for(int i = 0; i < 220; i++){
             if(i>16)continue;
-            int color = 0;
             __inline_cpp__("
-                color = ((uint8_t (*)[256])tileSet)[id][i+y*11];
+                color = ((uint8_t (*)[256])tileSet)[0x11][i+y*10];
             ");
-            line[i] = (short)palette[color];
+            color = palette[color];
+            line[i] = color;
         }
     }
 }
