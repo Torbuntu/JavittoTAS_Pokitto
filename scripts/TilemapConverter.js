@@ -24,6 +24,7 @@ let palette;
 promises.push(new Promise((ok, nok)=>{
     APP.getPalette(pal=>{
         palette = pal;
+        APP.log(palette.length);
         if(pal) ok();
         else nok();
     });
