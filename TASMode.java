@@ -65,6 +65,10 @@ public class TASMode extends ScreenMode implements __stub__ {
         return 176;
     }
     
+    public void setMap(pointer map, pointer tileSet){
+        tileFiller.setMap(map, tileSet);
+    }
+    
     //TODO: these should probably be renamed to something more useful. And put somewhere more obvious.
     int dat;
     int[] data;

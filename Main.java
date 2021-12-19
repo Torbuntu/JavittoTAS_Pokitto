@@ -30,7 +30,7 @@ class Main extends State {
             dogs[i].setPosition(10+i*15, 32+i*4);
         }
         
-        screen.tileFiller.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
+        screen.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
     }
     
     void shutdown(){
