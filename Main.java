@@ -8,12 +8,13 @@ import sprites.Dog;
 
 class Main extends State {
 
-    //0xD81F - Magenta
     // the screenmode we want to draw with
     TASMode screen;
     int color = 6000;
     Dog dog = new Dog();
     Dog[] dogs = new Dog[16];
+    
+    boolean mapSwitch = false;
     
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
@@ -47,13 +48,19 @@ class Main extends State {
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
             
+        if( Button.B.justPressed() ){
+            mapSwitch = !mapSwitch;
+            if(mapSwitch){
+                screen.setMap(TileMaps.getTestMap(), TileMaps.getTiles());
+            }else{
+                screen.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
+            }
+        }
         if(Button.Down.isPressed()){
             dog.y=dog.y+2;
-            dog.setFlipped(false);
         }
         if(Button.Up.isPressed()){
             dog.y=dog.y-2;
-            dog.setFlipped(true);
         }
         if(Button.Right.isPressed()){
             dog.x=dog.x+2;
@@ -64,6 +71,11 @@ class Main extends State {
             dog.setMirrored(true);   
         }
         
+        if(TileMaps.gardenPathData((int)dog.x/16, (int)dog.y/16) != 0){
+            dog.setFlipped(true);
+        }else{
+            dog.setFlipped(false);
+        }
         
         dog.draw(screen);
         for(byte i = 0; i < 14; i++){

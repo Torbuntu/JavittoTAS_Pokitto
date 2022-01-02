@@ -8,6 +8,8 @@ public class TileFiller implements LineFiller {
     int width;
     int height;
     int color = 0;
+    int offsetX = 0;
+    int offsetY = 0;
     
     TileFiller(ushort[] palette){
         this.palette = palette;
@@ -23,9 +25,16 @@ public class TileFiller implements LineFiller {
         ");
     }
     
+    void draw(int x, int y){
+        offsetX = x;
+        offsetY = y;
+    }
+    
     void fillLine(short[] line, int y){
        // if(y > 16)return;
         for(int x = 0; x < 220; x++){
+            if(offsetX+x < 0 || offsetY+y < 0)continue;
+            if(offsetX+x >= 220 || offsetY+y >= 176)continue;
             __inline_cpp__("
                 color = ((uint8_t*)tileSet)
                 [(((uint8_t*)tileMap)[(x/16)+(y/16)*width]) // map tile index
