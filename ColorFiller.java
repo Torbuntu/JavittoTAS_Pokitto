@@ -11,7 +11,6 @@ public class ColorFiller implements LineFiller {
     }
     public void fillLine(short[] line, int y) {
         for(int x = 0; x < 220; ++x){
-            // line[x] = (int)palette[Math.random(0, 250)];
             line[x] = color;
         }
     }

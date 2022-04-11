@@ -69,18 +69,25 @@ public class TASMode extends ScreenMode implements __stub__ {
         tileFiller.setMap(map, tileSet);
     }
     
+    public void drawMap(int x, int y){
+        tileFiller.draw(x,y);
+    }
+    
     //TODO: these should probably be renamed to something more useful. And put somewhere more obvious.
     int dat;
     int[] data;
     int frameWidth;
     int frameHeight;
-    //TODO: Somehow add frame image data to some sort of sprite buffer that will render in SpriteFiller.fillLine
     public void addSprite(pointer frame, float x, float y, boolean mirror, boolean flip){
         __inline_cpp__("
             frameWidth = ((char*)frame)[0];
             frameHeight = ((char*)frame)[1];
             const uint8_t *img = (uint8_t *)frame+2;
         ");
+        
+        if(x+frameWidth < 0 || x >= 220)return;
+        if(y+frameHeight < 0 || y >= 176)return;
+        
         data = new int[frameWidth*frameHeight];
         if(mirror){
             if(flip){

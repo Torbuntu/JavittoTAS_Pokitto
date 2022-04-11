@@ -6,6 +6,7 @@ public class SpriteData {
     int height;
     int[] data;
     
+    // TODO: use the frame pointer directly instead of an int[] data?
     SpriteData(int[] data, float x, float y, int w, int h){
         this.x = (int)x;
         this.y = (int)y;

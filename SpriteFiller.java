@@ -23,13 +23,27 @@ public class SpriteFiller implements LineFiller {
             SpriteData s = spriteBuffer[--each];
             if(y < s.y) continue;
             if(y >= s.y+s.height) continue;
-            for(int i = 0; i < s.width; ++i){
-                color = s.data[i+(y-s.y)*s.width];
+            
+            var indexY = (y-s.y);
+            
+            // We always want to keep startX at 0
+            int startX = 0;
+            int endX = s.width;
+            
+            if(s.x < 0){
+                startX -= s.x;
+                //endX += s.x;
+            }
+            
+            if(startX + endX + s.x > 220){
+                endX = 220-(startX+s.x);
+            }
+
+            var data = s.data;
+            for(int x = startX; x < endX; ++x){
+                color = data[x+indexY*s.width];
                 if(color <= 0)continue;
-                if(s.x+i < 0)continue;
-                if(s.x+i >= 220)continue;
-                
-                line[s.x+i]=color;
+                line[s.x+x]=color;
             }
         }
         // Reset the buffer if we are done with every line.
