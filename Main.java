@@ -60,17 +60,17 @@ class Main extends State {
             }
         }
         if(Button.Down.isPressed()){
-            dog.y = dog.y+2;
+            y = y+2;
         }
         if(Button.Up.isPressed()){
-            dog.y = dog.y-2;
+            y = y-2;
         }
         if(Button.Right.isPressed()){
-            dog.x = dog.x+2;
+            x = x-2;
             dog.setMirrored(false);
         }
         if(Button.Left.isPressed()){
-            dog.x = dog.x-2;
+            x = x+2;
             dog.setMirrored(true);   
         }
         
@@ -80,16 +80,16 @@ class Main extends State {
         //     dog.setFlipped(false);
         // }
         
-        dog.draw(screen);
+        // dog.draw(screen);
         screen.drawMap(x,y);
         
-        for(byte i = 0; i < 14; i++){
-            dogs[i].y=dogs[i].y+1.5f;
-            if(dogs[i].y > 176)dogs[i].y = -12;
-            dogs[i].x = dogs[i].x + 1.8f;
-            if(dogs[i].x > 220)dogs[i].x = -15;
-            dogs[i].draw(screen);
-        }
+        // for(byte i = 0; i < 14; i++){
+        //     dogs[i].y=dogs[i].y+1.5f;
+        //     if(dogs[i].y > 176)dogs[i].y = -12;
+        //     dogs[i].x = dogs[i].x + 1.8f;
+        //     if(dogs[i].x > 220)dogs[i].x = -15;
+        //     dogs[i].draw(screen);
+        // }
         
         screen.flush();
         
