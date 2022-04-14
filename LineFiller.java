@@ -1,5 +1,5 @@
 package femto.mode;
 
 public interface LineFiller {
-    void fillLine(short[] line, int y);
+    void fillLine(ushort[] line, int y);
 }

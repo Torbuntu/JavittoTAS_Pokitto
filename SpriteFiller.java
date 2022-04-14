@@ -16,7 +16,7 @@ public class SpriteFiller implements LineFiller {
         buffer++;
     }
     
-    public void fillLine(short[] line, int y) {
+    public void fillLine(ushort[] line, int y) {
         int each = buffer;
         int color;
         while(each > 0){

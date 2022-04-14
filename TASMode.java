@@ -11,7 +11,7 @@ public class TASMode extends ScreenMode implements __stub__ {
     /// The screen mode's palette.
     public ushort[] palette;
     
-    short[] line;
+    ushort[] line;
     
     // oh boy, here we go. Lots to do here. *deep breaths* 
     public LineFiller[] fillers = new LineFiller[4];
@@ -27,7 +27,7 @@ public class TASMode extends ScreenMode implements __stub__ {
     
     protected void initialize( pointer pal ){
         this.font = font;
-        line = new short[220];
+        line = new ushort[220];
         //buffer = new byte[(this.width()>>1)*this.height()];
         palette = new ushort[256];
         loadPalette( pal );
@@ -152,7 +152,7 @@ public class TASMode extends ScreenMode implements __stub__ {
         }
     }
     
-    void flushLine(short[] line, int y){
+    void flushLine(ushort[] line, int y){
         beginStream();
         for(int x = 0; x < line.length; ++x){
             writeData(line[x]);

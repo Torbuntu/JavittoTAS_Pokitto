@@ -9,7 +9,7 @@ public class ColorFiller implements LineFiller {
     public void draw(int color){
         this.color = palette[color];
     }
-    public void fillLine(short[] line, int y) {
+    public void fillLine(ushort[] line, int y) {
         for(int x = 0; x < 220; ++x){
             line[x] = color;
         }
