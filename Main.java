@@ -72,7 +72,7 @@ class Main extends State {
         }
         if(Button.Left.isPressed()){
             dog.x = dog.x-2;
-            dog.setMirrored(true);   
+            dog.setMirrored(true);
         }
         
         if(TileMaps.gardenPathData((int)dog.x/16, (int)dog.y/16) != 0){

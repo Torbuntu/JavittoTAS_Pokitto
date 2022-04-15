@@ -49,14 +49,13 @@ public class TileFiller implements LineFiller {
                 auto tile = ((uint8_t*)tileSet) + tileIdx * 256 + modY;
             ");
             
-            modX = x * 16;
+            modX = (x * 16);
             for(int t = 0; t < 16; t++){
                 __inline_cpp__("
                 color = tile[t];
                 ");
                 line[modX+t] = palette[color];
             }
-            
         }
     }
 }

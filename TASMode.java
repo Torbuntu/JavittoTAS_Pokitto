@@ -28,7 +28,6 @@ public class TASMode extends ScreenMode implements __stub__ {
     protected void initialize( pointer pal ){
         this.font = font;
         line = new ushort[220];
-        //buffer = new byte[(this.width()>>1)*this.height()];
         palette = new ushort[256];
         loadPalette( pal );
         spriteFiller = new SpriteFiller(palette);
@@ -135,29 +134,24 @@ public class TASMode extends ScreenMode implements __stub__ {
         spriteFiller.addSprite(data, x, y, frameWidth, frameHeight);
     }
     
-    
     public void clear( int color ){
         colorFiller.draw(color);
     }
 
     void flush() {
         super.flush();
+        beginStream();
         for(int y = 0; y < 176; ++y){
             for(LineFiller lf : fillers){
                 if(null == lf)continue;
                 // fillLine populates the line variable with data
                 lf.fillLine(line, y);
             }
-            flushLine(line, y);
+            __inline_cpp__("
+            // pokitto/libs/SystemInit.s
+            // pokitto/begin.cpp
+            flushLine16(line->elements);
+            ");
         }
     }
-    
-    void flushLine(ushort[] line, int y){
-        beginStream();
-        for(int x = 0; x < line.length; ++x){
-            writeData(line[x]);
-        }
-    }
-    
-    
 }
