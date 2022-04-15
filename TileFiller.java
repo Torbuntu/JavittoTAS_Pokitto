@@ -4,10 +4,9 @@ public class TileFiller implements LineFiller {
     // Get the map, get the tiles, render
     pointer tileMap;
     pointer tileSet;
-    pointer tile;
     ushort[] palette;
-    int width;
-    int height;
+    int mapWidth;
+    int mapHeight;
     int color;
     int offsetX = 0;
     int offsetY = 0;
@@ -22,8 +21,8 @@ public class TileFiller implements LineFiller {
         this.tileSet = tileSet;
 
         __inline_cpp__("
-            width = ((char * ) map)[0]; 
-            height = ((char * ) map)[1]; 
+            mapWidth = ((char * ) map)[0]; 
+            mapHeight = ((char * ) map)[1]; 
             tileMap = (uint8_t * ) map + 2;
         ");
     }
@@ -37,40 +36,25 @@ public class TileFiller implements LineFiller {
     void fillLine(ushort[] line, int y) {
         if (offsetY + y < 0 || offsetY + y >= 176) return;
         
-        int tileIdx;
-        var calcX = 0;
-        var tileIndexY = ((y+offsetY) / 16) * width;
+        var tileIndexY = ((y+offsetY) / 16) * mapWidth;
         var modY = ((y+offsetY) % 16) * 16;
+        int modX;
         
-        int startX = offsetX;
-        int endX = 220;
+        int tileIdx;
         
-        if(offsetX < 0){
-            startX = 0;
-            endX += offsetX;
-        }
-        if(startX + endX > 220) {
-            endX = 220;
-        }
-        
-        for (int x = startX; x < endX; x+=16) {
-            calcX = x-offsetX;
-            
+        for (int x = 0; x < mapWidth; x++) {
             __inline_cpp__("
                 // Get tile index
-                tileIdx = ((uint8_t*)tileMap)[(calcX / 16) + tileIndexY];
+                tileIdx = ((uint8_t*)tileMap)[(x) + tileIndexY];
+                auto tile = ((uint8_t*)tileSet) + tileIdx * 256 + modY;
             ");
             
+            modX = x * 16;
             for(int t = 0; t < 16; t++){
                 __inline_cpp__("
-                color = ((uint8_t*) tileSet)
-                    [
-                        tileIdx // map tile index
-                        * 256 + // size of the tile (16x16)
-                        (((t+calcX) % 16) + modY) // tile color index
-                    ]; 
+                color = tile[t];
                 ");
-                line[x+t] = palette[color]; 
+                line[modX+t] = palette[color];
             }
             
         }
