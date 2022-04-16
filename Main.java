@@ -46,7 +46,7 @@ class Main extends State {
     }
     
     void update(){
-        screen.clear(10);
+        screen.clear(0);
         
         if( Button.A.justPressed() )
             Game.changeState( new Main() );
@@ -61,17 +61,21 @@ class Main extends State {
         }
         
         if(Button.Down.isPressed()){
-            dog.y = dog.y+2;
+            // dog.y = dog.y+2;
+            y = y+1;
         }
         if(Button.Up.isPressed()){
-            dog.y = dog.y-2;
+            // dog.y = dog.y-2;
+            y = y - 1;
         }
         if(Button.Right.isPressed()){
-            dog.x = dog.x+2;
+            // dog.x = dog.x+2;
+            x = x + 1;
             dog.setMirrored(false);
         }
         if(Button.Left.isPressed()){
-            dog.x = dog.x-2;
+            // dog.x = dog.x-2;
+            x = x - 1;
             dog.setMirrored(true);
         }
         

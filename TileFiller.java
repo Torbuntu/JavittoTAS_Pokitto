@@ -8,10 +8,8 @@ public class TileFiller implements LineFiller {
     int mapWidth;
     int mapHeight;
     int color;
-    int offsetX = 0;
-    int offsetY = 0;
-
-    int id;
+    int cameraX = 0;
+    int cameraY = 0;
 
     TileFiller(ushort[] palette) {
         this.palette = palette;
@@ -28,33 +26,31 @@ public class TileFiller implements LineFiller {
     }
 
     void draw(int x, int y) {
-        offsetX = x;
-        offsetY = y;
+        cameraX = x;
+        cameraY = y;
     }
 
 // TODO: This thing needs massive work to be more performant...
     void fillLine(ushort[] line, int y) {
-        if (offsetY + y < 0 || offsetY + y >= 176) return;
+        if (cameraY + y < 0 || cameraY + y >= 176) return;
         
-        var tileIndexY = ((y+offsetY) / 16) * mapWidth;
-        var modY = ((y+offsetY) % 16) * 16;
-        int modX;
-        
-        int tileIdx;
+        var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
+        var tileSetIndexY = ((y+cameraY) % 16) * 16;
+        int lineX;
         
         for (int x = 0; x < mapWidth; x++) {
             __inline_cpp__("
-                // Get tile index
-                tileIdx = ((uint8_t*)tileMap)[(x) + tileIndexY];
-                auto tile = ((uint8_t*)tileSet) + tileIdx * 256 + modY;
+            // Get tile index
+            auto tileId = ((uint8_t*)tileMap)[(x) + tileMapIndexY];
+            auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
-            modX = (x * 16);
+            lineX = (x * 16);
             for(int t = 0; t < 16; t++){
                 __inline_cpp__("
                 color = tile[t];
                 ");
-                line[modX+t] = palette[color];
+                line[lineX+t] = palette[color];
             }
         }
     }
