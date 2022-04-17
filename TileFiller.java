@@ -30,13 +30,12 @@ public class TileFiller implements LineFiller {
         cameraY = y;
     }
 
-// TODO: This thing needs massive work to be more performant...
+// TODO: implement camera adjustment...
     void fillLine(ushort[] line, int y) {
         if (cameraY + y < 0 || cameraY + y >= 176) return;
         
         var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
         var tileSetIndexY = ((y+cameraY) % 16) * 16;
-        int lineX;
         
         for (int x = 0; x < mapWidth; x++) {
             __inline_cpp__("
@@ -45,7 +44,8 @@ public class TileFiller implements LineFiller {
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
-            lineX = (x * 16);
+            var lineX = (x * 16);
+
             for(int t = 0; t < 16; t++){
                 __inline_cpp__("
                 color = tile[t];

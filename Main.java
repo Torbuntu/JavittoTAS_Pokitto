@@ -61,21 +61,17 @@ class Main extends State {
         }
         
         if(Button.Down.isPressed()){
-            // dog.y = dog.y+2;
-            y = y+1;
+            dog.y = dog.y+2;
         }
         if(Button.Up.isPressed()){
-            // dog.y = dog.y-2;
-            y = y - 1;
+            dog.y = dog.y-2;
         }
         if(Button.Right.isPressed()){
-            // dog.x = dog.x+2;
-            x = x + 1;
+            dog.x = dog.x+2;
             dog.setMirrored(false);
         }
         if(Button.Left.isPressed()){
-            // dog.x = dog.x-2;
-            x = x - 1;
+            dog.x = dog.x-2;
             dog.setMirrored(true);
         }
         
@@ -86,7 +82,6 @@ class Main extends State {
         }
         
         dog.draw(screen);
-        screen.drawMap(x,y);
         
         for(byte i = 0; i < 14; i++){
             dogs[i].y=dogs[i].y+1.5f;
