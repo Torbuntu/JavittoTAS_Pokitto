@@ -3,6 +3,7 @@ package femto.mode;
 public class TileFiller implements LineFiller {
     // Get the map, get the tiles, render
     pointer tileMap;
+    pointer tileWindow;
     pointer tileSet;
     ushort[] palette;
     int mapWidth;
@@ -30,28 +31,31 @@ public class TileFiller implements LineFiller {
         cameraY = y;
     }
 
-// TODO: implement camera adjustment...
+
+// TODO: Fix camera clip
     void fillLine(ushort[] line, int y) {
-        if (cameraY + y < 0 || cameraY + y >= 176) return;
         
+        // Set the Y for the map and tileset lookup
         var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
         var tileSetIndexY = ((y+cameraY) % 16) * 16;
-        
-        for (int x = 0; x < mapWidth; x++) {
+        var tileX = cameraX;
+        // Loop the map width to collect the tiles
+        for (int i = 0; i < 14;i++) {
             __inline_cpp__("
-            // Get tile index
-            auto tileId = ((uint8_t*)tileMap)[(x) + tileMapIndexY];
+            // Get tile ID from the map. Then use that to find the tile itself from the tileset
+            auto tileId = ((uint8_t*)tileMap)[(i+tileX) + tileMapIndexY];
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
-            var lineX = (x * 16);
-
+            // Loop over the Tile color IDs and put them in the line array.
             for(int t = 0; t < 16; t++){
                 __inline_cpp__("
                 color = tile[t];
                 ");
-                line[lineX+t] = palette[color];
+                line[(i*16)+t] = palette[color];
             }
         }
+        
     }
+    
 }
