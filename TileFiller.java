@@ -11,7 +11,9 @@ public class TileFiller implements LineFiller {
     int color;
     int cameraX = 0;
     int cameraY = 0;
-
+    int tileH = 16;
+    int tileW = 16;
+    
     TileFiller(ushort[] palette) {
         this.palette = palette;
     }
@@ -37,13 +39,13 @@ public class TileFiller implements LineFiller {
         
         // Set the Y for the map and tileset lookup
         var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
-        var tileSetIndexY = ((y+cameraY) % 16) * 16;
-        var tileX = cameraX;
+        var tileSetIndexY = ((y+cameraY) % 16) * tileW;
+        
         // Loop the map width to collect the tiles
-        for (int i = 0; i < 14;i++) {
+        for (int i = 0; i < 220;) {
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t*)tileMap)[(i+tileX) + tileMapIndexY];
+            auto tileId = ((uint8_t*)tileMap)[(i/16) + tileMapIndexY];
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
@@ -52,8 +54,9 @@ public class TileFiller implements LineFiller {
                 __inline_cpp__("
                 color = tile[t];
                 ");
-                line[(i*16)+t] = palette[color];
+                line[(i)+t] = palette[color];
             }
+            i+=16;
         }
         
     }
