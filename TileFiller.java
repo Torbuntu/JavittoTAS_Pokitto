@@ -40,7 +40,7 @@ public class TileFiller implements LineFiller {
         // Set the Y for the map and tileset lookup
         var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
         var tileSetIndexY = ((y+cameraY) % 16) * tileW;
-        var mapX = cameraX / mapWidth;
+        var mapX = cameraX / tileW;
         var tileX = cameraX % tileW;
         // Loop the map width to collect the tiles
         for (int i = 0; i < 220;) {
