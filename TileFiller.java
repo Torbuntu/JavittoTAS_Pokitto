@@ -40,25 +40,28 @@ public class TileFiller implements LineFiller {
         // Set the Y for the map and tileset lookup
         var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
         var tileSetIndexY = ((y+cameraY) % 16) * tileW;
-        
+        var mapX = cameraX / mapWidth;
+        var tileX = cameraX % tileW;
         // Loop the map width to collect the tiles
         for (int i = 0; i < 220;) {
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t*)tileMap)[(i/16) + tileMapIndexY];
+            auto tileId = ((uint8_t*)tileMap)[mapX + tileMapIndexY];
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
+            int iter = Math.min(tileW - tileX, 220 - i);
             // Loop over the Tile color IDs and put them in the line array.
-            for(int t = 0; t < 16; t++){
+            for(int t = 0; t < iter; t++){
                 __inline_cpp__("
-                color = tile[t];
+                color = tile[tileX + t];
                 ");
                 line[(i)+t] = palette[color];
             }
-            i+=16;
+            i+=iter;
+            mapX++;
+            tileX = 0;
         }
-        
     }
     
 }
