@@ -4,19 +4,20 @@ import femto.State;
 import femto.input.Button;
 import femto.font.TIC80;
 import femto.palette.Miloslav;
-import sprites.Dog;
+import sprites.Bot;
+import sprites.BotHead;
 
 class Main extends State {
 
     // the screenmode we want to draw with
     TASMode screen;
-    int color = 6000;
-    Dog dog = new Dog();
-    Dog[] dogs = new Dog[16];
     
     int x,y;
     
     boolean mapSwitch = false;
+    
+    Bot bot;
+    BotHead botHead;
     
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
@@ -24,14 +25,13 @@ class Main extends State {
     
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
-        dog.run();
-        dog.setPosition(80, 100);
+        bot = new Bot();
+        bot.setPosition(100,140);
+        bot.idle();
         
-        for(int i = 0; i < 14; i++){
-            dogs[i] = new Dog();
-            dogs[i].run();
-            dogs[i].setPosition(10+i*15, 32+i*4);
-        }
+        botHead = new BotHead();
+        botHead.setPosition(100,132);
+        
         x = 0;
         y = 0;
         screen.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
@@ -61,39 +61,38 @@ class Main extends State {
         }
         
         if(Button.Down.isPressed()){
-            y--;
+            // y--;
             // dog.y = dog.y+2;
         }
         if(Button.Up.isPressed()){
-            y++;
+            // y++;
             // dog.y = dog.y-2;
         }
         if(Button.Right.isPressed()){
             // dog.x = dog.x+2;
-            x++;
-            dog.setMirrored(false);
-        }
+            x+=2;
+            bot.setMirrored(true);
+            botHead.setMirrored(true);
+            bot.walkHori();
+        }else
         if(Button.Left.isPressed()){
-            x--;
-            dog.setMirrored(true);
+            x-=2;
+            bot.setMirrored(false);
+            botHead.setMirrored(false);
+            bot.walkHori();
+        }else {
+            bot.idle();
         }
         
-        if(TileMaps.gardenPathData((int)dog.x/16, (int)dog.y/16) != 0){
-            dog.setFlipped(true);
-        }else{
-            dog.setFlipped(false);
-        }
+        // if(TileMaps.gardenPathData((int)dog.x/16, (int)dog.y/16) != 0){
+        //     dog.setFlipped(true);
+        // }else{
+        //     dog.setFlipped(false);
+        // }
         
-        dog.draw(screen);
+        bot.draw(screen);
+        botHead.draw(screen);
         screen.drawMap(x, y);
-        
-        for(byte i = 0; i < 14; i++){
-            dogs[i].y=dogs[i].y+1.5f;
-            if(dogs[i].y > 176)dogs[i].y = -12;
-            dogs[i].x = dogs[i].x + 1.8f;
-            if(dogs[i].x > 220)dogs[i].x = -15;
-            dogs[i].draw(screen);
-        }
         
         screen.flush();
         
