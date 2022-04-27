@@ -12,7 +12,7 @@ class Main extends State {
     // the screenmode we want to draw with
     TASMode screen;
     
-    int x,y;
+    int x,y, vy=0;
     
     boolean mapSwitch = false;
     
@@ -26,11 +26,11 @@ class Main extends State {
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         bot = new Bot();
-        bot.setPosition(100,140);
+        bot.setPosition(162,30);
         bot.idle();
         
         botHead = new BotHead();
-        botHead.setPosition(100,132);
+        botHead.setPosition(162,22);
         
         x = 0;
         y = 0;
@@ -48,8 +48,9 @@ class Main extends State {
     void update(){
         screen.clear(0);
         
-        if( Button.A.justPressed() )
+        if( Button.A.justPressed() ) {
             Game.changeState( new Main() );
+        }
             
         if( Button.B.justPressed() ){
             mapSwitch = !mapSwitch;
@@ -61,22 +62,22 @@ class Main extends State {
         }
         
         if(Button.Down.isPressed()){
-            // y--;
-            // dog.y = dog.y+2;
+            // TODO down ladder / drop platform
         }
         if(Button.Up.isPressed()){
-            // y++;
-            // dog.y = dog.y-2;
+            // TODO, jump/ladder
         }
         if(Button.Right.isPressed()){
             // dog.x = dog.x+2;
-            x+=2;
+            bot.x+=2;
+            botHead.x+=2;
             bot.setMirrored(true);
             botHead.setMirrored(true);
             bot.walkHori();
         }else
         if(Button.Left.isPressed()){
-            x-=2;
+            bot.x-=2;
+            botHead.x-=2;
             bot.setMirrored(false);
             botHead.setMirrored(false);
             bot.walkHori();
@@ -84,11 +85,15 @@ class Main extends State {
             bot.idle();
         }
         
-        // if(TileMaps.gardenPathData((int)dog.x/16, (int)dog.y/16) != 0){
-        //     dog.setFlipped(true);
-        // }else{
-        //     dog.setFlipped(false);
-        // }
+        if(TileMaps.gardenPathData((int)bot.x/16, (int)(bot.y+1)/16) != 0){
+            vy = 0;
+            
+        }else{
+            vy = 3;
+        }
+        
+        botHead.y+=vy;
+        bot.y+=vy;
         
         bot.draw(screen);
         botHead.draw(screen);
