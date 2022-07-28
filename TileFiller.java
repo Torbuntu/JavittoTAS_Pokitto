@@ -43,7 +43,7 @@ public class TileFiller implements LineFiller {
         var tileMapIndexY = ((y-cameraY) / 16) * mapWidth;
         var tileSetIndexY = ((y-cameraY) % 16) * tileW;
         
-        // Divid the current X position by the width of the Tiles.
+        // Divide the current X position by the width of the Tiles.
         var mapX = cameraX / tileW;
         
         // Get the position on the first X Tile. 
@@ -51,24 +51,26 @@ public class TileFiller implements LineFiller {
         
         // Loop the map width to collect the tiles
         for (int i = 0; i < 220;) {
+            int iter = Math.min(tileW - tileX, 220 - i);
+            
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
             auto tileId = ((uint8_t*)tileMap)[mapX + tileMapIndexY];
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileSetIndexY;
             ");
             
-            int iter = Math.min(tileW - tileX, 220 - i);
 
             // Loop over the Tile color IDs and put them in the line array.
             for(int t = 0; t < iter; t++){
                 __inline_cpp__("
                 color = tile[tileX + t];
                 ");
-                line[(i)+t] = palette[color];
+                line[i+t] = palette[color];
             }
             i+=iter;
-            mapX++;
             tileX = 0;
+            mapX++;
+            
         }
     }
     
