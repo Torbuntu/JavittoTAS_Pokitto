@@ -36,12 +36,19 @@ public class TileFiller implements LineFiller {
 
 // TODO: Fix camera clip
     void fillLine(ushort[] line, int y) {
+        // Clip top and bottom of map.
+        if(y-cameraY < 0 || y-cameraY >= mapHeight*tileH)return;
         
         // Set the Y for the map and tileset lookup
-        var tileMapIndexY = ((y+cameraY) / 16) * mapWidth;
-        var tileSetIndexY = ((y+cameraY) % 16) * tileW;
+        var tileMapIndexY = ((y-cameraY) / 16) * mapWidth;
+        var tileSetIndexY = ((y-cameraY) % 16) * tileW;
+        
+        // Divid the current X position by the width of the Tiles.
         var mapX = cameraX / tileW;
+        
+        // Get the position on the first X Tile. 
         var tileX = cameraX % tileW;
+        
         // Loop the map width to collect the tiles
         for (int i = 0; i < 220;) {
             __inline_cpp__("
@@ -51,6 +58,7 @@ public class TileFiller implements LineFiller {
             ");
             
             int iter = Math.min(tileW - tileX, 220 - i);
+
             // Loop over the Tile color IDs and put them in the line array.
             for(int t = 0; t < iter; t++){
                 __inline_cpp__("

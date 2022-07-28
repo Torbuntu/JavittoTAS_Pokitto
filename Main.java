@@ -34,7 +34,7 @@ class Main extends State {
         
         x = 0;
         y = 0;
-        screen.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
+        screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
     void shutdown(){
@@ -55,42 +55,40 @@ class Main extends State {
         if( Button.B.justPressed() ){
             mapSwitch = !mapSwitch;
             if(mapSwitch){
-                screen.setMap(TileMaps.getTestMap(), TileMaps.getTiles());
+                screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
             }else{
-                screen.setMap(TileMaps.getGardenPath(), TileMaps.getTiles());
+                screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
             }
         }
         
         if(Button.Down.isPressed()){
             // TODO down ladder / drop platform
+            y++;
         }
         if(Button.Up.isPressed()){
             // TODO, jump/ladder
+            y--;
         }
         if(Button.Right.isPressed()){
             // dog.x = dog.x+2;
-            bot.x+=2;
-            botHead.x+=2;
+            // bot.x+=2;
+            // botHead.x+=2;
+            x++;
             bot.setMirrored(true);
             botHead.setMirrored(true);
             bot.walkHori();
         }else
         if(Button.Left.isPressed()){
-            bot.x-=2;
-            botHead.x-=2;
+            // bot.x-=2;
+            // botHead.x-=2;
+            x--;
             bot.setMirrored(false);
             botHead.setMirrored(false);
             bot.walkHori();
         }else {
             bot.idle();
         }
-        
-        if(TileMaps.gardenPathData((int)bot.x/16, (int)(bot.y+1)/16) != 0){
-            vy = 0;
-            
-        }else{
-            vy = 3;
-        }
+
         
         botHead.y+=vy;
         bot.y+=vy;
@@ -101,7 +99,7 @@ class Main extends State {
         
         screen.flush();
         
-        System.out.println(screen.fps());
+        System.out.println(screen.fps() + " - x:" + x + ", Y:"+y);
     }
     
 }
