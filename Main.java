@@ -16,6 +16,8 @@ class Main extends State {
     
     boolean mapSwitch = false;
     
+    int c = 0;
+    
     Bot bot;
     BotHead botHead;
     
@@ -46,6 +48,11 @@ class Main extends State {
     }
     
     void update(){
+        c++;
+        if(c==100){
+            c = 0;
+            System.out.println(screen.fps());
+        }
         screen.clear(0);
         
         if( Button.A.justPressed() ) {
@@ -63,17 +70,17 @@ class Main extends State {
         
         if(Button.Down.isPressed()){
             // TODO down ladder / drop platform
-            y++;
+            y+=16;
         }
         if(Button.Up.isPressed()){
             // TODO, jump/ladder
-            y--;
+            y-=16;
         }
         if(Button.Right.isPressed()){
             // dog.x = dog.x+2;
             // bot.x+=2;
             // botHead.x+=2;
-            x++;
+            x+=16;
             bot.setMirrored(true);
             botHead.setMirrored(true);
             bot.walkHori();
@@ -81,7 +88,7 @@ class Main extends State {
         if(Button.Left.isPressed()){
             // bot.x-=2;
             // botHead.x-=2;
-            x--;
+            x-=16;
             bot.setMirrored(false);
             botHead.setMirrored(false);
             bot.walkHori();
@@ -98,8 +105,6 @@ class Main extends State {
         screen.drawMap(x, y);
         
         screen.flush();
-        
-        System.out.println(screen.fps() + " - x:" + x + ", Y:"+y);
     }
     
 }

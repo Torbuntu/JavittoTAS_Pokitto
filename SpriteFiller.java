@@ -24,7 +24,7 @@ public class SpriteFiller implements LineFiller {
             if(y < s.y) continue;
             if(y >= s.y+s.height) continue;
             
-            var indexY = (y-s.y);
+            var indexY = (y-s.y)*s.width;
             
             // We always want to keep startX at 0
             int startX = 0;
@@ -41,7 +41,7 @@ public class SpriteFiller implements LineFiller {
 
             var data = s.data;
             for(int x = startX; x < endX; ++x){
-                color = data[x+indexY*s.width];
+                color = data[x+indexY];
                 if(color <= 0)continue;
                 line[s.x+x]=color;
             }

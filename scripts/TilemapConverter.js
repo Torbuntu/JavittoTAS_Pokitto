@@ -153,10 +153,8 @@ public class TileMaps {
 `;
         let idx=0;
         for( let composite of compositeList ){
-            bin += `// ${(idx++).toString(16)}: ${composite.key}\n`;
-            bin += `{`;
+            bin += `\n// ${(idx++).toString(16)}: ${composite.key}\n`;
             bin += APP.convertImage(composite, {bpp:8,palette});
-            bin += `},`
         }
 bin += `       };
         ptr = tiles;
