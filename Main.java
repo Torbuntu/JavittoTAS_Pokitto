@@ -68,15 +68,15 @@ class Main extends State {
             }
         }
         
-        if(Button.Down.isPressed()){
+        if(Button.Down.justPressed()){
             // TODO down ladder / drop platform
-            y+=16;
-        }
-        if(Button.Up.isPressed()){
-            // TODO, jump/ladder
             y-=16;
         }
-        if(Button.Right.isPressed()){
+        if(Button.Up.justPressed()){
+            // TODO, jump/ladder
+            y+=16;
+        }
+        if(Button.Right.justPressed()){
             // dog.x = dog.x+2;
             // bot.x+=2;
             // botHead.x+=2;
@@ -85,7 +85,7 @@ class Main extends State {
             botHead.setMirrored(true);
             bot.walkHori();
         }else
-        if(Button.Left.isPressed()){
+        if(Button.Left.justPressed()){
             // bot.x-=2;
             // botHead.x-=2;
             x-=16;
