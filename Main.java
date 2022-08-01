@@ -12,7 +12,7 @@ class Main extends State {
     // the screenmode we want to draw with
     TASMode screen;
     
-    int x,y, vy=0;
+    int x,y,px,py;
     
     boolean mapSwitch = false;
     
@@ -38,6 +38,8 @@ class Main extends State {
         
         x = 0;
         y = 0;
+        px=96;
+        py=80;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
@@ -54,7 +56,7 @@ class Main extends State {
         if(c==100){
             c = 0;
             System.out.println((int)screen.fps());
-            System.out.println("X: " + x);
+            System.out.println("X: " + x + ", Y: " + y);
         }
         screen.clear(0);
         
@@ -70,22 +72,55 @@ class Main extends State {
         if(movement > 0){
             movement--;
             switch(direction){
-                case 0: x--;break;
-                case 1: y++;break;
-                case 2: x++;break;
-                case 3: y--;break;
+                case 0: 
+                    if(x==0){
+                        px-=2;
+                    } else if (x > 0 && px == 96) {
+                        x-=2;
+                    } else {
+                        px-=2;
+                    }
+                    break;
+                case 1: 
+                    if(y==0){
+                        py-=2;
+                    } else if(y < 0 && py == 80){
+                        y+=2;
+                    } else {
+                        py-=2;
+                    }
+                    break;
+                case 2:
+                    if(x==0 && px < 96) {
+                        px+=2;
+                    } else if(x < 212){
+                        x+=2;
+                    } else {
+                        px+=2;
+                    }
+                    
+                    break;
+                case 3: 
+                    if(y==0 && py < 80) {
+                        py+=2;
+                    } else if (y > -176){
+                        y-=2;
+                    } else {
+                        py+=2;
+                    }
+                    break;
             }
         } else {
             if(Button.Down.isPressed()){
                 // TODO down ladder / drop platform
                 // y-=16;
-                movement = 16;
+                movement = 8;
                 direction = 3;
             } else
             if(Button.Up.isPressed()){
                 // TODO, jump/ladder
                 // y+=16;
-                movement = 16;
+                movement = 8;
                 direction = 1;
             } else 
             if(Button.Right.isPressed()){
@@ -93,7 +128,7 @@ class Main extends State {
                 // bot.x+=2;
                 // botHead.x+=2;
                 // x+=16;
-                movement = 16;
+                movement = 8;
                 direction = 2;
                 bot.setMirrored(true);
                 botHead.setMirrored(true);
@@ -103,7 +138,7 @@ class Main extends State {
                 // bot.x-=2;
                 // botHead.x-=2;
                 // x-=16;
-                movement = 16;
+                movement = 8;
                 direction = 0;
                 bot.setMirrored(false);
                 botHead.setMirrored(false);
@@ -113,11 +148,8 @@ class Main extends State {
             }
         }
         
-        
-
-        
-        botHead.y+=vy;
-        bot.y+=vy;
+        bot.setPosition(px, py);
+        botHead.setPosition(px, py-8);
         
         bot.draw(screen);
         botHead.draw(screen);
