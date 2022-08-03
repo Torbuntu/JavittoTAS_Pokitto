@@ -73,13 +73,14 @@ class Main extends State {
             movement--;
             switch(direction){
                 case 0: 
-                    if(x==0){
-                        px-=2;
-                    } else if (x > 0 && px == 96) {
-                        x-=2;
-                    } else {
-                        px-=2;
-                    }
+                    // if(x==0){
+                    //     px-=2;
+                    // } else if (x > 0 && px == 96) {
+                    //     x-=2;
+                    // } else {
+                    //     px-=2;
+                    // }
+                    x--;
                     break;
                 case 1: 
                     if(y==0){

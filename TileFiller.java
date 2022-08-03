@@ -49,13 +49,22 @@ public class TileFiller implements LineFiller {
         // Get the position on the first X Tile.
         var tileX = cameraX % tileW;
         
+        // TODO - make this work for the "right" side of the map as well.
+        int start = -cameraX;
+        if(cameraX < 0){
+            mapX = 0;
+            tileX = 0;
+        }
+        if(start < 0)start = 0;
+        
         // Loop the map width to collect the tiles
-        for (int i = 0; i < 220;) {
+        for (int i = start; i < 220;) {
             // Clip the right hand side of the map. Whee~
             if(mapX >= mapWidth)return;
             
             int iter = Math.min(tileW - tileX, 220 - i);
             // Trying to clip the left side of the map...
+
             if(mapX < 0){
                 mapX++;
                 tileX = 0;
