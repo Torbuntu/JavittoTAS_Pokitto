@@ -34,7 +34,6 @@ public class TileFiller implements LineFiller {
     }
 
 
-// TODO: Fix camera clip
     void fillLine(ushort[] line, int y) {
         // Clip top and bottom of map.
         if(y-cameraY < 0 || y-cameraY >= mapHeight*tileH)return;
@@ -43,13 +42,11 @@ public class TileFiller implements LineFiller {
         var mapY = ((y-cameraY) / 16) * mapWidth;
         var tileY = ((y-cameraY) % 16) * tileW;
         
-        // Divide the current X position by the width of the Tiles.
+        // Set the X for the map and tileset lookup
         var mapX = cameraX / tileW;
-        
-        // Get the position on the first X Tile.
         var tileX = cameraX % tileW;
         
-        // TODO - make this work for the "right" side of the map as well.
+        // Clip to the left of the map
         int start = -cameraX;
         if(cameraX < 0){
             mapX = 0;
@@ -61,23 +58,14 @@ public class TileFiller implements LineFiller {
         for (int i = start; i < 220;) {
             // Clip the right hand side of the map. Whee~
             if(mapX >= mapWidth)return;
-            
-            int iter = Math.min(tileW - tileX, 220 - i);
-            // Trying to clip the left side of the map...
 
-            if(mapX < 0){
-                mapX++;
-                tileX = 0;
-                i+=iter;
-                continue;
-            }
-            
+            int iter = min(tileW - tileX, 220 - i);
+
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
             auto tileId = ((uint8_t*)tileMap)[mapX + mapY];
             auto tile = ((uint8_t*)tileSet) + tileId * 256 + tileY;
             ");
-            
 
             // Loop over the Tile color IDs and put them in the line array.
             for(int t = 0; t < iter; t++){
@@ -90,6 +78,10 @@ public class TileFiller implements LineFiller {
             tileX = 0;
             mapX++;
         }
+    }
+    
+    int min(int a, int b){
+        return (a<b) ? a : b;
     }
     
 }

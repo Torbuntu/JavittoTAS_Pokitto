@@ -6,6 +6,7 @@ import femto.font.TIC80;
 import femto.palette.Miloslav;
 import sprites.Bot;
 import sprites.BotHead;
+import sprites.Tools;
 
 class Main extends State {
 
@@ -14,14 +15,15 @@ class Main extends State {
     
     int x,y,px,py;
     
-    boolean mapSwitch = false;
+    boolean mapSwitch = false, menu = false;
     
     int c = 0;
     
     Bot bot;
     BotHead botHead;
+    Tools[] tools;
     
-    ubyte movement = 0, direction = 0;
+    ubyte movement = 0, direction = 0, selected = 0, use = 0;
     
     public static void main(String[] args){
         Game.run( TIC80.font(), new Main() );
@@ -35,6 +37,20 @@ class Main extends State {
         
         botHead = new BotHead();
         botHead.setPosition(112,72);
+        
+        tools = new Tools[]{
+            new Tools(),
+            new Tools(),
+            new Tools(),
+            new Tools()
+        };
+        tools[0].hoe();
+        tools[1].can();
+        tools[2].planter();
+        tools[3].rod();
+        for(int i = 0; i < 4; i++){
+            tools[i].setPosition(4,148);
+        }
         
         x = 0;
         y = 0;
@@ -52,108 +68,123 @@ class Main extends State {
     }
     
     void update(){
+        // -- DEBUG --
         c++;
         if(c==100){
             c = 0;
             System.out.println((int)screen.fps());
-            System.out.println("X: " + x + ", Y: " + y);
         }
-        screen.clear(0);
+        
+        // -- UPDATE --
         
         if( Button.A.justPressed() ) {
         }
             
         if( Button.B.justPressed() ){
+            use=8;
         }
         
         if( Button.C.justPressed() ){
+            if(menu) {
+                for(int i = 0; i < 4; i++){
+                    tools[i].setPosition(4,148);
+                }
+            } else {
+                for(int i = 0; i < 4; i++){
+                    tools[i].setPosition(4,148-i*24);
+                }
+            }
+            
+            menu = !menu;
         }
         
-        if(movement > 0){
-            movement--;
-            switch(direction){
-                case 0: 
-                    // if(x==0){
-                    //     px-=2;
-                    // } else if (x > 0 && px == 96) {
-                    //     x-=2;
-                    // } else {
-                    //     px-=2;
-                    // }
-                    x--;
-                    break;
-                case 1: 
-                    if(y==0){
-                        py-=2;
-                    } else if(y < 0 && py == 80){
+        // Movement
+        if(!menu){
+            if(movement > 0){
+                movement--;
+                switch(direction){
+                    case 0: 
+                        x-=2;
+                        break;
+                    case 1: 
                         y+=2;
-                    } else {
-                        py-=2;
-                    }
-                    break;
-                case 2:
-                    if(x==0 && px < 96) {
-                        px+=2;
-                    } else if(x < 212){
+                        break;
+                    case 2:
                         x+=2;
-                    } else {
-                        px+=2;
-                    }
-                    
-                    break;
-                case 3: 
-                    if(y==0 && py < 80) {
-                        py+=2;
-                    } else if (y > -176){
+                        break;
+                    case 3: 
                         y-=2;
-                    } else {
-                        py+=2;
-                    }
-                    break;
+                        break;
+                }
+            } else if(use == 0) {
+                if(Button.Down.isPressed()){
+                    movement = 8;
+                    direction = 3;
+                } else
+                if(Button.Up.isPressed()){
+                    movement = 8;
+                    direction = 1;
+                } else 
+                if(Button.Right.isPressed()){
+                    movement = 8;
+                    direction = 2;
+                    bot.setMirrored(true);
+                    botHead.setMirrored(true);
+                    bot.walkHori();
+                } else
+                if(Button.Left.isPressed()){
+                    movement = 8;
+                    direction = 0;
+                    bot.setMirrored(false);
+                    botHead.setMirrored(false);
+                    bot.walkHori();
+                } else {
+                    bot.idle();
+                }
+            }
+            bot.setPosition(px, py);
+            botHead.setPosition(px, py-8);
+        } else {
+            if(Button.Down.justPressed()){
+                selected--;
+                if(selected < 0)selected=0;
+            }
+            if(Button.Up.justPressed()){
+                selected++;
+                if(selected > 3)selected=3;
+            }  
+            if(Button.Right.justPressed()){
+                // if on planter, show seeds.
+            } 
+            if(Button.Left.justPressed()){
+                // if on planter, show seeds.
+            }
+        }
+        
+        
+        // -- DRAW --
+        screen.clear(0);
+
+        if(menu){
+            for(int i = 0; i < 4; i++){
+                tools[i].draw(screen);
             }
         } else {
-            if(Button.Down.isPressed()){
-                // TODO down ladder / drop platform
-                // y-=16;
-                movement = 8;
-                direction = 3;
-            } else
-            if(Button.Up.isPressed()){
-                // TODO, jump/ladder
-                // y+=16;
-                movement = 8;
-                direction = 1;
-            } else 
-            if(Button.Right.isPressed()){
-                // dog.x = dog.x+2;
-                // bot.x+=2;
-                // botHead.x+=2;
-                // x+=16;
-                movement = 8;
-                direction = 2;
-                bot.setMirrored(true);
-                botHead.setMirrored(true);
-                bot.walkHori();
-            } else
-            if(Button.Left.isPressed()){
-                // bot.x-=2;
-                // botHead.x-=2;
-                // x-=16;
-                movement = 8;
-                direction = 0;
-                bot.setMirrored(false);
-                botHead.setMirrored(false);
-                bot.walkHori();
-            } else {
-                bot.idle();
-            }
+            tools[selected].draw(screen);
         }
-        
-        bot.setPosition(px, py);
-        botHead.setPosition(px, py-8);
-        
         bot.draw(screen);
         botHead.draw(screen);
+        
+        if(use > 0){
+            use--;
+            if(direction == 0)tools[selected].setPosition(px-24,py);
+            if(direction == 1)tools[selected].setPosition(px,py-24);
+            if(direction == 2)tools[selected].setPosition(px+bot.width(),py);
+            if(direction == 3)tools[selected].setPosition(px,py+bot.height());
+            tools[selected].draw(screen);
+            tools[selected].setPosition(4,148);
+        }
+        
         screen.drawMap(x, y);
         
         screen.flush();
