@@ -7,6 +7,7 @@ import femto.palette.Miloslav;
 import sprites.Bot;
 import sprites.BotHead;
 import sprites.Tools;
+import sprites.Hand;
 
 class Main extends State {
 
@@ -23,6 +24,8 @@ class Main extends State {
     BotHead botHead;
     Tools[] tools;
     
+    Hand handIcon;
+    
     ubyte movement = 0, direction = 0, selected = 0, use = 0;
     
     public static void main(String[] args){
@@ -37,6 +40,9 @@ class Main extends State {
         
         botHead = new BotHead();
         botHead.setPosition(112,72);
+        
+        handIcon = new Hand();
+        handIcon.hand();
         
         tools = new Tools[]{
             new Tools(),
@@ -73,6 +79,7 @@ class Main extends State {
         if(c==100){
             c = 0;
             System.out.println((int)screen.fps());
+            System.out.println(selected);
         }
         
         // -- UPDATE --
@@ -104,16 +111,16 @@ class Main extends State {
                 movement--;
                 switch(direction){
                     case 0: 
-                        x-=2;
+                        px-=2;
                         break;
                     case 1: 
-                        y+=2;
+                        py-=2;
                         break;
                     case 2:
-                        x+=2;
+                        px+=2;
                         break;
-                    case 3: 
-                        y-=2;
+                    case 3:
+                        py+=2;
                         break;
                 }
             } else if(use == 0) {
@@ -146,12 +153,10 @@ class Main extends State {
             botHead.setPosition(px, py-8);
         } else {
             if(Button.Down.justPressed()){
-                selected--;
-                if(selected < 0)selected=0;
+                if(selected > 0)selected--;
             }
             if(Button.Up.justPressed()){
-                selected++;
-                if(selected > 3)selected=3;
+                if(selected < 3)selected++;
             }  
             if(Button.Right.justPressed()){
                 // if on planter, show seeds.
@@ -168,7 +173,11 @@ class Main extends State {
         if(menu){
             for(int i = 0; i < 4; i++){
                 tools[i].draw(screen);
+                if(i==selected){
+                    handIcon.setPosition(32, 155-i*24);
+                }
             }
+            handIcon.draw(screen);
         } else {
             tools[selected].draw(screen);
         }
