@@ -35,11 +35,9 @@ class Main extends State {
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         bot = new Bot();
-        bot.setPosition(112,80);
         bot.idle();
         
         botHead = new BotHead();
-        botHead.setPosition(112,72);
         
         handIcon = new Hand();
         handIcon.hand();
@@ -60,8 +58,8 @@ class Main extends State {
         
         x = 0;
         y = 0;
-        px=96;
-        py=80;
+        px=114;
+        py=84;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
@@ -85,15 +83,18 @@ class Main extends State {
         
         // -- UPDATE --
         
+        // Check
         if( Button.A.justPressed() ) {
+            
+        }
+            
+        // Use equipped tool
+        if( Button.B.justPressed() ){
             screen.setTile(0, px/16, py/16);
             use=8;
         }
-            
-        if( Button.B.justPressed() ){
-            use=8;
-        }
         
+        // Open menu / Select from menu
         if( Button.C.justPressed() ){
             if(menu) {
                 for(int i = 0; i < 4; i++){
@@ -130,10 +131,12 @@ class Main extends State {
                 if(Button.Down.isPressed()){
                     movement = 8;
                     direction = 3;
+                    bot.walkVert();
                 } else
                 if(Button.Up.isPressed()){
                     movement = 8;
                     direction = 1;
+                    bot.walkVert();
                 } else 
                 if(Button.Right.isPressed()){
                     movement = 8;
