@@ -64,6 +64,10 @@ public class TASMode extends ScreenMode implements __stub__ {
         return 176;
     }
     
+    public void setTile(int tileId, int x, int y){
+        tileFiller.setTile(tileId, x, y);
+    }
+    
     public void setMap(pointer map, pointer tileSet){
         tileFiller.setMap(map, tileSet);
     }

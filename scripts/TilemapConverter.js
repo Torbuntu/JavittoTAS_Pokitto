@@ -99,7 +99,7 @@ Promise.all(promises)
     public static pointer get${capitalize(name)}(){
         pointer ptr;
         __inline_cpp__("
-        static const uint8_t ${name}[] = {
+        static uint8_t ${name}[] = {
         ${str[0].length}, ${str.length},
         ${str.map(l=>l.map(m=>"0x"+((m||1)-1).toString(16).padStart(2, "0")).join(", ")).join(",\n")}
         };
@@ -113,7 +113,7 @@ Promise.all(promises)
     public static byte ${name}Data(int x, int y){
         byte ptr;
         __inline_cpp__("
-        static const signed char parameters[] = {
+        static signed char parameters[] = {
             ${special.map(l => {
                 l.forEach(l => keys[l] = l);
                 let v = "EMPTY";

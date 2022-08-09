@@ -80,11 +80,14 @@ class Main extends State {
             c = 0;
             System.out.println((int)screen.fps());
             System.out.println(selected);
+            System.out.println(px + ","+py);
         }
         
         // -- UPDATE --
         
         if( Button.A.justPressed() ) {
+            screen.setTile(0, px/16, py/16);
+            use=8;
         }
             
         if( Button.B.justPressed() ){

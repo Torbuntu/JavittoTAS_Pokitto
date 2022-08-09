@@ -17,6 +17,12 @@ public class TileFiller implements LineFiller {
     TileFiller(ushort[] palette) {
         this.palette = palette;
     }
+    
+    void setTile(int tileId, int x, int y){
+        __inline_cpp__("
+        ((uint8_t*)tileMap)[x+y*mapWidth] = tileId;
+        ");
+    }
 
     void setMap(pointer map, pointer tileSet) {
         this.tileSet = tileSet;
@@ -32,7 +38,6 @@ public class TileFiller implements LineFiller {
         cameraX = x;
         cameraY = y;
     }
-
 
     void fillLine(ushort[] line, int y) {
         // Clip top and bottom of map.
