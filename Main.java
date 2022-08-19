@@ -9,10 +9,14 @@ import sprites.BotHead;
 import sprites.Tools;
 import sprites.Hand;
 
+import code.DataManager;
+
 class Main extends State {
 
     // the screenmode we want to draw with
     TASMode screen;
+    
+    DataManager dm;
     
     int x,y,px,py;
     
@@ -34,6 +38,9 @@ class Main extends State {
     
     void init(){
         screen = new TASMode(Miloslav.palette(), TIC80.font());
+        
+        dm = new DataManager();
+        
         bot = new Bot();
         bot.idle();
         
@@ -73,19 +80,20 @@ class Main extends State {
     
     void update(){
         // -- DEBUG --
-        c++;
-        if(c==100){
-            c = 0;
-            System.out.println((int)screen.fps());
-            System.out.println(selected);
-            System.out.println(px + ","+py);
-        }
+        // c++;
+        // if(c==100){
+        //     c = 0;
+        //     System.out.println((int)screen.fps());
+        //     System.out.println(selected);
+        //     System.out.println(px + ","+py);
+        // }
         
         // -- UPDATE --
         
         // Check
         if( Button.A.justPressed() ) {
-            
+            dm.writeData();
+            dm.readData();
         }
             
         // Use equipped tool
