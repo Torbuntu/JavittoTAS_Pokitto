@@ -4,8 +4,7 @@ import femto.State;
 import femto.input.Button;
 import femto.font.TIC80;
 import femto.palette.Miloslav;
-import sprites.Bot;
-import sprites.BotHead;
+import sprites.Guy;
 import sprites.Tools;
 import sprites.Hand;
 
@@ -24,8 +23,7 @@ class Main extends State {
     
     int c = 0;
     
-    Bot bot;
-    BotHead botHead;
+    Guy guy;
     Tools[] tools;
     
     Hand handIcon;
@@ -41,10 +39,9 @@ class Main extends State {
         
         dm = new DataManager();
         
-        bot = new Bot();
-        bot.idle();
+        guy = new Guy();
+        guy.idle();
         
-        botHead = new BotHead();
         
         handIcon = new Hand();
         handIcon.hand();
@@ -93,9 +90,14 @@ class Main extends State {
         // Check
         if( Button.A.justPressed() ) {
             dm.writeData();
-            dm.readData();
+            byte[] result = dm.readData();
+            for(byte i : result) {
+                if(i != (byte)0 ){
+                    screen.setTile(i, 1, 0);
+                }
+            }
         }
-            
+
         // Use equipped tool
         if( Button.B.justPressed() ){
             screen.setTile(0, px/16, py/16);
@@ -119,7 +121,13 @@ class Main extends State {
         
         // Movement
         if(!menu){
-            if(movement > 0){
+            if(use > 0){
+                use--;
+                if(selected == 0) {
+                    guy.hoe();
+                }
+            }
+            else if(movement > 0){
                 movement--;
                 switch(direction){
                     case 0: 
@@ -139,32 +147,29 @@ class Main extends State {
                 if(Button.Down.isPressed()){
                     movement = 8;
                     direction = 3;
-                    bot.walkVert();
+                    guy.down();
                 } else
                 if(Button.Up.isPressed()){
                     movement = 8;
                     direction = 1;
-                    bot.walkVert();
+                    guy.down();
                 } else 
                 if(Button.Right.isPressed()){
                     movement = 8;
                     direction = 2;
-                    bot.setMirrored(true);
-                    botHead.setMirrored(true);
-                    bot.walkHori();
+                    guy.setMirrored(true);
+                    guy.down();
                 } else
                 if(Button.Left.isPressed()){
                     movement = 8;
                     direction = 0;
-                    bot.setMirrored(false);
-                    botHead.setMirrored(false);
-                    bot.walkHori();
+                    guy.setMirrored(false);
+                    guy.down();
                 } else {
-                    bot.idle();
+                    guy.idle();
                 }
             }
-            bot.setPosition(px, py);
-            botHead.setPosition(px, py-8);
+            guy.setPosition(px, py);
         } else {
             if(Button.Down.justPressed()){
                 if(selected > 0)selected--;
@@ -195,19 +200,8 @@ class Main extends State {
         } else {
             tools[selected].draw(screen);
         }
-        bot.draw(screen);
-        botHead.draw(screen);
-        
-        if(use > 0){
-            use--;
-            if(direction == 0)tools[selected].setPosition(px-24,py);
-            if(direction == 1)tools[selected].setPosition(px,py-24);
-            if(direction == 2)tools[selected].setPosition(px+bot.width(),py);
-            if(direction == 3)tools[selected].setPosition(px,py+bot.height());
-            tools[selected].draw(screen);
-            tools[selected].setPosition(4,148);
-        }
-        
+        guy.draw(screen);
+
         screen.drawMap(x, y);
         
         screen.flush();

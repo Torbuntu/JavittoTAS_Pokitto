@@ -24,7 +24,7 @@ public class DataManager {
     }
     
     // TODO - Make this take a file name to read from and return a useful data type for use in the game.
-    void readData() {
+    byte[] readData() {
         File file = new File();
         byte[] result;
         if(file.openRO("/data/mdaled/field")){
@@ -35,11 +35,7 @@ public class DataManager {
         }
         System.out.println(file.size());
         file.close();
-        
-        
-        for(byte i: result) {
-            System.out.println(i);
-        }
+        return result;
         
     }
 }
