@@ -63,7 +63,7 @@ class Main extends State {
         x = 0;
         y = 0;
         px=114;
-        py=84;
+        py=82;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
@@ -89,18 +89,17 @@ class Main extends State {
         
         // Check
         if( Button.A.justPressed() ) {
-            dm.writeData();
-            byte[] result = dm.readData();
-            for(byte i : result) {
-                if(i != (byte)0 ){
-                    screen.setTile(i, 1, 0);
-                }
-            }
+
         }
 
         // Use equipped tool
         if( Button.B.justPressed() ){
-            screen.setTile(0, px/16, py/16);
+            
+            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==1) {
+                screen.setTile(0, px/16, py/16);
+                guy.hoe();
+            }
+            
             use=8;
         }
         
@@ -128,6 +127,7 @@ class Main extends State {
                 }
             }
             else if(movement > 0){
+                System.out.println(screen.getTile((px)/16, (py)/16));
                 movement--;
                 switch(direction){
                     case 0: 

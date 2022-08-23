@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="14" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="14" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="farm-tileset" tilewidth="16" tileheight="16" tilecount="594" columns="27">
   <image source="farm-tiles.png" width="432" height="352"/>
-  <tile id="1">
+  <tile id="3">
    <properties>
-    <property name="Event" value="Special"/>
+    <property name="Event" value="FIELD"/>
    </properties>
   </tile>
  </tileset>
  <layer id="2" name="Event" width="14" height="12">
   <data encoding="csv">
-5,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -29,11 +29,11 @@
 5,2,2,2,2,2,2,2,2,2,11,12,12,13,
 3,2,2,2,2,2,2,2,2,2,38,39,40,40,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,
-3,2,36,32,32,32,34,2,2,2,2,2,2,2,
-3,2,29,4,4,4,30,2,2,2,2,2,2,2,
-3,2,29,4,4,4,30,2,2,2,2,2,2,2,
-3,2,29,4,4,4,30,2,2,2,2,2,2,2,
-3,2,37,31,31,31,35,2,2,2,2,2,2,2,
+3,2,2,2,2,2,2,2,2,2,2,2,2,2,
+3,2,2,4,4,4,2,2,2,2,2,2,2,2,
+3,2,2,2,2,2,2,2,2,2,2,2,2,2,
+3,2,2,2,2,2,2,2,2,2,2,2,2,2,
+3,2,2,2,2,2,2,2,2,2,2,2,2,2,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,
 3,2,2,2,2,2,2,2,2,2,2,2,2,2,

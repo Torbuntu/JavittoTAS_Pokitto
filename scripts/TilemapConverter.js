@@ -110,7 +110,7 @@ Promise.all(promises)
             
             // the map enum
             bin += `
-    public static byte ${name}Data(int x, int y){
+    public static byte get${capitalize(name)}Data(int x, int y){
         byte ptr;
         __inline_cpp__("
         static signed char parameters[] = {
@@ -120,7 +120,7 @@ Promise.all(promises)
                 if(l.length == 1)
                     v = l[0];
                 else if(l.length > 1)
-                    v = "MapEnum(" + [...new Set(l)].join("|") + ")";
+                    v = "UNSUPPORTED, // TODO multiple data points currently unsupported - MapEnum(" + [...new Set(l)].join("|") + ")";
                 return v;
             }).join(",\n\t")
             }
@@ -137,6 +137,7 @@ Promise.all(promises)
         bin =
 `// Generated File - DO NOT EDIT
 public class TileMaps {
+\tstatic byte UNSUPPORTED = -1;
 \tstatic byte EMPTY = 0;
 \t${Object.keys(keys).map((o, i) => `static byte ${o} = ${i+1}`).join(";\n\t")};
 
