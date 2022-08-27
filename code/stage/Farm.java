@@ -94,20 +94,23 @@ public class Farm extends State {
 
         // Use equipped tool
         if( Button.B.justPressed() ){
+            if(TileMaps.getFarmMapData((px/16), py/16)==TileMaps.TRAVEL) {
+                Game.changeState(new Travel());
+            }
             
-            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==2) {
+            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
                 screen.setTile(18, px/16, py/16);
                 guy.hoe();
             }
             if(selected == 1) {
                 // if on field and bucket not empty, water.
-                if(TileMaps.getFarmMapData(px/16, py/16)==2) {
+                if(TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
                     if(water > 0 && screen.getTile(px/16, py/16) == 18) {
                         screen.setTile(17, px/16, py/16);
                         water--;
                     }
                 }
-                if(TileMaps.getFarmMapData((px/16)-1, py/16)==1) {
+                if(TileMaps.getFarmMapData((px/16)-1, py/16)==TileMaps.WATER) {
                     water = 7;    
                 }
                 
