@@ -1,3 +1,5 @@
+package code.stage;
+
 import femto.mode.TASMode;
 import femto.Game;
 import femto.State;
@@ -8,10 +10,10 @@ import sprites.Guy;
 import sprites.Tools;
 import sprites.Hand;
 
-import code.DataManager;
+import code.manager.DataManager;
 
-class Main extends State {
-
+public class Farm extends State {
+    
     // the screenmode we want to draw with
     TASMode screen;
     
@@ -30,11 +32,7 @@ class Main extends State {
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0;
     
-    public static void main(String[] args){
-        Game.run( TIC80.font(), new Main() );
-    }
-    
-    void init(){
+    void init() {
         screen = new TASMode(Miloslav.palette(), TIC80.font());
         
         dm = new DataManager();
@@ -67,10 +65,11 @@ class Main extends State {
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
-    void shutdown(){
+    void shutdown() {
         screen = null;
     }
-    public void resume(){
+    
+    public void resume() {
         screen.beforeFlush();
         screen.flush();
     }
@@ -89,7 +88,11 @@ class Main extends State {
         
         // Check
         if( Button.A.justPressed() ) {
-
+            dm.writeData();
+            dm.readData();
+            dm.readData();
+            dm.readData();
+            dm.readData();
         }
 
         // Use equipped tool
@@ -127,7 +130,6 @@ class Main extends State {
                 }
             }
             else if(movement > 0){
-                System.out.println(screen.getTile((px)/16, (py)/16));
                 movement--;
                 switch(direction){
                     case 0: 
@@ -206,5 +208,4 @@ class Main extends State {
         
         screen.flush();
     }
-    
 }

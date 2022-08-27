@@ -6,7 +6,7 @@
 		"project.json": {}
 	},
 	"javaFlags": {
-		"mainClass": "Main"
+		"mainClass": "code.Main"
 	},
 	"libs": {
 		"Pokitto": [
@@ -98,7 +98,10 @@
 	},
 	"emuFlags": {
 		"Pokitto": [
-			"${projectPath}/${projectName}.bin"
+			"${projectPath}/${projectName}.bin",
+			"-V",
+			"-O",
+			"${projectPath}/fs.img"
 		]
 	},
 	"ELF2BINFlags": {
@@ -161,36 +164,35 @@
 		]
 	},
 	"meta": {
+		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
 		"JavittoTAS.elf": {},
-		"Main.java": {},
 		"README.md": {},
-		"Mockup": {},
+		"LineFiller.java": {},
 		"SpriteData.java": {},
 		"SpriteFiller.java": {},
-		"ColorFiller.java": {},
-		"LineFiller.java": {},
 		"TASMode.java": {},
 		"TileFiller.java": {},
-		"TileMaps.java": {},
 		"code": {},
+		"TileMaps.java": {},
 		"data": {
 			"sdcard": true
 		},
 		"genArray.groovy": {},
 		"maps": {},
 		"project.json": {},
-		"sprites": {},
+		"readFs.groovy": {},
 		"scripts": {},
-		"": {},
-		"Mockup/Farm-Mockup.ase": {},
-		"Mockup/Map-Mockup.ase": {},
-		"code/DataManager.java": {},
+		"sprites": {},
+		"code/Main.java": {},
+		"code/manager": {},
+		"code/stage": {},
 		"data/mdaled": {
 			"sdcard": true
 		},
 		"maps/farm-tiles.png": {},
 		"maps/farmMap.tmx": {},
+		"scripts/TilemapConverter.js": {},
 		"sprites/Bot.aseprite": {},
 		"sprites/Bot.json": {},
 		"sprites/Bot.png": {},
@@ -202,11 +204,14 @@
 		"sprites/Guy.png": {},
 		"sprites/Hand.ase": {},
 		"sprites/Hand.json": {},
-		"sprites/Tools.ase": {},
 		"sprites/Hand.png": {},
+		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
 		"sprites/Tools.png": {},
-		"scripts/TilemapConverter.js": {},
+		"": {},
+		"code/manager/CropManager.java": {},
+		"code/manager/DataManager.java": {},
+		"code/stage/Farm.java": {},
 		"data/mdaled/field": {
 			"sdcard": true
 		},

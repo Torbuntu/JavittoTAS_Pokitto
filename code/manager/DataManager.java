@@ -1,7 +1,24 @@
-package code;
+package code.manager;
 
 import femto.File;
 
+/**
+ * Manages the saved data for the game.
+ * 
+ * Field:
+ * The array of byte data for the field itself. This marks the individual tiles state:
+ * - Plowed
+ * - Wet/dry
+ * - Crop type
+ * - Crop stage of growth
+ * 
+ * Items:
+ * Determines which items have been collected or upgraded.
+ * 
+ * Other:
+ *
+ * 
+ */ 
 public class DataManager {
     DataManager() {
         System.out.println("Data Manager init");
@@ -16,7 +33,8 @@ public class DataManager {
         File file = new File();
         if(file.openRW("/data/mdaled/field")){
             System.out.println("Trying to write");
-            file.write(field);
+            if(file.isOpen())
+                file.write(field);
         } else {
             System.out.println("Failure to write");
         }
