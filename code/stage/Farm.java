@@ -1,16 +1,16 @@
 package code.stage;
 
-import femto.mode.TASMode;
+import code.Globals;
+
+import code.manager.DataManager;
+
 import femto.Game;
 import femto.State;
 import femto.input.Button;
-import femto.font.TIC80;
-import femto.palette.Miloslav;
+
 import sprites.Guy;
 import sprites.Tools;
 import sprites.Hand;
-
-import code.manager.DataManager;
 
 public class Farm extends State {
     
@@ -30,12 +30,12 @@ public class Farm extends State {
     
     Hand handIcon;
     
-    ubyte movement = 0, direction = 0, selected = 0, use = 0;
+    ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
     void init() {
-        screen = new TASMode(Miloslav.palette(), TIC80.font());
+        screen = Globals.screen;
         
-        dm = new DataManager();
+        dm = Globals.dataManager;
         
         guy = new Guy();
         guy.idle();
@@ -88,19 +88,30 @@ public class Farm extends State {
         
         // Check
         if( Button.A.justPressed() ) {
-            dm.writeData();
-            dm.readData();
-            dm.readData();
-            dm.readData();
-            dm.readData();
+            System.out.println(screen.getTile(px/16, py/16));
+            System.out.println(TileMaps.getFarmMapData(px/16, py/16));
         }
 
         // Use equipped tool
         if( Button.B.justPressed() ){
             
-            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==1) {
-                screen.setTile(0, px/16, py/16);
+            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==2) {
+                screen.setTile(18, px/16, py/16);
                 guy.hoe();
+            }
+            if(selected == 1) {
+                // if on field and bucket not empty, water.
+                if(TileMaps.getFarmMapData(px/16, py/16)==2) {
+                    if(water > 0 && screen.getTile(px/16, py/16) == 18) {
+                        screen.setTile(17, px/16, py/16);
+                        water--;
+                    }
+                }
+                if(TileMaps.getFarmMapData((px/16)-1, py/16)==1) {
+                    water = 7;    
+                }
+                
+                guy.water();
             }
             
             use=8;
@@ -117,7 +128,7 @@ public class Farm extends State {
                     tools[i].setPosition(4,148-i*24);
                 }
             }
-            
+            System.out.println("Selected: " + (int)selected);
             menu = !menu;
         }
         
@@ -127,6 +138,9 @@ public class Farm extends State {
                 use--;
                 if(selected == 0) {
                     guy.hoe();
+                }
+                if(selected == 1) {
+                    guy.water();
                 }
             }
             else if(movement > 0){

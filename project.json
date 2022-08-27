@@ -1,6 +1,6 @@
 {
 	"metadata": {},
-	"lastBuffer": "Main.java",
+	"lastBuffer": "",
 	"files": {
 		"Main.java": {},
 		"project.json": {}
@@ -165,25 +165,27 @@
 	},
 	"meta": {
 		"ColorFiller.java": {},
-		"JavittoTAS.bin": {},
 		"JavittoTAS.elf": {},
-		"README.md": {},
 		"LineFiller.java": {},
+		"README.md": {},
+		"JavittoTAS.bin": {},
 		"SpriteData.java": {},
 		"SpriteFiller.java": {},
 		"TASMode.java": {},
 		"TileFiller.java": {},
-		"code": {},
 		"TileMaps.java": {},
+		"code": {},
 		"data": {
 			"sdcard": true
 		},
+		"fs.img": {},
 		"genArray.groovy": {},
 		"maps": {},
 		"project.json": {},
 		"readFs.groovy": {},
 		"scripts": {},
 		"sprites": {},
+		"code/Globals.java": {},
 		"code/Main.java": {},
 		"code/manager": {},
 		"code/stage": {},
@@ -209,8 +211,8 @@
 		"sprites/Tools.json": {},
 		"sprites/Tools.png": {},
 		"": {},
-		"code/manager/CropManager.java": {},
 		"code/manager/DataManager.java": {},
+		"code/manager/CropManager.java": {},
 		"code/stage/Farm.java": {},
 		"data/mdaled/field": {
 			"sdcard": true
