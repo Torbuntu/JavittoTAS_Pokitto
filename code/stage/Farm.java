@@ -99,14 +99,14 @@ public class Farm extends State {
             }
             
             if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
-                screen.setTile(18, px/16, py/16);
+                screen.setTile(19, px/16, py/16);
                 guy.hoe();
             }
             if(selected == 1) {
                 // if on field and bucket not empty, water.
                 if(TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
-                    if(water > 0 && screen.getTile(px/16, py/16) == 18) {
-                        screen.setTile(17, px/16, py/16);
+                    if(water > 0 && screen.getTile(px/16, py/16) == 19) {
+                        screen.setTile(18, px/16, py/16);
                         water--;
                     }
                 }
