@@ -161,34 +161,33 @@
 		]
 	},
 	"meta": {
-		"": {},
-		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
-		"LineFiller.java": {},
+		"ColorFiller.java": {},
 		"JavittoTAS.elf": {},
-		"Miloslav.pal": {},
+		"LineFiller.java": {},
 		"README.md": {},
 		"SpriteData.java": {},
+		"Miloslav.pal": {},
+		"TASMode.java": {},
 		"SpriteFiller.java": {},
 		"TileFiller.java": {},
-		"TASMode.java": {},
 		"TileMaps.java": {},
-		"code": {},
 		"data": {
 			"sdcard": true
 		},
+		"code": {},
 		"genArray.groovy": {},
-		"maps": {},
 		"project.json": {},
+		"maps": {},
 		"scripts": {},
 		"sprites": {},
+		"data/mdaled": {
+			"sdcard": true
+		},
 		"code/Globals.java": {},
 		"code/Main.java": {},
 		"code/manager": {},
 		"code/stage": {},
-		"data/mdaled": {
-			"sdcard": true
-		},
 		"maps/farm-tiles.png": {},
 		"maps/farmMap.tmx": {},
 		"scripts/TilemapConverter.js": {},
@@ -207,17 +206,18 @@
 		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
 		"sprites/Tools.png": {},
-		"code/manager/CropManager.java": {},
-		"code/manager/DataManager.java": {},
-		"code/stage/Farm.java": {},
-		"code/stage/RandomTest.java": {},
-		"code/stage/Travel.java": {},
+		"": {},
 		"data/mdaled/field": {
 			"sdcard": true
 		},
 		"data/mdaled/items": {
 			"sdcard": true
-		}
+		},
+		"code/manager/CropManager.java": {},
+		"code/manager/DataManager.java": {},
+		"code/stage/Farm.java": {},
+		"code/stage/RandomTest.java": {},
+		"code/stage/Travel.java": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

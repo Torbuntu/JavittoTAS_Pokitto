@@ -52,8 +52,6 @@ public class Farm extends State {
         }
     }
     
-    
-    
     void init() {
         screen = Globals.screen;
         
@@ -158,7 +156,20 @@ public class Farm extends State {
         }
         
         // Movement
-        if(!menu){
+        if(menu){
+            if(Button.Down.justPressed()){
+                if(selected > 0)selected--;
+            }
+            if(Button.Up.justPressed()){
+                if(selected < 3)selected++;
+            }  
+            if(Button.Right.justPressed()){
+                // if on planter, show seeds.
+            } 
+            if(Button.Left.justPressed()){
+                // if on planter, show seeds.
+            }
+        } else {
             if(use > 0){
                 use--;
                 if(selected == 0) {
@@ -202,7 +213,9 @@ public class Farm extends State {
                     guy.down();
                 } else
                 if(Button.Left.isPressed()){
-                    movement = 5;
+                    if(TileMaps.getFarmMapData((px-8)/tw, py/th) != TileMaps.WATER){
+                        movement = 5;
+                    }
                     direction = 0;
                     guy.setMirrored(false);
                     guy.down();
@@ -211,19 +224,6 @@ public class Farm extends State {
                 }
             }
             guy.setPosition(px, py);
-        } else {
-            if(Button.Down.justPressed()){
-                if(selected > 0)selected--;
-            }
-            if(Button.Up.justPressed()){
-                if(selected < 3)selected++;
-            }  
-            if(Button.Right.justPressed()){
-                // if on planter, show seeds.
-            } 
-            if(Button.Left.justPressed()){
-                // if on planter, show seeds.
-            }
         }
         
         updateAnimation();
