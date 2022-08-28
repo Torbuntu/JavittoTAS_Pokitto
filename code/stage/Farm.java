@@ -34,6 +34,26 @@ public class Farm extends State {
     
     ubyte tw = 10, th = 8;
     
+    // animated water
+    ubyte animate = 10, id = 18;
+    void updateAnimation(){
+        if(animate > 0){
+            animate--;
+        } else {
+            animate = 10;
+            id++;
+            if(id > 20){
+                id = 17;
+            }
+            for(int y = 0; y < 22; y++){
+                screen.setTile(id, 1, y);
+            }
+            System.out.println(screen.fps());
+        }
+    }
+    
+    
+    
     void init() {
         screen = Globals.screen;
         
@@ -206,7 +226,7 @@ public class Farm extends State {
             }
         }
         
-        
+        updateAnimation();
         // -- DRAW --
         screen.clear(0);
 

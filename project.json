@@ -98,10 +98,7 @@
 	},
 	"emuFlags": {
 		"Pokitto": [
-			"${projectPath}/${projectName}.bin",
-			"-V",
-			"-O",
-			"${projectPath}/fs.img"
+			"${projectPath}/${projectName}.bin"
 		]
 	},
 	"ELF2BINFlags": {
@@ -164,32 +161,30 @@
 		]
 	},
 	"meta": {
+		"": {},
+		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
+		"LineFiller.java": {},
 		"JavittoTAS.elf": {},
 		"Miloslav.pal": {},
 		"README.md": {},
-		"ColorFiller.java": {},
-		"LineFiller.java": {},
 		"SpriteData.java": {},
-		"TileFiller.java": {},
 		"SpriteFiller.java": {},
+		"TileFiller.java": {},
 		"TASMode.java": {},
+		"TileMaps.java": {},
 		"code": {},
 		"data": {
 			"sdcard": true
 		},
-		"TileMaps.java": {},
-		"fs.img": {},
 		"genArray.groovy": {},
 		"maps": {},
 		"project.json": {},
-		"readFs.groovy": {},
 		"scripts": {},
 		"sprites": {},
-		"": {},
 		"code/Globals.java": {},
-		"code/manager": {},
 		"code/Main.java": {},
+		"code/manager": {},
 		"code/stage": {},
 		"data/mdaled": {
 			"sdcard": true
@@ -198,10 +193,10 @@
 		"maps/farmMap.tmx": {},
 		"scripts/TilemapConverter.js": {},
 		"sprites/Bot.aseprite": {},
-		"sprites/Bot.png": {},
 		"sprites/Bot.json": {},
-		"sprites/BotHead.json": {},
+		"sprites/Bot.png": {},
 		"sprites/BotHead.aseprite": {},
+		"sprites/BotHead.json": {},
 		"sprites/BotHead.png": {},
 		"sprites/Guy.ase": {},
 		"sprites/Guy.json": {},
@@ -212,17 +207,17 @@
 		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
 		"sprites/Tools.png": {},
-		"code/manager/DataManager.java": {},
 		"code/manager/CropManager.java": {},
+		"code/manager/DataManager.java": {},
 		"code/stage/Farm.java": {},
+		"code/stage/RandomTest.java": {},
 		"code/stage/Travel.java": {},
 		"data/mdaled/field": {
 			"sdcard": true
 		},
 		"data/mdaled/items": {
 			"sdcard": true
-		},
-		"JavittoTAS.bin.1.gif": {}
+		}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

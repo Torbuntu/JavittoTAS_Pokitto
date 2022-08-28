@@ -8,6 +8,7 @@ import femto.font.TIC80;
 import code.Globals;
 
 import code.stage.Farm;
+import code.stage.RandomTest;
 
 class Main extends State {
     

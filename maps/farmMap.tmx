@@ -18,6 +18,9 @@
    </properties>
   </tile>
  </tileset>
+ <tileset firstgid="507" name="farm-tiles" tilewidth="10" tileheight="8" tilecount="506" columns="22">
+  <image source="farm-tiles.png" width="220" height="184"/>
+ </tileset>
  <layer id="1" name="Ground" width="22" height="23">
   <data encoding="csv">
 5,5,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,
@@ -69,7 +72,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+3,4,67,68,69,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="3" name="Event" width="22" height="23">
