@@ -32,6 +32,8 @@ public class Farm extends State {
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
+    ubyte tw = 10, th = 8;
+    
     void init() {
         screen = Globals.screen;
         
@@ -60,8 +62,8 @@ public class Farm extends State {
         
         x = 0;
         y = 0;
-        px=114;
-        py=82;
+        px=200;
+        py=64;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
@@ -88,29 +90,29 @@ public class Farm extends State {
         
         // Check
         if( Button.A.justPressed() ) {
-            System.out.println(screen.getTile(px/16, py/16));
-            System.out.println(TileMaps.getFarmMapData(px/16, py/16));
+            System.out.println(getGuyTile());
+            System.out.println(getGuyFarmTileData());
         }
 
         // Use equipped tool
         if( Button.B.justPressed() ){
-            if(TileMaps.getFarmMapData((px/16), py/16)==TileMaps.TRAVEL) {
+            if(getGuyFarmTileData()==TileMaps.TRAVEL) {
                 Game.changeState(new Travel());
             }
             
-            if(selected == 0 && TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
-                screen.setTile(19, px/16, py/16);
+            if(selected == 0 && getGuyFarmTileData()==TileMaps.FIELD) {
+                screen.setTile(15, (px+6)/tw, (py+8)/th);
                 guy.hoe();
             }
             if(selected == 1) {
                 // if on field and bucket not empty, water.
-                if(TileMaps.getFarmMapData(px/16, py/16)==TileMaps.FIELD) {
-                    if(water > 0 && screen.getTile(px/16, py/16) == 19) {
-                        screen.setTile(18, px/16, py/16);
+                if(getGuyFarmTileData()==TileMaps.FIELD) {
+                    if(water > 0 && getGuyTile() == 15) {
+                        screen.setTile(16, (px+6)/tw, (py+8)/th);
                         water--;
                     }
                 }
-                if(TileMaps.getFarmMapData((px/16)-1, py/16)==TileMaps.WATER) {
+                if(TileMaps.getFarmMapData((px/tw)-1, py/th)==TileMaps.WATER) {
                     water = 7;    
                 }
                 
@@ -164,23 +166,23 @@ public class Farm extends State {
                 }
             } else if(use == 0) {
                 if(Button.Down.isPressed()){
-                    movement = 8;
+                    movement = 4;
                     direction = 3;
                     guy.down();
                 } else
                 if(Button.Up.isPressed()){
-                    movement = 8;
+                    movement = 4;
                     direction = 1;
                     guy.down();
                 } else 
                 if(Button.Right.isPressed()){
-                    movement = 8;
+                    movement = 5;
                     direction = 2;
                     guy.setMirrored(true);
                     guy.down();
                 } else
                 if(Button.Left.isPressed()){
-                    movement = 8;
+                    movement = 5;
                     direction = 0;
                     guy.setMirrored(false);
                     guy.down();
@@ -224,5 +226,17 @@ public class Farm extends State {
         screen.drawMap(x, y);
         
         screen.flush();
+    }
+    
+    int getGuyTile() {
+        return screen.getTile((px+6)/tw, (py+8)/th);
+    }
+    
+    int getGuyFarmTileData() {
+        return TileMaps.getFarmMapData((px+6)/tw, (py+8)/th);
+    }
+    
+    void moveGuy() {
+        
     }
 }

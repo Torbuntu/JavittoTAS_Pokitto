@@ -146,6 +146,9 @@ public class TileMaps {
     
     // Number of tiles
     public static int tileSetSize = ${compositeList.length};
+    
+    public static int tileW = ${tileW};
+    public static int tileH = ${tileH};
     // Used in TileFiller to get tiles.
     public static pointer getTiles(){
         pointer ptr;

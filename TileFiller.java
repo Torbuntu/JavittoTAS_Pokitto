@@ -11,8 +11,9 @@ public class TileFiller implements LineFiller {
     int color;
     int cameraX = 0;
     int cameraY = 0;
-    int tileH = 16;
-    int tileW = 16;
+    int tileW = 10;
+    int tileH = 8;
+    int tileSize = 0;
 
     TileFiller(ushort[] palette) {
         this.palette = palette;
@@ -35,8 +36,14 @@ public class TileFiller implements LineFiller {
     void setMap(pointer map, pointer tileSet) {
         this.tileSet = tileSet;
         
+        tileW = TileMaps.tileW;
+        tileH = TileMaps.tileH;
+        tileSize = tileW * tileH;
+        
         __inline_cpp__("
-        mapWidth = ((char * ) map)[0]; mapHeight = ((char * ) map)[1]; tileMap = (uint8_t * ) map + 2;
+        mapWidth = ((char * ) map)[0]; 
+        mapHeight = ((char * ) map)[1]; 
+        tileMap = (uint8_t * ) map + 2;
         ");
     }
 
@@ -50,8 +57,8 @@ public class TileFiller implements LineFiller {
         if (y - cameraY < 0 || y - cameraY >= mapHeight * tileH) return;
         
         // Set the Y for the map and tileset lookup
-        var mapY = ((y - cameraY) / 16) * mapWidth;
-        var tileY = ((y - cameraY) % 16) * tileW;
+        var mapY = ((y - cameraY) / tileH) * mapWidth;
+        var tileY = ((y - cameraY) % tileH) * tileW;
         
         // Set the X for the map and tileset lookup
         var mapX = cameraX / tileW;
@@ -71,10 +78,11 @@ public class TileFiller implements LineFiller {
             if (mapX >= mapWidth) return;
         
             int iter = min(tileW - tileX, 220 - i);
-        
+
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY]; auto tile = ((uint8_t * ) tileSet) + tileId * 256 + tileY;
+            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY]; 
+            auto tile = ((uint8_t * ) tileSet) + tileId * (tileSize) + tileY;
             ");
     
             // Loop over the Tile color IDs and put them in the line array.
@@ -83,12 +91,12 @@ public class TileFiller implements LineFiller {
                     color = tile[tileX + t];
                     ");
                     line[i + t] = palette[color];
-                }
-                i += iter;
-                tileX = 0;
-                mapX++;
             }
+            i += iter;
+            tileX = 0;
+            mapX++;
         }
+    }
 
     int min(int a, int b) {
         return (a < b) ? a : b;

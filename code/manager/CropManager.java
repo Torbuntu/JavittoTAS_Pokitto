@@ -25,6 +25,7 @@ package code.manager;
  * 
  */
 public class CropManager {
+    // 8x6 field size for 48 possible crops.
     public CropManager() {
         
     }
