@@ -2,16 +2,20 @@ package femto.mode;
 public class SpriteData {
     int x;
     int y;
-    int width;
-    int height;
-    int[] data;
+    int w;
+    int h;
+    boolean mirror;
+    boolean flip;
+    pointer frame;
     
     // TODO: use the frame pointer directly instead of an int[] data?
-    SpriteData(int[] data, float x, float y, int w, int h){
+    SpriteData(pointer frame, float x, float y, int w, int h, boolean mirror, boolean flip){
         this.x = (int)x;
         this.y = (int)y;
-        this.data = data;
-        this.width = w;
-        this.height = h;
+        this.w = w;
+        this.h = h;
+        this.frame = frame;
+        this.mirror = mirror;
+        this.flip = flip;
     }
 }

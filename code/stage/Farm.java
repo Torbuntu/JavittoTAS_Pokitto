@@ -80,8 +80,8 @@ public class Farm extends State {
         
         x = 0;
         y = 0;
-        px=200;
-        py=64;
+        px=199;
+        py=68;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     

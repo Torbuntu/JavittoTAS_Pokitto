@@ -161,15 +161,15 @@
 		]
 	},
 	"meta": {
-		"JavittoTAS.bin": {},
 		"ColorFiller.java": {},
-		"JavittoTAS.elf": {},
+		"JavittoTAS.bin": {},
 		"LineFiller.java": {},
-		"README.md": {},
-		"SpriteData.java": {},
 		"Miloslav.pal": {},
-		"TASMode.java": {},
+		"SpriteData.java": {},
 		"SpriteFiller.java": {},
+		"JavittoTAS.elf": {},
+		"README.md": {},
+		"TASMode.java": {},
 		"TileFiller.java": {},
 		"TileMaps.java": {},
 		"data": {
@@ -177,8 +177,8 @@
 		},
 		"code": {},
 		"genArray.groovy": {},
-		"project.json": {},
 		"maps": {},
+		"project.json": {},
 		"scripts": {},
 		"sprites": {},
 		"data/mdaled": {
@@ -216,8 +216,8 @@
 		"code/manager/CropManager.java": {},
 		"code/manager/DataManager.java": {},
 		"code/stage/Farm.java": {},
-		"code/stage/RandomTest.java": {},
-		"code/stage/Travel.java": {}
+		"code/stage/Travel.java": {},
+		"code/stage/RandomTest.java": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
