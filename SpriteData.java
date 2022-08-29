@@ -1,4 +1,5 @@
 package femto.mode;
+
 public class SpriteData {
     int x;
     int y;
@@ -8,7 +9,6 @@ public class SpriteData {
     boolean flip;
     pointer frame;
     
-    // TODO: use the frame pointer directly instead of an int[] data?
     SpriteData(pointer frame, float x, float y, int w, int h, boolean mirror, boolean flip){
         this.x = (int)x;
         this.y = (int)y;

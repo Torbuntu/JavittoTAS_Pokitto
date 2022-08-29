@@ -161,33 +161,33 @@
 		]
 	},
 	"meta": {
-		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
+		"JavittoTAS.elf": {},
 		"LineFiller.java": {},
 		"Miloslav.pal": {},
+		"README.md": {},
 		"SpriteData.java": {},
 		"SpriteFiller.java": {},
-		"JavittoTAS.elf": {},
-		"README.md": {},
 		"TASMode.java": {},
+		"ColorFiller.java": {},
 		"TileFiller.java": {},
 		"TileMaps.java": {},
+		"code": {},
 		"data": {
 			"sdcard": true
 		},
-		"code": {},
 		"genArray.groovy": {},
 		"maps": {},
 		"project.json": {},
 		"scripts": {},
 		"sprites": {},
-		"data/mdaled": {
-			"sdcard": true
-		},
 		"code/Globals.java": {},
 		"code/Main.java": {},
 		"code/manager": {},
 		"code/stage": {},
+		"data/mdaled": {
+			"sdcard": true
+		},
 		"maps/farm-tiles.png": {},
 		"maps/farmMap.tmx": {},
 		"scripts/TilemapConverter.js": {},
@@ -203,21 +203,21 @@
 		"sprites/Hand.ase": {},
 		"sprites/Hand.json": {},
 		"sprites/Hand.png": {},
-		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
+		"sprites/Tools.ase": {},
 		"sprites/Tools.png": {},
 		"": {},
-		"data/mdaled/field": {
-			"sdcard": true
-		},
-		"data/mdaled/items": {
-			"sdcard": true
-		},
 		"code/manager/CropManager.java": {},
 		"code/manager/DataManager.java": {},
 		"code/stage/Farm.java": {},
+		"code/stage/RandomTest.java": {},
 		"code/stage/Travel.java": {},
-		"code/stage/RandomTest.java": {}
+		"data/mdaled/items": {
+			"sdcard": true
+		},
+		"data/mdaled/field": {
+			"sdcard": true
+		}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

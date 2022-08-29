@@ -28,14 +28,12 @@ public class SpriteFiller implements LineFiller {
         buffer++;
     }
     
-    // TODOD - Fix mirror and flip
     public void fillLine(ushort[] line, int y) {
         int each = buffer;
         int color;
         while(each > 0){
             SpriteData s = spriteBuffer[--each];
             if(y < s.y || y >= s.y+s.h) continue;
-            
             
             
             // We always want to keep startX at 0
@@ -55,20 +53,30 @@ public class SpriteFiller implements LineFiller {
             
             for(int x = startX; x < endX; ++x){
                 __inline_cpp__("
-                color = ((char*)s.frame)[x+indexY];
+                if(s->mirror){
+                    if(s->flip){
+                        color = ((char*)s->frame)[(s->w-1-x)+(s->h-1-(y-s->y))*s->w];
+                    } else {
+                        color = ((char*)s->frame)[s->w-1-x+indexY];
+                    }
+                } else {
+                    if(s->flip){
+                        color = ((char*)s->frame)[x+(s->h-1-(y-s->y))*s->w];
+                    } else {
+                        color = ((char*)s->frame)[x+indexY];
+                    }
+                }
                 ");
-                
                 if(color <= 0)continue;
                 line[s.x+x]=palette[color];
             }
+            
         }
         // Reset the buffer if we are done with every line.
         if(y == 175) buffer = 0;
     }
     
-    
     /*
-
         data = new int[frameWidth*frameHeight];
         if(mirror){
             if(flip){
