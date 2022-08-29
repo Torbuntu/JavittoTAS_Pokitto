@@ -80,69 +80,8 @@ public class TASMode extends ScreenMode implements __stub__ {
         tileFiller.draw(x,y);
     }
     
-    //TODO: these should probably be renamed to something more useful. And put somewhere more obvious.
-    // int dat;
-    // int[] data;
-    // int frameWidth;
-    // int frameHeight;
     public void addSprite(pointer frame, float x, float y, boolean mirror, boolean flip){
         spriteFiller.addSprite(frame, x, y, mirror, flip);
-        
-        
-        // __inline_cpp__("
-        //     frameWidth = ((char*)frame)[0];
-        //     frameHeight = ((char*)frame)[1];
-        //     const uint8_t *img = (uint8_t *)frame+2;
-        // ");
-        
-        // if(x+frameWidth < 0 || x >= 220)return;
-        // if(y+frameHeight < 0 || y >= 176)return;
-        
-        // data = new int[frameWidth*frameHeight];
-        // if(mirror){
-        //     if(flip){
-        //         for(int y = frameHeight-1; y >= 0; --y){
-        //             for(int x = frameWidth-1; x >= 0; --x){
-        //                 __inline_cpp__("
-        //                 dat = ((char*)img)[x+y*frameWidth];
-        //                 ");
-        //                 data[(frameWidth-1-x)+(frameHeight-1-y)*frameWidth] = palette[dat];
-        //             }
-        //         }
-        //     }else{
-        //         for(int y = 0; y < frameHeight; ++y){
-        //             for(int x = frameWidth-1; x >= 0; --x){
-        //                 __inline_cpp__("
-        //                 dat = ((char*)img)[x+y*frameWidth];
-        //                 ");
-        //                 data[frameWidth-1-x+y*frameWidth] = palette[dat];
-        //             }
-        //         }
-        //     }
-        // }else{
-        //     if(flip){
-        //         for(int y = frameHeight-1; y >= 0; --y){
-        //             for(int x = 0; x < frameWidth; ++x){
-        //                 __inline_cpp__("
-        //                 dat = ((char*)img)[x+y*frameWidth];
-        //                 ");
-        //                 data[x+(frameHeight-1-y)*frameWidth] = palette[dat];
-        //             }
-        //         }
-        //     }else{
-        //         for(int y = 0; y < frameHeight; ++y){
-        //             for(int x = 0; x < frameWidth; ++x){
-        //                 __inline_cpp__("
-        //                 dat = ((char*)img)[x+y*frameWidth];
-        //                 ");
-        //                 data[x+y*frameWidth] = palette[dat];
-        //             }
-        //         }
-        //     }
-            
-        // }
-        
-        // spriteFiller.addSprite(data, x, y, frameWidth, frameHeight);
     }
     
     public void clear( int color ){

@@ -11,6 +11,7 @@ public class TileFiller implements LineFiller {
     int color;
     int cameraX = 0;
     int cameraY = 0;
+    int adjustedY;
     int tileW = 10;
     int tileH = 8;
     int tileSize = 0;
@@ -53,12 +54,13 @@ public class TileFiller implements LineFiller {
     }
 
     void fillLine(ushort[] line, int y) {
+        adjustedY = y - cameraY;
         // Clip top and bottom of map.
-        if (y - cameraY < 0 || y - cameraY >= mapHeight * tileH) return;
+        if (adjustedY < 0 || adjustedY >= mapHeight * tileH) return;
         
         // Set the Y for the map and tileset lookup
-        var mapY = ((y - cameraY) / tileH) * mapWidth;
-        var tileY = ((y - cameraY) % tileH) * tileW;
+        var mapY = ((adjustedY) / tileH) * mapWidth;
+        var tileY = ((adjustedY) % tileH) * tileW;
         
         // Set the X for the map and tileset lookup
         var mapX = cameraX / tileW;
@@ -88,9 +90,9 @@ public class TileFiller implements LineFiller {
             // Loop over the Tile color IDs and put them in the line array.
             for (int t = 0; t < iter; t++) {
                 __inline_cpp__("
-                    color = tile[tileX + t];
-                    ");
-                    line[i + t] = palette[color];
+                color = tile[tileX + t];
+                ");
+                line[i + t] = palette[color];
             }
             i += iter;
             tileX = 0;

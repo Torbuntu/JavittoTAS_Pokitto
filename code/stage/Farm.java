@@ -34,18 +34,20 @@ public class Farm extends State {
     
     ubyte tw = 10, th = 8;
     
+    ubyte tilled = 47, watered = 48;
+    
     // animated water
-    ubyte animate = 10, id = 18;
+    ubyte animate = 10, id = 50;
     void updateAnimation(){
         if(animate > 0){
             animate--;
         } else {
             animate = 10;
             id++;
-            if(id > 20){
-                id = 17;
+            if(id > 52){
+                id = 49;
             }
-            for(int y = 0; y < 22; y++){
+            for(int y = 2; y < 22; y++){
                 screen.setTile(id, 1, y);
             }
             System.out.println(screen.fps());
@@ -119,14 +121,14 @@ public class Farm extends State {
             }
             
             if(selected == 0 && getGuyFarmTileData()==TileMaps.FIELD) {
-                screen.setTile(15, (px+6)/tw, (py+8)/th);
+                screen.setTile(tilled, (px+6)/tw, (py+8)/th);
                 guy.hoe();
             }
             if(selected == 1) {
                 // if on field and bucket not empty, water.
                 if(getGuyFarmTileData()==TileMaps.FIELD) {
-                    if(water > 0 && getGuyTile() == 15) {
-                        screen.setTile(16, (px+6)/tw, (py+8)/th);
+                    if(water > 0 && getGuyTile() == tilled) {
+                        screen.setTile(watered, (px+6)/tw, (py+8)/th);
                         water--;
                     }
                 }
@@ -244,7 +246,7 @@ public class Farm extends State {
         guy.draw(screen);
 
         screen.drawMap(x, y);
-        
+
         screen.flush();
     }
     
