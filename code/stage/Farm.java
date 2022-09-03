@@ -34,18 +34,18 @@ public class Farm extends State {
     
     ubyte tw = 10, th = 8;
     
-    ubyte tilled = 47, watered = 48;
+    ubyte tilled = 54, watered = 55;
     
     // animated water
-    ubyte animate = 10, id = 50;
+    ubyte animate = 15, id = 56;
     void updateAnimation(){
         if(animate > 0){
             animate--;
         } else {
             animate = 10;
             id++;
-            if(id > 52){
-                id = 49;
+            if(id > 59){
+                id = 56;
             }
             for(int y = 2; y < 22; y++){
                 screen.setTile(id, 1, y);
