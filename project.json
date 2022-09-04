@@ -161,15 +161,16 @@
 		]
 	},
 	"meta": {
+		"": {},
 		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
-		"JavittoTAS.elf": {},
 		"LineFiller.java": {},
-		"Miloslav.pal": {},
 		"Mocks": {},
 		"README.md": {},
+		"JavittoTAS.elf": {},
 		"SpriteData.java": {},
 		"SpriteFiller.java": {},
+		"Miloslav.pal": {},
 		"TASMode.java": {},
 		"TileFiller.java": {},
 		"TileMaps.java": {},
@@ -190,8 +191,8 @@
 		"data/mdaled": {
 			"sdcard": true
 		},
-		"maps/farm-tiles.png": {},
 		"maps/farmMap.tmx": {},
+		"maps/farm-tiles.png": {},
 		"scripts/TilemapConverter.js": {},
 		"sprites/Bot.aseprite": {},
 		"sprites/Bot.json": {},
@@ -208,7 +209,6 @@
 		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
 		"sprites/Tools.png": {},
-		"": {},
 		"code/manager/CropManager.java": {},
 		"code/manager/DataManager.java": {},
 		"code/stage/Farm.java": {},

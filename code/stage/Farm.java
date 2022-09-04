@@ -23,10 +23,8 @@ public class Farm extends State {
     
     boolean mapSwitch = false, menu = false;
     
-    int c = 0;
-    
     Guy guy;
-    Tools[] tools;
+    Tools tools;
     
     Hand handIcon;
     
@@ -34,21 +32,28 @@ public class Farm extends State {
     
     ubyte tw = 10, th = 8;
     
-    ubyte tilled = 54, watered = 55;
+    ubyte tilled = 55, watered = 56;
     
     // animated water
-    ubyte animate = 15, id = 56;
+    ubyte animate = 15, id = 57;
+    
+    /**
+     * Uses a collection of tile ID's to update the
+     * water tiles to animate the waves.
+     * 
+     * 4 tile IDs used.
+     */ 
     void updateAnimation(){
         if(animate > 0){
             animate--;
         } else {
             animate = 10;
             id++;
-            if(id > 59){
-                id = 56;
+            if(id > 60){
+                id = 57;
             }
             for(int y = 2; y < 22; y++){
-                screen.setTile(id, 1, y);
+                screen.setTile(id, 2, y);
             }
             System.out.println(screen.fps());
         }
@@ -62,28 +67,15 @@ public class Farm extends State {
         guy = new Guy();
         guy.idle();
         
-        
         handIcon = new Hand();
         handIcon.hand();
         
-        tools = new Tools[]{
-            new Tools(),
-            new Tools(),
-            new Tools(),
-            new Tools()
-        };
-        tools[0].hoe();
-        tools[1].can();
-        tools[2].planter();
-        tools[3].rod();
-        for(int i = 0; i < 4; i++){
-            tools[i].setPosition(4,148);
-        }
+        tools = new Tools();
         
         x = 0;
         y = 0;
-        px=199;
-        py=68;
+        px= 199;
+        py= 68;
         screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
     
@@ -97,18 +89,9 @@ public class Farm extends State {
     }
     
     void update(){
-        // -- DEBUG --
-        // c++;
-        // if(c==100){
-        //     c = 0;
-        //     System.out.println((int)screen.fps());
-        //     System.out.println(selected);
-        //     System.out.println(px + ","+py);
-        // }
-        
         // -- UPDATE --
         
-        // Check
+        // Check the tile and data
         if( Button.A.justPressed() ) {
             System.out.println(getGuyTile());
             System.out.println(getGuyFarmTileData());
@@ -133,7 +116,7 @@ public class Farm extends State {
                     }
                 }
                 if(TileMaps.getFarmMapData((px/tw)-1, py/th)==TileMaps.WATER) {
-                    water = 7;    
+                    water = 12;    
                 }
                 
                 guy.water();
@@ -144,17 +127,9 @@ public class Farm extends State {
         
         // Open menu / Select from menu
         if( Button.C.justPressed() ){
-            if(menu) {
-                for(int i = 0; i < 4; i++){
-                    tools[i].setPosition(4,148);
-                }
-            } else {
-                for(int i = 0; i < 4; i++){
-                    tools[i].setPosition(4,148-i*24);
-                }
-            }
+            selected++;
+            if(selected > 4) selected = 0;
             System.out.println("Selected: " + (int)selected);
-            menu = !menu;
         }
         
         // Movement
@@ -172,77 +147,74 @@ public class Farm extends State {
                 // if on planter, show seeds.
             }
         } else {
-            if(use > 0){
-                use--;
-                if(selected == 0) {
-                    guy.hoe();
-                }
-                if(selected == 1) {
-                    guy.water();
-                }
-            }
-            else if(movement > 0){
-                movement--;
-                switch(direction){
-                    case 0: 
-                        px-=2;
-                        break;
-                    case 1: 
-                        py-=2;
-                        break;
-                    case 2:
-                        px+=2;
-                        break;
-                    case 3:
-                        py+=2;
-                        break;
-                }
-            } else if(use == 0) {
-                if(Button.Down.isPressed()){
-                    movement = 4;
-                    direction = 3;
-                    guy.down();
-                } else
-                if(Button.Up.isPressed()){
-                    movement = 4;
-                    direction = 1;
-                    guy.down();
-                } else 
-                if(Button.Right.isPressed()){
-                    movement = 5;
-                    direction = 2;
-                    guy.setMirrored(true);
-                    guy.down();
-                } else
-                if(Button.Left.isPressed()){
-                    if(TileMaps.getFarmMapData((px-8)/tw, py/th) != TileMaps.WATER){
-                        movement = 5;
-                    }
-                    direction = 0;
-                    guy.setMirrored(false);
-                    guy.down();
-                } else {
-                    guy.idle();
-                }
-            }
-            guy.setPosition(px, py);
+            moveGuy();
         }
         
         updateAnimation();
+        
         // -- DRAW --
         screen.clear(0);
-
-        if(menu){
-            for(int i = 0; i < 4; i++){
-                tools[i].draw(screen);
-                if(i==selected){
-                    handIcon.setPosition(32, 155-i*24);
-                }
-            }
-            handIcon.draw(screen);
-        } else {
-            tools[selected].draw(screen);
+        
+        // -- TOOLS --
+        switch(water) {
+            case 1: 
+                tools.water1();
+                break;
+            case 2:
+                tools.water2();
+                break;
+            case 3:
+                tools.water3();
+                break;
+            case 4:
+                tools.water4();
+                break;
+            case 5:
+                tools.water5();
+                break;
+            case 6:
+                tools.water6();
+                break;
+            case 7:
+                tools.water7();
+                break;
+            case 8:
+                tools.water8();
+                break;
+            case 9:
+                tools.water9();
+                break;
+            case 10:
+                tools.water10();
+                break;
+            case 11:
+                tools.water11();
+                break;
+            case 12:
+                tools.waterFull();
+                break;
         }
+        if(water > 0) tools.draw(screen, 2, 26);
+        
+        // draw selection box
+        tools.selected();
+        tools.draw(screen, 2, 6+selected*20);
+        
+        tools.hoe();
+        tools.draw(screen, 2, 6);
+        tools.can();
+        tools.draw(screen, 2, 26);
+        tools.planter();
+        tools.draw(screen, 2, 46);
+        tools.basket();
+        tools.draw(screen, 2, 66);
+        // TODO - unlock the rod to fish
+        // if(rodUnlocked) {
+        tools.rod();
+        tools.draw(screen, 2, 86);
+        // }
+        // -- END TOOLS --
+
         guy.draw(screen);
 
         screen.drawMap(x, y);
@@ -259,6 +231,59 @@ public class Farm extends State {
     }
     
     void moveGuy() {
-        
+        if(use > 0){
+            use--;
+            if(selected == 0) {
+                guy.hoe();
+            }
+            if(selected == 1) {
+                guy.water();
+            }
+        }
+        else if(movement > 0){
+            movement--;
+            switch(direction){
+                case 0: 
+                    px-=2;
+                    break;
+                case 1: 
+                    py-=2;
+                    break;
+                case 2:
+                    px+=2;
+                    break;
+                case 3:
+                    py+=2;
+                    break;
+            }
+        } else if(use == 0) {
+            if(Button.Down.isPressed()){
+                movement = 4;
+                direction = 3;
+                guy.down();
+            } else
+            if(Button.Up.isPressed()){
+                movement = 4;
+                direction = 1;
+                guy.down();
+            } else 
+            if(Button.Right.isPressed()){
+                movement = 5;
+                direction = 2;
+                guy.setMirrored(true);
+                guy.down();
+            } else
+            if(Button.Left.isPressed()){
+                if(TileMaps.getFarmMapData((px-8)/tw, py/th) != TileMaps.WATER){
+                    movement = 5;
+                }
+                direction = 0;
+                guy.setMirrored(false);
+                guy.down();
+            } else {
+                guy.idle();
+            }
+        }
+        guy.setPosition(px, py);
     }
 }
