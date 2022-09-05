@@ -10,6 +10,7 @@ import femto.input.Button;
 
 import sprites.Guy;
 import sprites.Tools;
+
 import sprites.Hand;
 
 public class Farm extends State {
@@ -21,21 +22,27 @@ public class Farm extends State {
     
     int x,y,px,py;
     
-    boolean mapSwitch = false, menu = false;
-    
     Guy guy;
     Tools tools;
     
-    Hand handIcon;
+    //testing seed with hand
+    Hand hand;
+    
+    byte[] type;
+    byte[] growth;
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
     ubyte tw = 10, th = 8;
     
+    // Tiles for field tilled/watered
     ubyte tilled = 55, watered = 56;
     
     // animated water
     ubyte animate = 15, id = 57;
+    
+    
+    ubyte fieldOffsetX = 49, fieldOffsetY = 84;
     
     /**
      * Uses a collection of tile ID's to update the
@@ -55,20 +62,30 @@ public class Farm extends State {
             for(int y = 2; y < 22; y++){
                 screen.setTile(id, 2, y);
             }
-            System.out.println(screen.fps());
+            // System.out.println(screen.fps());
         }
     }
     
     void init() {
         screen = Globals.screen;
         
+        hand = new Hand();
+        hand.hand();
+        
         dm = Globals.dataManager;
+        var field = dm.readData("field");
+        type = new byte[120];
+        growth = new byte[120];
+        ubyte id = 0;
+        for (int i = 0; i < (120 * 2); i += 2) {
+            if (id > 120) return;
+            type[id] = field[i];
+            growth[id] = field[i + 1];
+            id++;
+        }
         
         guy = new Guy();
         guy.idle();
-        
-        handIcon = new Hand();
-        handIcon.hand();
         
         tools = new Tools();
         
@@ -93,15 +110,16 @@ public class Farm extends State {
         
         // Check the tile and data
         if( Button.A.justPressed() ) {
-            System.out.println(getGuyTile());
-            System.out.println(getGuyFarmTileData());
+            System.out.println(px + ","+py);
+            System.out.println(getFieldId());
+            saveAndQuit();
         }
 
         // Use equipped tool
         if( Button.B.justPressed() ){
-            if(getGuyFarmTileData()==TileMaps.TRAVEL) {
-                Game.changeState(new Travel());
-            }
+            // if(getGuyFarmTileData()==TileMaps.TRAVEL) {
+            //     Game.changeState(new Travel());
+            // }
             
             if(selected == 0 && getGuyFarmTileData()==TileMaps.FIELD) {
                 screen.setTile(tilled, (px+6)/tw, (py+8)/th);
@@ -115,40 +133,34 @@ public class Farm extends State {
                         water--;
                     }
                 }
+                // if water on the left, fill it up.
                 if(TileMaps.getFarmMapData((px/tw)-1, py/th)==TileMaps.WATER) {
                     water = 12;    
                 }
                 
                 guy.water();
             }
+            if(selected == 2) {
+                // if on tilled land, plant seed
+                if(getGuyFarmTileData()==TileMaps.FIELD && getGuyTile() >= tilled){
+                    byte id = getFieldId();
+                    // TODO - inventory system
+                    type[id] = 2;
+                    growth[id] = 1;
+                }
+            }
             
             use=8;
         }
         
-        // Open menu / Select from menu
         if( Button.C.justPressed() ){
             selected++;
             if(selected > 4) selected = 0;
-            System.out.println("Selected: " + (int)selected);
         }
         
         // Movement
-        if(menu){
-            if(Button.Down.justPressed()){
-                if(selected > 0)selected--;
-            }
-            if(Button.Up.justPressed()){
-                if(selected < 3)selected++;
-            }  
-            if(Button.Right.justPressed()){
-                // if on planter, show seeds.
-            } 
-            if(Button.Left.justPressed()){
-                // if on planter, show seeds.
-            }
-        } else {
-            moveGuy();
-        }
+
+        moveGuy();
         
         updateAnimation();
         
@@ -214,6 +226,15 @@ public class Farm extends State {
         tools.draw(screen, 2, 86);
         // }
         // -- END TOOLS --
+        
+        for(int i = 0; i < 120; i++){
+            var x = (i % 12);
+            var y = (i / 12);
+            var id = x + y * 12;
+            if(type[i] > 0) {
+                hand.draw(screen, fieldOffsetX +x*10, fieldOffsetY+y*8);
+            }
+        }
 
         guy.draw(screen);
 
@@ -285,5 +306,26 @@ public class Farm extends State {
             }
         }
         guy.setPosition(px, py);
+    }
+    
+    /**
+     * Returns the position ID of the field
+     */ 
+    byte getFieldId() {
+        var x = (px-49) / 10;
+        var y = (py-84) / 8;
+        return  x + y * 12;
+    }
+    
+    void saveAndQuit() {
+        // Collect field to byte array
+        byte[] field = new byte[120 * 2];
+        ubyte id = 0;
+        for (int i = 0; i < (120 * 2); i += 2) {
+            field[i] = (byte) type[id];
+            field[i + 1] = (byte) growth[id];
+            id++;
+        }
+        dm.writeData("field", field);
     }
 }

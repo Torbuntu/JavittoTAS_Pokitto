@@ -8,7 +8,7 @@ package code.manager;
  * Field tile:
  * 0 - Dry unplowed field
  * 1 - Plowed
- * 2 - Watered (cannot water unplowed field)
+ * >= 2  - Crops (cannot water unplowed field)
  * 
  * Crop tiles (requires plowed):
  * - Initialized (Seed planted)
@@ -17,7 +17,7 @@ package code.manager;
  * - Harvestable
  * 
  * Example on disk:
- * 0,0,0, 1,2,3, 1,2,-1
+ * 0,0, 2,3, 2,-1
  * Three tiles:
  * EMPTY, 
  * Dry plowed and with crop 2 at day 3, 
