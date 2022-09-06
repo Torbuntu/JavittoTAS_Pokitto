@@ -153,7 +153,7 @@ public class TileMaps {
     public static pointer getTiles(){
         pointer ptr;
         __inline_cpp__("
-        static const uint8_t tiles[][256] = {
+        static const uint8_t tiles[${compositeList.length*tileW*tileH}] = {
 `;
         let idx=0;
         for( let composite of compositeList ){

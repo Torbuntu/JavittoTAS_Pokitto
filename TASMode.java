@@ -42,6 +42,10 @@ public class TASMode extends ScreenMode implements __stub__ {
         beforeFlush(); // prevent function from being discarded
     }
     
+    void disableFiller(int id) {
+        fillers[id] = null;
+    }
+    
     private void beforeFlush(){
         beginStream();
     }

@@ -18,7 +18,8 @@ public class Globals {
     static final CropManager cropManager = new CropManager();
     
     public static void init() {
-        
+        // Disable color filler to get better performance
+        // screen.disableFiller(0);
         
     }
     

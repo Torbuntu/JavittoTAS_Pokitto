@@ -38,29 +38,30 @@ public class Farm extends State {
     // Tiles for field tilled/watered
     ubyte tilled = 55, watered = 56;
     
-    // animated water
-    ubyte animate = 15, id = 57;
-    
-    
     ubyte fieldOffsetX = 49, fieldOffsetY = 84;
     
+    
+    // animated water
+    ubyte animate = 15;
+    ubyte id = 0;
+    ubyte[] ids = {57, 58, 59, 58};
     /**
      * Uses a collection of tile ID's to update the
      * water tiles to animate the waves.
      * 
      * 4 tile IDs used.
-     */ 
+     */
     void updateAnimation(){
         if(animate > 0){
             animate--;
         } else {
             animate = 10;
             id++;
-            if(id > 60){
-                id = 57;
+            if(id > 3){
+                id = 0;
             }
             for(int y = 2; y < 22; y++){
-                screen.setTile(id, 2, y);
+                screen.setTile(ids[id], 2, y);
             }
             // System.out.println(screen.fps());
         }
@@ -107,12 +108,12 @@ public class Farm extends State {
     
     void update(){
         // -- UPDATE --
-        
+        System.out.println(screen.fps());
         // Check the tile and data
         if( Button.A.justPressed() ) {
             System.out.println(px + ","+py);
             System.out.println(getFieldId());
-            saveAndQuit();
+            // saveAndQuit();
         }
 
         // Use equipped tool
@@ -165,7 +166,6 @@ public class Farm extends State {
         updateAnimation();
         
         // -- DRAW --
-        screen.clear(0);
         
         // -- TOOLS --
         switch(water) {

@@ -59,10 +59,20 @@ public class DataManager {
         if(file.openRO("/data/mdaled/" + name)){
             if(file.isOpen()){
                 result = file.toArray();
+            } else  {
+                result = getDummy();
             }
         }
         file.close();
         return result;
+    }
+    
+    byte[] getDummy() {
+        byte[] field = new byte[120 * 2];
+        for (int i = 0; i < (120 * 2); i++) {
+            field[i] = (byte) 0;
+        }
+        return field;
     }
 
 }
