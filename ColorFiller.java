@@ -8,7 +8,6 @@ public class ColorFiller implements LineFiller {
     }
     public void draw(int c){
         this.color = palette[c];
-        
     }
     
     public void fillLine(ushort[] line, int y) {

@@ -14,10 +14,11 @@ public class TASMode extends ScreenMode implements __stub__ {
     ushort[] line;
     
     // oh boy, here we go. Lots to do here. *deep breaths* 
-    public LineFiller[] fillers = new LineFiller[3];
+    public LineFiller[] fillers = new LineFiller[4];
     ColorFiller colorFiller;
     SpriteFiller spriteFiller;
-    TileFiller tileFiller;
+    BGTileFiller bgTileFiller;
+    FGTileFiller fgTileFiller;
     
     protected TASMode(){}
     
@@ -32,17 +33,19 @@ public class TASMode extends ScreenMode implements __stub__ {
         loadPalette( pal );
         spriteFiller = new SpriteFiller(palette);
         colorFiller = new ColorFiller(palette);
-        tileFiller = new TileFiller(palette);
+        bgTileFiller = new BGTileFiller(palette);
+        fgTileFiller = new FGTileFiller(palette);
         fillers[0] = colorFiller;
-        fillers[1] = tileFiller;
-        fillers[2] = spriteFiller;
+        fillers[1] = bgTileFiller;
+        fillers[2] = fgTileFiller;
+        fillers[3] = spriteFiller;
         clear(0);
         textRightLimit = width();
         return;
         beforeFlush(); // prevent function from being discarded
     }
     
-    void disableFiller(int id) {
+    public void disableFiller(int id) {
         fillers[id] = null;
     }
     
@@ -68,20 +71,36 @@ public class TASMode extends ScreenMode implements __stub__ {
         return 176;
     }
     
-    public void setTile(int tileId, int x, int y){
-        tileFiller.setTile(tileId, x, y);
+    public void setBGTile(int tileId, int x, int y){
+        bgTileFiller.setTile(tileId, x, y);
     }
     
-    public int getTile(int x, int y) {
-        return tileFiller.getTile(x,y);
+    public void setFGTile(int tileId, int x, int y){
+        fgTileFiller.setTile(tileId, x, y);
     }
     
-    public void setMap(pointer map, pointer tileSet){
-        tileFiller.setMap(map, tileSet);
+    public int getBGTile(int x, int y) {
+        return bgTileFiller.getTile(x,y);
     }
     
-    public void drawMap(int x, int y){
-        tileFiller.draw(x,y);
+    public int getFGTile(int x, int y) {
+        return fgTileFiller.getTile(x,y);
+    }
+    
+    public void setBGMap(pointer map, pointer tileSet){
+        bgTileFiller.setMap(map, tileSet);
+    }
+    
+    public void setFGMap(pointer map, pointer tileSet){
+        fgTileFiller.setMap(map, tileSet);
+    }
+    
+    public void drawBGMap(int x, int y){
+        bgTileFiller.draw(x,y);
+    }
+    
+    public void drawFGMap(int x, int y){
+        fgTileFiller.draw(x,y);
     }
     
     public void addSprite(pointer frame, float x, float y, boolean mirror, boolean flip){
@@ -95,6 +114,8 @@ public class TASMode extends ScreenMode implements __stub__ {
     void flush() {
         super.flush();
         beginStream();
+        var time = System.currentTimeMillis();
+        System.out.println("---- start fillers----");
         for(int y = 0; y < 176; ++y){
             for(LineFiller lf : fillers){
                 if(null == lf)continue;
@@ -107,5 +128,7 @@ public class TASMode extends ScreenMode implements __stub__ {
             flushLine16(line->elements);
             ");
         }
+        System.out.println("Time -> " + (System.currentTimeMillis() - time));
+        System.out.println("---- end fillers---- \n");
     }
 }

@@ -1,6 +1,6 @@
 package femto.mode;
 
-public class TileFiller implements LineFiller {
+public class BGTileFiller implements LineFiller {
     // Get the map, get the tiles, render
     pointer tileMap;
     pointer tileWindow;
@@ -16,7 +16,7 @@ public class TileFiller implements LineFiller {
     int tileH = 8;
     int tileSize = 0;
 
-    TileFiller(ushort[] palette) {
+    BGTileFiller(ushort[] palette) {
         this.palette = palette;
     }
 
@@ -75,9 +75,9 @@ public class TileFiller implements LineFiller {
         if (start < 0) start = 0;
         
         // Loop the map width to collect the tiles
-        for (int i = start; i < 220;) {
+        for (int i = start; i < 220 && mapX < mapWidth;) {
             // Clip the right hand side of the map. Whee~
-            if (mapX >= mapWidth) return;
+            // if (mapX >= mapWidth) return;
         
             int iter = min(tileW - tileX, 220 - i);
 

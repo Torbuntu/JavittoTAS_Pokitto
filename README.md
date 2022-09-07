@@ -144,3 +144,14 @@ OUT .req r6
 
 
 ```
+
+Line Fillers:
+```
+public LineFiller[] fillers = new LineFiller[3];
+ColorFiller colorFiller;
+SpriteFiller spriteFiller;
+TileFiller tileFiller;
+```
+
+TODO - Split BG and FG tile maps to more easily work with layered tiles. The goal here would be that the FGTileFiller would 
+support transparency and so could be layered on top of the BGTileFiller to add more dynamic details. 

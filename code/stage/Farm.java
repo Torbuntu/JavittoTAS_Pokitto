@@ -35,16 +35,15 @@ public class Farm extends State {
     
     ubyte tw = 10, th = 8;
     
-    // Tiles for field tilled/watered
-    ubyte tilled = 55, watered = 56;
-    
     ubyte fieldOffsetX = 49, fieldOffsetY = 84;
     
+    // Tiles for field tilled/watered
+    ubyte tilled = 75, watered = 76;
     
     // animated water
     ubyte animate = 15;
     ubyte id = 0;
-    ubyte[] ids = {57, 58, 59, 58};
+    ubyte[] ids = {77, 78, 79, 78};
     /**
      * Uses a collection of tile ID's to update the
      * water tiles to animate the waves.
@@ -61,7 +60,7 @@ public class Farm extends State {
                 id = 0;
             }
             for(int y = 2; y < 22; y++){
-                screen.setTile(ids[id], 2, y);
+                screen.setBGTile(ids[id], 3, y);
             }
             // System.out.println(screen.fps());
         }
@@ -94,7 +93,8 @@ public class Farm extends State {
         y = 0;
         px= 199;
         py= 68;
-        screen.setMap(TileMaps.getFarmMap(), TileMaps.getTiles());
+        screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
+        screen.setFGMap(TileMaps.getTestMap(), TileMaps.getTiles());
     }
     
     void shutdown() {
@@ -107,6 +107,7 @@ public class Farm extends State {
     }
     
     void update(){
+        var time = System.currentTimeMillis();
         // -- UPDATE --
         System.out.println(screen.fps());
         // Check the tile and data
@@ -123,14 +124,14 @@ public class Farm extends State {
             // }
             
             if(selected == 0 && getGuyFarmTileData()==TileMaps.FIELD) {
-                screen.setTile(tilled, (px+6)/tw, (py+8)/th);
+                screen.setBGTile(tilled, (px+6)/tw, (py+8)/th);
                 guy.hoe();
             }
             if(selected == 1) {
                 // if on field and bucket not empty, water.
                 if(getGuyFarmTileData()==TileMaps.FIELD) {
                     if(water > 0 && getGuyTile() == tilled) {
-                        screen.setTile(watered, (px+6)/tw, (py+8)/th);
+                        screen.setBGTile(watered, (px+6)/tw, (py+8)/th);
                         water--;
                     }
                 }
@@ -206,45 +207,38 @@ public class Farm extends State {
                 tools.waterFull();
                 break;
         }
-        if(water > 0) tools.draw(screen, 2, 26);
+        if(water > 0) tools.draw(screen, -2, 126);
         
         // draw selection box
         tools.selected();
         tools.draw(screen, 2, 6+selected*20);
         
-        tools.hoe();
-        tools.draw(screen, 2, 6);
-        tools.can();
-        tools.draw(screen, 2, 26);
-        tools.planter();
-        tools.draw(screen, 2, 46);
-        tools.basket();
-        tools.draw(screen, 2, 66);
-        // TODO - unlock the rod to fish
-        // if(rodUnlocked) {
-        tools.rod();
-        tools.draw(screen, 2, 86);
+        // tools.hoe();
+        // tools.draw(screen, 2, 6);
+        // tools.can();
+        // tools.draw(screen, 2, 26);
+        // tools.planter();
+        // tools.draw(screen, 2, 46);
+        // tools.basket();
+        // tools.draw(screen, 2, 66);
+        // // TODO - unlock the rod to fish
+        // // if(rodUnlocked) {
+        // tools.rod();
+        // tools.draw(screen, 2, 86);
         // }
         // -- END TOOLS --
-        
-        for(int i = 0; i < 120; i++){
-            var x = (i % 12);
-            var y = (i / 12);
-            var id = x + y * 12;
-            if(type[i] > 0) {
-                hand.draw(screen, fieldOffsetX +x*10, fieldOffsetY+y*8);
-            }
-        }
 
         guy.draw(screen);
 
-        screen.drawMap(x, y);
-
+        screen.drawBGMap(x, y);
+        screen.drawFGMap(-50, 88);
         screen.flush();
+        
+        System.out.println("---- Update: -> " + (System.currentTimeMillis() - time));
     }
     
     int getGuyTile() {
-        return screen.getTile((px+6)/tw, (py+8)/th);
+        return screen.getBGTile((px+6)/tw, (py+8)/th);
     }
     
     int getGuyFarmTileData() {
