@@ -83,7 +83,13 @@ public class FGTileFiller implements LineFiller {
 
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY]; 
+            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY];
+            if(tileId==0){
+                i += iter;
+                tileX = 0L;
+                mapX++;
+                continue;
+            }
             auto tile = ((uint8_t * ) tileSet) + tileId * (tileSize) + tileY;
             ");
     

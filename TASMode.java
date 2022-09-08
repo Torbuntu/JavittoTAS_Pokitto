@@ -114,8 +114,6 @@ public class TASMode extends ScreenMode implements __stub__ {
     void flush() {
         super.flush();
         beginStream();
-        var time = System.currentTimeMillis();
-        System.out.println("---- start fillers----");
         for(int y = 0; y < 176; ++y){
             for(LineFiller lf : fillers){
                 if(null == lf)continue;
@@ -128,7 +126,5 @@ public class TASMode extends ScreenMode implements __stub__ {
             flushLine16(line->elements);
             ");
         }
-        System.out.println("Time -> " + (System.currentTimeMillis() - time));
-        System.out.println("---- end fillers---- \n");
     }
 }

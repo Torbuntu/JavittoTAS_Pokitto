@@ -20,7 +20,7 @@ public class Farm extends State {
     
     DataManager dm;
     
-    int x,y,px,py;
+    int px,py;
     
     Guy guy;
     Tools tools;
@@ -62,7 +62,6 @@ public class Farm extends State {
             for(int y = 2; y < 22; y++){
                 screen.setBGTile(ids[id], 3, y);
             }
-            // System.out.println(screen.fps());
         }
     }
     
@@ -89,10 +88,8 @@ public class Farm extends State {
         
         tools = new Tools();
         
-        x = 0;
-        y = 0;
-        px= 199;
-        py= 68;
+        px = 199;
+        py = 68;
         screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
         screen.setFGMap(TileMaps.getTestMap(), TileMaps.getTiles());
     }
@@ -107,11 +104,11 @@ public class Farm extends State {
     }
     
     void update(){
-        var time = System.currentTimeMillis();
         // -- UPDATE --
-        System.out.println(screen.fps());
+        
         // Check the tile and data
         if( Button.A.justPressed() ) {
+            System.out.println(screen.fps());
             System.out.println(px + ","+py);
             System.out.println(getFieldId());
             // saveAndQuit();
@@ -139,7 +136,6 @@ public class Farm extends State {
                 if(TileMaps.getFarmMapData((px/tw)-1, py/th)==TileMaps.WATER) {
                     water = 12;    
                 }
-                
                 guy.water();
             }
             if(selected == 2) {
@@ -149,6 +145,9 @@ public class Farm extends State {
                     // TODO - inventory system
                     type[id] = 2;
                     growth[id] = 1;
+                    var x = (px-49) / 10;
+                    var y = (py-84) / 8;
+                    screen.setFGTile(80, x, y);
                 }
             }
             
@@ -169,72 +168,22 @@ public class Farm extends State {
         // -- DRAW --
         
         // -- TOOLS --
-        switch(water) {
-            case 1: 
-                tools.water1();
-                break;
-            case 2:
-                tools.water2();
-                break;
-            case 3:
-                tools.water3();
-                break;
-            case 4:
-                tools.water4();
-                break;
-            case 5:
-                tools.water5();
-                break;
-            case 6:
-                tools.water6();
-                break;
-            case 7:
-                tools.water7();
-                break;
-            case 8:
-                tools.water8();
-                break;
-            case 9:
-                tools.water9();
-                break;
-            case 10:
-                tools.water10();
-                break;
-            case 11:
-                tools.water11();
-                break;
-            case 12:
-                tools.waterFull();
-                break;
+        if(water > 0) {
+            updateWaterLevel();
+            tools.draw(screen, -2, 126);
         }
-        if(water > 0) tools.draw(screen, -2, 126);
         
         // draw selection box
         tools.selected();
-        tools.draw(screen, 2, 6+selected*20);
-        
-        // tools.hoe();
-        // tools.draw(screen, 2, 6);
-        // tools.can();
-        // tools.draw(screen, 2, 26);
-        // tools.planter();
-        // tools.draw(screen, 2, 46);
-        // tools.basket();
-        // tools.draw(screen, 2, 66);
-        // // TODO - unlock the rod to fish
-        // // if(rodUnlocked) {
-        // tools.rod();
-        // tools.draw(screen, 2, 86);
-        // }
+        tools.draw(screen, -2, 150+-selected*24);
+
         // -- END TOOLS --
 
         guy.draw(screen);
 
-        screen.drawBGMap(x, y);
+        screen.drawBGMap(0, 0);
         screen.drawFGMap(-50, 88);
         screen.flush();
-        
-        System.out.println("---- Update: -> " + (System.currentTimeMillis() - time));
     }
     
     int getGuyTile() {
@@ -309,6 +258,47 @@ public class Farm extends State {
         var x = (px-49) / 10;
         var y = (py-84) / 8;
         return  x + y * 12;
+    }
+    
+    void updateWaterLevel() {
+        switch(water) {
+            case 1: 
+                tools.water1();
+                break;
+            case 2:
+                tools.water2();
+                break;
+            case 3:
+                tools.water3();
+                break;
+            case 4:
+                tools.water4();
+                break;
+            case 5:
+                tools.water5();
+                break;
+            case 6:
+                tools.water6();
+                break;
+            case 7:
+                tools.water7();
+                break;
+            case 8:
+                tools.water8();
+                break;
+            case 9:
+                tools.water9();
+                break;
+            case 10:
+                tools.water10();
+                break;
+            case 11:
+                tools.water11();
+                break;
+            case 12:
+                tools.waterFull();
+                break;
+        }
     }
     
     void saveAndQuit() {
