@@ -11,8 +11,6 @@ import femto.input.Button;
 import sprites.Guy;
 import sprites.Tools;
 
-import sprites.Hand;
-
 public class Farm extends State {
     
     // the screenmode we want to draw with
@@ -20,22 +18,23 @@ public class Farm extends State {
     
     DataManager dm;
     
+    // Player x and y coordinates.
     int px,py;
     
     Guy guy;
     Tools tools;
     
-    //testing seed with hand
-    Hand hand;
-    
+    // Field crop types and growth levels.
+    // TODO ? - Move to crop manager?
     byte[] type;
     byte[] growth;
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
-    ubyte tw = 10, th = 8;
+    ubyte hour = 0, dayProgress;
     
-    ubyte fieldOffsetX = 49, fieldOffsetY = 84;
+    // Tile width and height
+    ubyte tw = 10, th = 8;
     
     // Tiles for field tilled/watered
     ubyte tilled = 75, watered = 76;
@@ -65,12 +64,27 @@ public class Farm extends State {
         }
     }
     
+    /**
+     * Day progression. 
+     * Hours increment dayProgress on 30 tics. 
+     * Day progresses when 200 hours pass. 
+     * hehe 200 hours. Busy days
+    */
+    void updateDayProgress() {
+        hour++;
+        if (hour > 30) {
+            dayProgress++;
+            hour = 0;
+        }
+        if(dayProgress >= 200) {
+            dayProgress = 0;
+            // TODO - New day dialog
+        }
+    }
+    
     void init() {
         screen = Globals.screen;
-        
-        hand = new Hand();
-        hand.hand();
-        
+
         dm = Globals.dataManager;
         var field = dm.readData("field");
         type = new byte[120];
@@ -88,20 +102,16 @@ public class Farm extends State {
         
         tools = new Tools();
         
+        // Player initial position
         px = 199;
         py = 68;
+        
+        // Set the farm background and foreground maps
         screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
         screen.setFGMap(TileMaps.getTestMap(), TileMaps.getTiles());
     }
     
-    void shutdown() {
-        screen = null;
-    }
-    
-    public void resume() {
-        screen.beforeFlush();
-        screen.flush();
-    }
+
     
     void update(){
         // -- UPDATE --
@@ -160,6 +170,7 @@ public class Farm extends State {
         }
         
         // Movement
+        updateDayProgress();
 
         moveGuy();
         
@@ -260,6 +271,7 @@ public class Farm extends State {
         return  x + y * 12;
     }
     
+    // TODO - I hate this. Seems really wasteful but I'm unsure how to do a better water level indicator.
     void updateWaterLevel() {
         switch(water) {
             case 1: 
@@ -311,5 +323,18 @@ public class Farm extends State {
             id++;
         }
         dm.writeData("field", field);
+    }
+    
+    
+    
+    
+    
+    void shutdown() {
+        screen = null;
+    }
+    
+    public void resume() {
+        screen.beforeFlush();
+        screen.flush();
     }
 }
