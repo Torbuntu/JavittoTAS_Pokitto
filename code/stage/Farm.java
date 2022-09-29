@@ -91,7 +91,7 @@ public class Farm extends State {
         px = 199;
         py = 68;
         screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
-        screen.setFGMap(TileMaps.getTestMap(), TileMaps.getTiles());
+        screen.setFGMap(TileMaps.getFieldMap(), TileMaps.getTiles());
     }
     
     void shutdown() {
