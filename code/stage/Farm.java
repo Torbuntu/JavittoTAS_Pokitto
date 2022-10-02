@@ -37,12 +37,12 @@ public class Farm extends State {
     ubyte tw = 10, th = 8;
     
     // Tiles for field tilled/watered
-    ubyte tilled = 75, watered = 76;
+    ubyte tilled = 4, watered = 5;
     
     // animated water
     ubyte animate = 15;
     ubyte id = 0;
-    ubyte[] ids = {77, 78, 79, 78};
+    ubyte[] ids = {0, 1, 2, 1};
     /**
      * Uses a collection of tile ID's to update the
      * water tiles to animate the waves.

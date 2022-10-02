@@ -1,5 +1,8 @@
 # Javitto TAS for Pokitto
 
+This project includes the changes necessary to add a Tiles and Sprites screen mode to Javitto for Pokitto as well as the remake of Moondrop Dale using this 
+screen mode.
+
 git clone this repo into `FemtoIDE/projects` to work with it in FemtoIDE.
 
 Following thread on the Pokitto forum [TAS mode for Javitto](https://talk.pokitto.com/t/tas-mode-for-javitto-development-thread)
@@ -147,11 +150,9 @@ OUT .req r6
 
 Line Fillers:
 ```
-public LineFiller[] fillers = new LineFiller[3];
+public LineFiller[] fillers = new LineFiller[4];
 ColorFiller colorFiller;
 SpriteFiller spriteFiller;
-TileFiller tileFiller;
+BGTileFiller bgTileFiller;
+FGTileFiller fgTileFiller;
 ```
-
-TODO - Split BG and FG tile maps to more easily work with layered tiles. The goal here would be that the FGTileFiller would 
-support transparency and so could be layered on top of the BGTileFiller to add more dynamic details. 

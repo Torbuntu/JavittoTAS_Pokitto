@@ -93,20 +93,20 @@
 	},
 	"GDBFlags": {
 		"Pokitto": [
-			"${projectPath}/${projectName}.elf"
+			"${projectPath}/MDDDeluxe.elf"
 		]
 	},
 	"emuFlags": {
 		"Pokitto": [
-			"${projectPath}/${projectName}.bin"
+			"${projectPath}/MDDDeluxe.bin"
 		]
 	},
 	"ELF2BINFlags": {
 		"Pokitto": [
 			"-O",
 			"binary",
-			"${projectPath}/${projectName}.elf",
-			"${projectPath}/${projectName}.bin"
+			"${projectPath}/MDDDeluxe.elf",
+			"${projectPath}/MDDDeluxe.bin"
 		]
 	},
 	"LDFlags": {
@@ -132,7 +132,7 @@
 			"-T",
 			"${appPath}/javacompiler/pokitto/link.ld",
 			"--output",
-			"${projectPath}/${projectName}.elf",
+			"${projectPath}/MDDDeluxe.elf",
 			"$objectFiles",
 			"-Wl,--start-group",
 			"-lstdc++",
@@ -161,17 +161,17 @@
 		]
 	},
 	"meta": {
-		"ColorFiller.java": {},
 		"BGTileFiller.java": {},
 		"FGTileFiller.java": {},
+		"ColorFiller.java": {},
 		"JavittoTAS.bin": {},
 		"JavittoTAS.elf": {},
-		"README.md": {},
+		"LineFiller.java": {},
+		"Miloslav.pal": {},
 		"Mocks": {},
 		"SpriteData.java": {},
+		"README.md": {},
 		"SpriteFiller.java": {},
-		"Miloslav.pal": {},
-		"LineFiller.java": {},
 		"TASMode.java": {},
 		"TileMaps.java": {},
 		"code": {},
@@ -183,14 +183,16 @@
 		"project.json": {},
 		"scripts": {},
 		"sprites": {},
+		"": {},
 		"Mocks/farmMockupA.png": {},
 		"code/Globals.java": {},
 		"code/Main.java": {},
-		"code/stage": {},
 		"code/manager": {},
+		"code/stage": {},
 		"data/mdaled": {
 			"sdcard": true
 		},
+		"maps/dynamicTiles.tmx": {},
 		"maps/farm-tiles.png": {},
 		"maps/farmMap.tmx": {},
 		"maps/fieldMap.tmx": {},
@@ -199,30 +201,31 @@
 		"sprites/Bot.png": {},
 		"sprites/Bot.json": {},
 		"sprites/BotHead.aseprite": {},
-		"sprites/BotHead.png": {},
-		"sprites/Guy.json": {},
-		"sprites/Guy.ase": {},
 		"sprites/BotHead.json": {},
+		"sprites/BotHead.png": {},
+		"sprites/Guy.ase": {},
+		"sprites/Guy.json": {},
 		"sprites/Guy.png": {},
 		"sprites/Hand.ase": {},
 		"sprites/Hand.json": {},
 		"sprites/Hand.png": {},
-		"sprites/Tools.ase": {},
 		"sprites/Tools.json": {},
+		"sprites/Tools.ase": {},
 		"sprites/Tools.png": {},
-		"": {},
+		"code/manager/CropManager.java": {},
+		"code/manager/DataManager.java": {},
 		"code/stage/ColorTest.java": {},
+		"code/stage/Farm.java": {},
 		"code/stage/RandomTest.java": {},
 		"code/stage/Travel.java": {},
-		"code/stage/Farm.java": {},
-		"code/manager/DataManager.java": {},
+		"data/mdaled/field": {
+			"sdcard": true
+		},
 		"data/mdaled/items": {
 			"sdcard": true
 		},
-		"code/manager/CropManager.java": {},
-		"data/mdaled/field": {
-			"sdcard": true
-		}
+		"MDDDeluxe.elf": {},
+		"MDDDeluxe.bin": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

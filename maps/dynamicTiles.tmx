@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="12" height="10" tilewidth="10" tileheight="8" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="farm-tiles" tilewidth="10" tileheight="8" tilecount="506" columns="22">
+  <image source="farm-tiles.png" width="220" height="184"/>
+ </tileset>
+ <layer id="1" name="Ground" width="12" height="10">
+  <data encoding="csv">
+67,68,69,2,3,4,133,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+155,156,157,158,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7,133
+</data>
+ </layer>
+</map>
