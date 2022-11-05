@@ -2,6 +2,7 @@ package code.stage;
 
 import code.Globals;
 
+import code.manager.CropManager;
 import code.manager.DataManager;
 
 import femto.Game;
@@ -17,17 +18,13 @@ public class Farm extends State {
     TASMode screen;
     
     DataManager dm;
+    CropManager cropManager;
     
     // Player x and y coordinates.
     int px,py;
     
     Guy guy;
     Tools tools;
-    
-    // Field crop types and growth levels.
-    // TODO ? - Move to crop manager?
-    byte[] type;
-    byte[] growth;
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
@@ -84,18 +81,7 @@ public class Farm extends State {
     
     void init() {
         screen = Globals.screen;
-
-        dm = Globals.dataManager;
-        var field = dm.readData("field");
-        type = new byte[120];
-        growth = new byte[120];
-        ubyte id = 0;
-        for (int i = 0; i < (120 * 2); i += 2) {
-            if (id > 120) return;
-            type[id] = field[i];
-            growth[id] = field[i + 1];
-            id++;
-        }
+        cropManager = new CropManager();
         
         guy = new Guy();
         guy.idle();
@@ -153,8 +139,7 @@ public class Farm extends State {
                 if(getGuyFarmTileData()==TileMaps.FIELD && getGuyTile() >= tilled){
                     byte id = getFieldId();
                     // TODO - inventory system
-                    type[id] = 2;
-                    growth[id] = 1;
+                    cropManager.plow(id);
                     var x = (px-49) / 10;
                     var y = (py-84) / 8;
                     screen.setFGTile(80, x, y);
@@ -314,15 +299,8 @@ public class Farm extends State {
     }
     
     void saveAndQuit() {
-        // Collect field to byte array
-        byte[] field = new byte[120 * 2];
-        ubyte id = 0;
-        for (int i = 0; i < (120 * 2); i += 2) {
-            field[i] = (byte) type[id];
-            field[i + 1] = (byte) growth[id];
-            id++;
-        }
-        dm.writeData("field", field);
+        cropManager.saveAndQuit();
+
     }
     
     

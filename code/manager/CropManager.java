@@ -1,5 +1,7 @@
 package code.manager;
 
+
+import code.Globals;
 /**
  * Manages the state of crops in the Field stage.
  * 
@@ -31,12 +33,46 @@ package code.manager;
  * tiles for many stages to avoid running out of available tile
  * space in memory. 
  * 
- * Since there needs to be 2 variations for every tile for wet/dry.
+ * 
  * 
  */
 public class CropManager {
+    
+    DataManager dm;
     // 12x10 field size for 120 possible crops.
+    // Field crop types and growth levels.
+    byte[] type;
+    byte[] growth;
+    
     public CropManager() {
         
+        dm = Globals.dataManager;
+        var field = dm.readData("field");
+        type = new byte[120];
+        growth = new byte[120];
+        ubyte id = 0;
+        for (int i = 0; i < (120 * 2); i += 2) {
+            if (id > 120) break;
+            type[id] = field[i];
+            growth[id] = field[i + 1];
+            id++;
+        }
+    }
+    
+    void plow(byte fieldId) {
+        type[fieldId] = 2;
+        growth[fieldId] = 1;
+    }
+    
+    void saveAndQuit() {
+        // Collect field to byte array
+        byte[] field = new byte[120 * 2];
+        ubyte id = 0;
+        for (int i = 0; i < (120 * 2); i += 2) {
+            field[i] = (byte) type[id];
+            field[i + 1] = (byte) growth[id];
+            id++;
+        }
+        dm.writeData("field", field);
     }
 }
