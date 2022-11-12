@@ -12,6 +12,8 @@ import femto.input.Button;
 import sprites.Guy;
 import sprites.Tools;
 
+import sprites.Sun;
+
 public class Farm extends State {
     
     // the screenmode we want to draw with
@@ -25,6 +27,7 @@ public class Farm extends State {
     
     Guy guy;
     Tools tools;
+    Sun sun;
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
@@ -55,7 +58,7 @@ public class Farm extends State {
             if(id > 3){
                 id = 0;
             }
-            for(int y = 2; y < 22; y++){
+            for(int y = 4; y < 22; y++){
                 screen.setBGTile(ids[id], 3, y);
             }
         }
@@ -85,6 +88,9 @@ public class Farm extends State {
         
         guy = new Guy();
         guy.idle();
+        
+        sun = new Sun();
+        sun.idle();
         
         tools = new Tools();
         
@@ -142,7 +148,7 @@ public class Farm extends State {
                     cropManager.plow(id);
                     var x = (px-49) / 10;
                     var y = (py-84) / 8;
-                    screen.setFGTile(80, x, y);
+                    screen.setFGTile(6, x, y);
                 }
             }
             
@@ -162,6 +168,9 @@ public class Farm extends State {
         updateAnimation();
         
         // -- DRAW --
+        
+        // SUN
+        sun.draw(screen, screen.width()-dayProgress, 2);
         
         // -- TOOLS --
         if(water > 0) {
@@ -206,7 +215,7 @@ public class Farm extends State {
                 case 0: 
                     px-=2;
                     break;
-                case 1: 
+                case 1:
                     py-=2;
                     break;
                 case 2:
@@ -222,7 +231,7 @@ public class Farm extends State {
                 direction = 3;
                 guy.down();
             } else
-            if(Button.Up.isPressed()){
+            if(Button.Up.isPressed() && py > 32){
                 movement = 4;
                 direction = 1;
                 guy.down();
