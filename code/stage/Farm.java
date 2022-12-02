@@ -227,23 +227,33 @@ public class Farm extends State {
             }
         } else if(use == 0) {
             if(Button.Down.isPressed()){
-                movement = 4;
+                var tileDown = TileMaps.getFarmMapData((px+6)/tw, (py+16)/th);
+                if(tileDown != TileMaps.SOLID){
+                    movement = 4;
+                }
                 direction = 3;
                 guy.down();
             } else
             if(Button.Up.isPressed() && py > 32){
-                movement = 4;
+                var tileUp = TileMaps.getFarmMapData((px+6)/tw, (py)/th);
+                if(tileUp != TileMaps.SOLID){
+                    movement = 4;
+                }
                 direction = 1;
                 guy.down();
             } else 
             if(Button.Right.isPressed()){
-                movement = 5;
+                var tileRight = TileMaps.getFarmMapData((px+16)/tw, (py+6)/th);
+                if(tileRight != TileMaps.SOLID){
+                    movement = 5;
+                }
                 direction = 2;
                 guy.setMirrored(true);
                 guy.down();
             } else
             if(Button.Left.isPressed()){
-                if(TileMaps.getFarmMapData((px-8)/tw, py/th) != TileMaps.WATER){
+                var tileLeft = TileMaps.getFarmMapData((px-8)/tw, (py+8)/th);
+                if(tileLeft != TileMaps.WATER && tileLeft != TileMaps.SOLID){
                     movement = 5;
                 }
                 direction = 0;
