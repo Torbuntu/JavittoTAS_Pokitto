@@ -11,6 +11,7 @@ import femto.input.Button;
 
 import sprites.Guy;
 import sprites.Tools;
+import sprites.DialogCorner;
 
 import sprites.Sun;
 
@@ -21,6 +22,9 @@ public class Farm extends State {
     
     DataManager dm;
     CropManager cropManager;
+    
+    DialogCorner dialogCorner;
+    boolean dayEnd = false, talkTree = false;
     
     // Player x and y coordinates.
     int px,py;
@@ -78,13 +82,16 @@ public class Farm extends State {
         }
         if(dayProgress >= 200) {
             dayProgress = 0;
-            // TODO - New day dialog
+            dayEnd = true;
         }
     }
     
     void init() {
         screen = Globals.screen;
         cropManager = new CropManager();
+        
+        dialogCorner = new DialogCorner();
+        dialogCorner.corner();
         
         guy = new Guy();
         guy.idle();
@@ -103,13 +110,68 @@ public class Farm extends State {
         screen.setFGMap(TileMaps.getFieldMap(), TileMaps.getTiles());
     }
     
+    void drawDialogBox() {
+        dialogCorner.setFlipped(false);
+        dialogCorner.setMirrored(false);
+        dialogCorner.draw(screen, 0,0);
+        dialogCorner.setMirrored(true);
+        dialogCorner.draw(screen, 210, 0);
+        
+        dialogCorner.setFlipped(true);
+        dialogCorner.setMirrored(false);
+        dialogCorner.draw(screen, 0,16);
+        dialogCorner.setMirrored(true);
+        dialogCorner.draw(screen, 210, 16);
+    }
+    
+    void updateEndOfDay() {
+        
+    }
+    
+    void updateTreeDialog() {
+        
+    }
 
     
-    void update(){
+    void update() {
         // -- UPDATE --
+        
+        // TODO - End Day Dialog. Do not update time in dialog.
+        if(dayEnd) {
+            drawDialogBox();
+            if(Button.A.justPressed()) {
+                dayEnd = false;
+            }
+            
+            screen.flush();
+            return;
+        }
+        
+        
+        // TODO - Talk to Tree dialog. Do not update time in dialog.
+        if(talkTree) {
+            drawDialogBox();
+            if(Button.A.justPressed()) {
+                talkTree = false;
+            }
+            
+            screen.flush();
+            return;
+        }
+        
         
         // Check the tile and data
         if( Button.A.justPressed() ) {
+            if(py == 44 && px >= 159 && px <= 169) {
+                // End day dialog
+                dayEnd = true;
+            }
+            if(py == 52 && px >= 189 && px <= 199) {
+                // Talk to the tree 
+                talkTree = true;
+            }
+            
+            // debug info
             System.out.println(screen.fps());
             System.out.println(px + ","+py);
             System.out.println(getFieldId());
