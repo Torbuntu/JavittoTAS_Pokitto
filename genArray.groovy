@@ -1,5 +1,5 @@
 def list = []
-240.times{list<<2}
+240.times{list<<0}
 
 
 byte[] fieldList = new byte[list.size()]

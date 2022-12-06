@@ -84,7 +84,10 @@ public class CropManager {
         for(int y = 0; y < 10; y++){
             for(int x = 0; x < 12; x++){
                 if(type[id] < 0) screen.setFGTile(6, x, y);
-                else if(type[id] != 0) screen.setFGTile(type[id]+growth[id]+7, x, y);
+                else if(type[id] != 0) {
+                    screen.setFGTile(type[id]+growth[id]+7, x, y);
+                    screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8)
+                }
                 id++;
             }
         }
@@ -116,6 +119,7 @@ public class CropManager {
                             // type[x+y*12]
                             System.out.println("Grow!!" + (int)growth[x+y*12]);
                             growth[x+y*12] = growth[x+y*12]+1;
+                            screen.setFGTile(screen.getFGTile(x, y)+1, x, y);
                         }
                     }
                 } else {
