@@ -24,7 +24,7 @@ public class Farm extends State {
     CropManager cropManager;
     
     DialogCorner dialogCorner;
-    boolean dayEnd = false, talkTree = false;
+    boolean dayEnd = false, talkTree = false, dayStart = false, DEBUG = false;
     
     // Player x and y coordinates.
     int px,py;
@@ -41,7 +41,7 @@ public class Farm extends State {
     ubyte tw = 10, th = 8;
     
     // Tiles for field tilled/watered
-    ubyte tilled = 4, watered = 5;
+    ubyte tilled = 4, watered = 5, deadPlant = 6;
     
     // animated water
     ubyte animate = 15;
@@ -82,16 +82,16 @@ public class Farm extends State {
         }
         if(dayProgress >= 200) {
             dayProgress = 0;
-            dayEnd = true;
+            cropManager.update();
+            dayStart = true;
         }
     }
     
     void init() {
         screen = Globals.screen;
-        cropManager = new CropManager();
+        cropManager = Globals.cropManager;
         
         dialogCorner = new DialogCorner();
-        dialogCorner.corner();
         
         guy = new Guy();
         guy.idle();
@@ -108,9 +108,20 @@ public class Farm extends State {
         // Set the farm background and foreground maps
         screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
         screen.setFGMap(TileMaps.getFieldMap(), TileMaps.getTiles());
+        
+        cropManager.setCrops();
     }
     
+    
+    /**
+     * The dialog box. It is quite chunky. 
+     * 
+     * The sprites could be significantly reduced 
+     * (lots of solid colors right now)
+     */
     void drawDialogBox() {
+        // Corners
+        dialogCorner.corner();
         dialogCorner.setFlipped(false);
         dialogCorner.setMirrored(false);
         dialogCorner.draw(screen, 0,0);
@@ -122,6 +133,31 @@ public class Farm extends State {
         dialogCorner.draw(screen, 0,16);
         dialogCorner.setMirrored(true);
         dialogCorner.draw(screen, 210, 16);
+        
+        // Side Edges
+        dialogCorner.edge();
+        dialogCorner.setMirrored(true);
+        dialogCorner.draw(screen, 0, 8);
+        
+        dialogCorner.setMirrored(false);
+        dialogCorner.draw(screen, 210, 8);
+        
+        // Top and Bottom Edges
+        dialogCorner.topBottom();
+        for(int i = 0; i < 20; i++) {
+            dialogCorner.draw(screen, 10+i*10, 0);
+        }
+        dialogCorner.setFlipped(false);
+        for(int i = 0; i < 20; i++) {
+            dialogCorner.draw(screen, 10+i*10, 16);
+        }
+        
+        // Fill
+        dialogCorner.fill();
+        for(int i = 0; i < 20; i++) {
+            dialogCorner.draw(screen, 10+i*10, 8);
+        }
+        
     }
     
     void updateEndOfDay() {
@@ -136,11 +172,31 @@ public class Farm extends State {
     void update() {
         // -- UPDATE --
         
+        
+        if(dayStart) {
+            // Do something?
+            drawDialogBox();
+            if(Button.A.justPressed() || Button.B.justPressed()) {
+                dayStart = false;
+            }
+            screen.flush();
+            return;
+        }
         // TODO - End Day Dialog. Do not update time in dialog.
         if(dayEnd) {
             drawDialogBox();
             if(Button.A.justPressed()) {
                 dayEnd = false;
+                cropManager.update();
+                dayProgress = 0;
+                hour = 0;
+                dayStart = true;
+                cropManager.saveAndQuit();
+                // End day, update progress
+            }
+            if(Button.B.justPressed()) {
+                dayEnd = false;
+                // Just close the dialog.
             }
             
             screen.flush();
@@ -151,7 +207,7 @@ public class Farm extends State {
         // TODO - Talk to Tree dialog. Do not update time in dialog.
         if(talkTree) {
             drawDialogBox();
-            if(Button.A.justPressed()) {
+            if(Button.A.justPressed() || Button.B.justPressed()) {
                 talkTree = false;
             }
             
@@ -169,12 +225,15 @@ public class Farm extends State {
             if(py == 52 && px >= 189 && px <= 199) {
                 // Talk to the tree 
                 talkTree = true;
+                // doTreeEvent thing here.
             }
             
             // debug info
-            System.out.println(screen.fps());
-            System.out.println(px + ","+py);
-            System.out.println(getFieldId());
+            if(DEBUG){
+                System.out.println(screen.fps());
+                System.out.println(px + ","+py);
+                System.out.println(getFieldId());
+            }
             // saveAndQuit();
         }
 
@@ -185,7 +244,14 @@ public class Farm extends State {
             // }
             
             if(selected == 0 && getGuyFarmTileData()==TileMaps.FIELD) {
-                screen.setBGTile(tilled, (px+6)/tw, (py+8)/th);
+                var x = (px-49) / 10;
+                var y = (py-84) / 8;
+                if(screen.getFGTile(x, y) == deadPlant) {
+                    screen.setFGTile(0, x, y);
+                    screen.setBGTile(tilled-1, (px+6)/tw, (py+8)/th);
+                } else {
+                    screen.setBGTile(tilled, (px+6)/tw, (py+8)/th);
+                }
                 guy.hoe();
             }
             if(selected == 1) {
@@ -207,10 +273,10 @@ public class Farm extends State {
                 if(getGuyFarmTileData()==TileMaps.FIELD && getGuyTile() >= tilled){
                     byte id = getFieldId();
                     // TODO - inventory system
-                    cropManager.plow(id);
+                    cropManager.plant(id);
                     var x = (px-49) / 10;
                     var y = (py-84) / 8;
-                    screen.setFGTile(6, x, y);
+                    screen.setFGTile(7, x, y);
                 }
             }
             
@@ -385,10 +451,8 @@ public class Farm extends State {
     }
     
     
-    
-    
-    
     void shutdown() {
+        saveAndQuit();
         screen = null;
     }
     
