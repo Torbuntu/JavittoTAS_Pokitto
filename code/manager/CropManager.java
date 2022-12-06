@@ -86,7 +86,7 @@ public class CropManager {
                 if(type[id] < 0) screen.setFGTile(6, x, y);
                 else if(type[id] != 0) {
                     screen.setFGTile(type[id]+growth[id]+7, x, y);
-                    screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8)
+                    screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
                 }
                 id++;
             }

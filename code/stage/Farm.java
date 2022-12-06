@@ -218,6 +218,10 @@ public class Farm extends State {
         
         // Check the tile and data
         if( Button.A.justPressed() ) {
+            if(TileMaps.getFarmMapData((px+2)/tw, (py+14)/th) == TileMaps.TRAVEL) {
+                Game.changeState(new Travel());
+            }
+            
             if(py == 44 && px >= 159 && px <= 169) {
                 // End day dialog
                 dayEnd = true;

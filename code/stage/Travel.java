@@ -22,7 +22,7 @@ public class Travel extends State {
         guy.idle();
         px=32;
         py=100;
-        // screen.setMap(TileMaps.getTravelMap(), TileMaps.getTiles());
+        screen.setBGMap(TileMaps.getTownMap(), TileMaps.getTiles());
     }
     
     void update() {
@@ -32,9 +32,8 @@ public class Travel extends State {
         
         guy.setPosition(px, py);
         // -- DRAW --
-        screen.clear(0);
         guy.draw(screen);
-        screen.drawMap(0,0);
+        screen.drawBGMap(0,0);
         screen.flush();
     }
     
