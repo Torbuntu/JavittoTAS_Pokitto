@@ -83,14 +83,23 @@ public class CropManager {
         ubyte id = 0;
         for(int y = 0; y < 10; y++){
             for(int x = 0; x < 12; x++){
-                if(type[id] < 0) screen.setFGTile(6, x, y);
-                else if(type[id] != 0) {
-                    screen.setFGTile(type[id]+growth[id]+7, x, y);
+                if(type[id] < 0) {
+                    screen.setFGTile(6, x, y);
+                } else if(type[id] != 0) {
+                    screen.setFGTile(type[id]+growth[id]+6, x, y);
                     screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
+                } else {
+                    screen.setBGTile(3, (50 + x*10)/10, (88+y*8)/8);
                 }
                 id++;
             }
         }
+    }
+    
+    void clearCrop(int x, int y) {
+        type[x+y*12] = 0;
+        growth[x+y*12] = 0;
+        screen.setFGTile(0, x, y);
     }
 
     /**
@@ -112,7 +121,8 @@ public class CropManager {
         ubyte id = 0;
         for(int y = 0; y < 10; y++){
             for(int x = 0; x < 12; x++){
-                if(screen.getBGTile((50 + x*10)/10, (88+y*8)/8) == watered) {
+                var fieldTile = screen.getBGTile((50 + x*10)/10, (88+y*8)/8);
+                if( fieldTile == watered ) {
                     screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
                     if(type[x+y*12] > 0) {
                         if(growth[x+y*12] > 0 && growth[x+y*12] < 10) {
@@ -128,6 +138,9 @@ public class CropManager {
                         growth[x+y*12] = -1;
                         type[x+y*12] = -1;
                         screen.setFGTile(6, x, y);
+                    } else {
+                        // set to blank field
+                        screen.setBGTile(3, (50 + x*10)/10, (88+y*8)/8);
                     }
                 }
                 id++;

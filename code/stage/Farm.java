@@ -24,7 +24,7 @@ public class Farm extends State {
     CropManager cropManager;
     
     DialogCorner dialogCorner;
-    boolean dayEnd = false, talkTree = false, dayStart = false, DEBUG = false;
+    boolean dayEnd = false, talkTree = false, dayStart = false;
     
     // Player x and y coordinates.
     int px,py;
@@ -110,6 +110,8 @@ public class Farm extends State {
         screen.setFGMap(TileMaps.getFieldMap(), TileMaps.getTiles());
         
         cropManager.setCrops();
+        
+        screen.drawFGMap(-50, 88);
     }
     
     
@@ -219,7 +221,7 @@ public class Farm extends State {
         // Check the tile and data
         if( Button.A.justPressed() ) {
             if(TileMaps.getFarmMapData((px+2)/tw, (py+14)/th) == TileMaps.TRAVEL) {
-                Game.changeState(new Travel());
+                Game.changeState(new Town());
             }
             
             if(py == 44 && px >= 159 && px <= 169) {
@@ -233,10 +235,8 @@ public class Farm extends State {
             }
             
             // debug info
-            if(DEBUG){
+            if(true){
                 System.out.println(screen.fps());
-                System.out.println(px + ","+py);
-                System.out.println(getFieldId());
             }
             // saveAndQuit();
         }
@@ -251,10 +251,10 @@ public class Farm extends State {
                 var x = (px-49) / 10;
                 var y = (py-84) / 8;
                 if(screen.getFGTile(x, y) == deadPlant) {
-                    screen.setFGTile(0, x, y);
-                    screen.setBGTile(tilled-1, (px+6)/tw, (py+8)/th);
+                    cropManager.clearCrop(x, y);
+                    setGuyTile(tilled-1);
                 } else {
-                    screen.setBGTile(tilled, (px+6)/tw, (py+8)/th);
+                    setGuyTile(tilled);
                 }
                 guy.hoe();
             }
@@ -262,7 +262,7 @@ public class Farm extends State {
                 // if on field and bucket not empty, water.
                 if(getGuyFarmTileData()==TileMaps.FIELD) {
                     if(water > 0 && getGuyTile() == tilled) {
-                        screen.setBGTile(watered, (px+6)/tw, (py+8)/th);
+                        setGuyTile(watered);
                         water--;
                     }
                 }
@@ -317,10 +317,12 @@ public class Farm extends State {
         // -- END TOOLS --
 
         guy.draw(screen);
-
-        screen.drawBGMap(0, 0);
-        screen.drawFGMap(-50, 88);
+        
         screen.flush();
+    }
+    
+    void setGuyTile(int tileId) {
+        screen.setBGTile(tileId, (px+6)/tw, (py+8)/th);
     }
     
     int getGuyTile() {
@@ -451,7 +453,6 @@ public class Farm extends State {
     
     void saveAndQuit() {
         cropManager.saveAndQuit();
-
     }
     
     

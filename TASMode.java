@@ -49,6 +49,10 @@ public class TASMode extends ScreenMode implements __stub__ {
         fillers[id] = null;
     }
     
+    public void enableFGFiller() {
+        fillers[2] = fgTileFiller;
+    }
+    
     private void beforeFlush(){
         beginStream();
     }

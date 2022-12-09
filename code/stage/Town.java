@@ -8,7 +8,7 @@ import femto.input.Button;
 
 import sprites.Guy;
 
-public class Travel extends State {
+public class Town extends State {
     
     // the screenmode we want to draw with
     TASMode screen;
@@ -23,6 +23,7 @@ public class Travel extends State {
         px=32;
         py=100;
         screen.setBGMap(TileMaps.getTownMap(), TileMaps.getTiles());
+        screen.disableFiller(2);
     }
     
     void update() {
@@ -33,11 +34,12 @@ public class Travel extends State {
         guy.setPosition(px, py);
         // -- DRAW --
         guy.draw(screen);
-        screen.drawBGMap(0,0);
+        
         screen.flush();
     }
     
     void shutdown() {
+        screen.enableFGFiller();
         screen = null;
     }
     
