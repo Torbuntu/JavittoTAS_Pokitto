@@ -35,8 +35,7 @@ public class Farm extends State {
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
-    ubyte hour = 0, dayProgress;
-    
+
     // Tile width and height
     ubyte tw = 10, th = 8;
     
@@ -67,30 +66,10 @@ public class Farm extends State {
             }
         }
     }
-    
-    /**
-     * Day progression. 
-     * Hours increment dayProgress on 30 tics. 
-     * Day progresses when 200 hours pass. 
-     * hehe 200 hours. Busy days
-    */
-    void updateDayProgress() {
-        hour++;
-        if (hour > 30) {
-            dayProgress++;
-            hour = 0;
-        }
-        if(dayProgress >= 200) {
-            dayProgress = 0;
-            cropManager.update();
-            dayStart = true;
-        }
-    }
-    
+
     void init() {
         screen = Globals.screen;
         cropManager = Globals.cropManager;
-        
         dialogCorner = new DialogCorner();
         
         guy = new Guy();
@@ -190,8 +169,7 @@ public class Farm extends State {
             if(Button.A.justPressed()) {
                 dayEnd = false;
                 cropManager.update();
-                dayProgress = 0;
-                hour = 0;
+                TimePiece.init();
                 dayStart = true;
                 cropManager.saveAndQuit();
                 // End day, update progress
@@ -292,17 +270,20 @@ public class Farm extends State {
             if(selected > 4) selected = 0;
         }
         
-        // Movement
-        updateDayProgress();
-
-        moveGuy();
+        // Time management 
+        if(TimePiece.updateDayProgress()) {
+            cropManager.update();
+            dayStart = true;
+        }
         
+        // Movement
+        moveGuy();
         updateAnimation();
         
         // -- DRAW --
         
         // SUN
-        sun.draw(screen, screen.width()-dayProgress, 2);
+        sun.draw(screen, screen.width()-TimePiece.getTime(), 2);
         
         // -- TOOLS --
         if(water > 0) {
@@ -455,9 +436,8 @@ public class Farm extends State {
         cropManager.saveAndQuit();
     }
     
-    
     void shutdown() {
-        saveAndQuit();
+        cropManager = null;
         screen = null;
     }
     

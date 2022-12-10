@@ -86,8 +86,8 @@ public class CropManager {
                 if(type[id] < 0) {
                     screen.setFGTile(6, x, y);
                 } else if(type[id] != 0) {
-                    screen.setFGTile(type[id]+growth[id]+6, x, y);
-                    screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
+                    screen.setFGTile(type[id]+growth[id]+5, x, y);
+                    // screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
                 } else {
                     screen.setBGTile(3, (50 + x*10)/10, (88+y*8)/8);
                 }
@@ -121,22 +121,23 @@ public class CropManager {
         ubyte id = 0;
         for(int y = 0; y < 10; y++){
             for(int x = 0; x < 12; x++){
+                var typeGrowthId = x+y*12;
                 var fieldTile = screen.getBGTile((50 + x*10)/10, (88+y*8)/8);
                 if( fieldTile == watered ) {
                     screen.setBGTile(4, (50 + x*10)/10, (88+y*8)/8);
-                    if(type[x+y*12] > 0) {
-                        if(growth[x+y*12] > 0 && growth[x+y*12] < 10) {
+                    if(type[typeGrowthId] > 0) {
+                        if(growth[typeGrowthId] > 0 && growth[typeGrowthId] < 10) {
                             // type[x+y*12]
-                            System.out.println("Grow!!" + (int)growth[x+y*12]);
-                            growth[x+y*12] = growth[x+y*12]+1;
+                            System.out.println("Grow!!" + (int)growth[typeGrowthId]);
+                            growth[typeGrowthId] = growth[typeGrowthId]+1;
                             screen.setFGTile(screen.getFGTile(x, y)+1, x, y);
                         }
                     }
                 } else {
-                    if(type[x+y*12] > 0) {
+                    if(type[typeGrowthId] > 0) {
                     // Kill the dry plants
-                        growth[x+y*12] = -1;
-                        type[x+y*12] = -1;
+                        growth[typeGrowthId] = -1;
+                        type[typeGrowthId] = -1;
                         screen.setFGTile(6, x, y);
                     } else {
                         // set to blank field
