@@ -21,8 +21,6 @@ public void draw( TASMode screen) {
     
 public void draw( TASMode screen, float x, float y ){
     updateTasAnimation();
-    boolean mirror = (flags&2) != 0;
-    boolean flip = (flags&4) != 0;
 
     if( (flags&1) == 0 ){
         x -= screen.cameraX;
@@ -36,13 +34,13 @@ public void draw( TASMode screen, float x, float y ){
     frame = f.frame;
     int frameWidth = ((char*)f.frame)[0];
     int frameHeight= ((char*)f.frame)[1];
-    
+
     // Apply the offsets to the local x,y coordinates
-    x = x.getInteger() + (mirror?this->width()-(frameWidth+(frameWidth&1)+f.offsetX):f.offsetX);
-    y = y.getInteger() + (flip?this->height()-(frameHeight+f.offsetY):f.offsetY);
-    
+    x = x.getInteger() + (this->isMirrored()?this->width()-(frameWidth+(frameWidth&1)+f.offsetX):f.offsetX);
+    y = y.getInteger() + (this->isFlipped()?this->height()-(frameHeight+f.offsetY):f.offsetY);
+
     ");
-    screen.addSprite(frame, x, y, mirror, flip);
+    screen.addSprite(frame, x, y, isMirrored(), isFlipped());
     return;
     getFrameDataForScreen(0, (LowRes256Color)null);
     width();
