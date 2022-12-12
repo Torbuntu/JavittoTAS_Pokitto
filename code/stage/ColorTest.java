@@ -21,25 +21,29 @@ public class ColorTest extends State {
         guy.idle();
         guy.setPosition(0, 0);
         // color = Math.random(20, 250);
+        
+        screen.setBGMap(TileMaps.getFarmMap(), TileMaps.getTiles());
     }
-    
+    boolean flip = false, mirror = false;
     void update() {
         count++;
-        if(count>30){
+        if(count>60){
             count=0;
-            System.out.println(color);
             System.out.println(screen.fps());
         }
         
         if( Button.A.justPressed() ){
             Game.changeState(new ColorTest());
         }
-        screen.clear(color);
+        guy.hoe();
         
-        
-        for(int i = 0; i < 22; i++){
-            for(int j = 0; j < 4; j++){
-                guy.draw(screen, i*10, j*14);
+        for(int i = 0; i < 20; i++){
+            guy.setMirrored(mirror);
+            mirror = !mirror;
+            for(int j = 0; j < 5; j++){
+                guy.setFlipped(flip);
+                flip = !flip;
+                guy.draw(screen, i*10, count+j*14);
             }
         }
         

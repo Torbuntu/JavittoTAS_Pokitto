@@ -7,6 +7,8 @@ public class SpriteFiller implements LineFiller {
     int buffer = 0;
     ushort[] palette;
     
+    int maxY = 0;
+    
     SpriteFiller(ushort[] palette){
         this.palette = palette;
     }
@@ -19,11 +21,19 @@ public class SpriteFiller implements LineFiller {
         __inline_cpp__("
             w = ((char*)frame)[0];
             h = ((char*)frame)[1];
+        ");
+        
+        if(x+w < 0 || x >= 220 || y+h < 0 || y >= 176){
+            return;
+        }
+        if(y+h > maxY){
+            maxY = (int)y+h;
+        }
+        
+        __inline_cpp__("
             img = (uint8_t *)frame+2;
         ");
         
-        if(x+w < 0 || x >= 220)return;
-        if(y+h < 0 || y >= 176)return;
         if(spriteBuffer[buffer] != null ){
             spriteBuffer[buffer].set(img, x, y, w, h, mirror, flip);
         } else {
@@ -34,13 +44,17 @@ public class SpriteFiller implements LineFiller {
     }
     
     public void fillLine(ushort[] line, int y) {
+        if(y > maxY) {
+            buffer = 0;
+            return;
+        }
         int each = buffer;
         int color;
         while(each > 0){
             SpriteData s = spriteBuffer[--each];
-            if(y < s.y || y >= s.y+s.h) continue;
+            if(y < s.y || y >= s.end) continue;
             
-            // We always want to keep startX at 0
+            // We always want to keep startX at 0 (This is the itterating index X, not the sprite position X)
             int startX = 0;
             int endX = s.w;
             
@@ -72,17 +86,18 @@ public class SpriteFiller implements LineFiller {
         if(y == 175) buffer = 0;
     }
     
-    void fillFlipMirror(ushort[] line,int y, SpriteData s, int startX, int endX,int indexY, int color){
+    void fillFlipMirror(ushort[] line, int y, SpriteData s, int startX, int endX,int indexY, int color){
+        int adjustedY = s.h-1-(y-s.y);
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame)[(s->w-1-x)+(s->h-1-(y-s->y))*s->w];
+            color = ((char*)s->frame)[(s->w-1-x)+(adjustedY)*s->w];
             ");
             if(color <= 0)continue;
             line[s.x+x]=palette[color];
         }
     }
     
-    void fillMirror(ushort[] line,int y, SpriteData s, int startX, int endX,int indexY, int color) {
+    void fillMirror(ushort[] line, int y, SpriteData s, int startX, int endX,int indexY, int color) {
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
             color = ((char*)s->frame)[s->w-1-x+indexY];
@@ -92,17 +107,18 @@ public class SpriteFiller implements LineFiller {
         }
     }
     
-    void fillFlip(ushort[] line,int y, SpriteData s, int startX, int endX,int indexY, int color) {
+    void fillFlip(ushort[] line, int y, SpriteData s, int startX, int endX,int indexY, int color) {
+        int adjustedY = s.h-1-(y-s.y);
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame)[x+(s->h-1-(y-s->y))*s->w];
+            color = ((char*)s->frame)[x+(adjustedY)*s->w];
             ");
             if(color <= 0)continue;
             line[s.x+x]=palette[color];
         }
     }
     
-    void fill(ushort[] line,int y, SpriteData s, int startX, int endX,int indexY, int color) {
+    void fill(ushort[] line, int y, SpriteData s, int startX, int endX,int indexY, int color) {
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
             color = ((char*)s->frame)[x+indexY];

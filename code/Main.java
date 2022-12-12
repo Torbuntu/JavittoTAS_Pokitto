@@ -19,7 +19,8 @@ class Main extends State {
         // TODO - Start on "new code.stage.Title"
         Mixer.init(8000);
         // Game.limitFPS(30);
-        Game.run( TIC80.font(), new Farm() );
+        Game.run( TIC80.font(), new ColorTest() );
+        // Game.run( TIC80.font(), new Farm() );
     }
     
     void init(){

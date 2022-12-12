@@ -99,6 +99,7 @@ public class TASMode extends ScreenMode implements __stub__ {
         fgTileFiller.setMap(map, tileSet);
     }
     
+    // Todo - Change to setMap ? Once we set the map and position we don't need to continuously call draw.
     public void drawBGMap(int x, int y){
         bgTileFiller.draw(x,y);
     }
@@ -130,5 +131,6 @@ public class TASMode extends ScreenMode implements __stub__ {
             flushLine16(line->elements);
             ");
         }
+        spriteFiller.maxY = 0;
     }
 }
