@@ -73,6 +73,9 @@ public class FGTileFiller implements LineFiller {
             tileX = 0;
         }
         if (start < 0) start = 0;
+        __inline_cpp__("
+        auto tileStart = ((uint8_t * ) tileMap)+mapY;//[mapX + mapY];
+        ");
         
         // Loop the map width to collect the tiles
         for (int i = start; i < 220 && mapX < mapWidth;) {
@@ -83,22 +86,22 @@ public class FGTileFiller implements LineFiller {
 
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY];
+            auto tileId = ((uint8_t * ) tileStart)[mapX] * (tileSize);
             if(tileId==0){
                 i += iter;
                 tileX = 0L;
                 mapX++;
                 continue;
             }
-            auto tile = ((uint8_t * ) tileSet) + tileId * (tileSize) + tileY;
+            auto tile = ((uint8_t * ) tileSet) + tileId + tileY + tileX;
             ");
     
             // Loop over the Tile color IDs and put them in the line array.
             for (int t = 0; t < iter; t++) {
                 __inline_cpp__("
                 // color = tile[tileX + t];
-                if(tile[tileX + t] == 0) continue;
-                line->elements[i + t] = palette->elements[tile[tileX + t]];
+                if(tile[t] == 0) continue;
+                line->elements[i + t] = palette->elements[tile[t]];
                 ");
             }
             i += iter;

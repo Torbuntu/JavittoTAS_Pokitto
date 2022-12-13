@@ -15,6 +15,7 @@ public class BGTileFiller implements LineFiller {
     int tileW = 10;
     int tileH = 8;
     int tileSize = 0;
+    int totalHeight;
 
     BGTileFiller(ushort[] palette) {
         this.palette = palette;
@@ -46,6 +47,8 @@ public class BGTileFiller implements LineFiller {
         mapHeight = ((char * ) map)[1]; 
         tileMap = (uint8_t * ) map + 2;
         ");
+        
+        totalHeight = mapHeight * tileH;
     }
 
     void draw(int x, int y) {
@@ -56,7 +59,7 @@ public class BGTileFiller implements LineFiller {
     void fillLine(ushort[] line, int y) {
         adjustedY = y - cameraY;
         // Clip top and bottom of map.
-        if (adjustedY < 0 || adjustedY >= mapHeight * tileH) return;
+        if (adjustedY < 0 || adjustedY >= totalHeight) return;
         
         // Set the Y for the map and tileset lookup
         var mapY = ((adjustedY) / tileH) * mapWidth;
@@ -74,6 +77,10 @@ public class BGTileFiller implements LineFiller {
         }
         if (start < 0) start = 0;
         
+        __inline_cpp__("
+        auto tileStart = ((uint8_t * ) tileMap)+mapY;//[mapX + mapY];
+        ");
+        
         // Loop the map width to collect the tiles
         for (int i = start; i < 220 && mapX < mapWidth;) {
             // Clip the right hand side of the map. Whee~
@@ -83,14 +90,15 @@ public class BGTileFiller implements LineFiller {
 
             __inline_cpp__("
             // Get tile ID from the map. Then use that to find the tile itself from the tileset
-            auto tileId = ((uint8_t * ) tileMap)[mapX + mapY]; 
-            auto tile = ((uint8_t * ) tileSet) + tileId * (tileSize) + tileY;
+            auto tileId = ((uint8_t * ) tileStart)[mapX]*tileSize;
+            auto tile = ((uint8_t * ) tileSet) + tileId + tileY + tileX;
+            auto lineElements = line->elements+i;
             ");
     
             // Loop over the Tile color IDs and put them in the line array.
             for (int t = 0; t < iter; t++) {
                 __inline_cpp__("
-                line->elements[i + t] = palette->elements[tile[tileX + t]];
+                 ((unsigned short*)lineElements)[t] = palette->elements[tile[t]];
                 ");
             }
             i += iter;
