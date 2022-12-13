@@ -83,45 +83,49 @@ public class SpriteFiller implements LineFiller {
     
     void fillFlipMirror(ushort[] line, int y, SpriteData s, int startX, int endX, int color){
         int adjustedY = 2+(s.h-1-(y-s.y))*s.w;
+        var img = s.frame+adjustedY;
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame+adjustedY)[(s->w-1-x)];
+            color = ((unsigned char*)img)[(s->w-1-x)];
+            if(color==0)continue;
+            line->elements[s->x+x] = palette->elements[color];
             ");
-            if(color <= 0)continue;
-            line[s.x+x]=palette[color];
         }
     }
     
     void fillMirror(ushort[] line, int y, SpriteData s, int startX, int endX, int color) {
         var indexY = 2+(y-s.y)*s.w;
+        var img = s.frame+indexY;
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame+indexY)[s->w-1-x];
+            color = ((unsigned char*)img)[s->w-1-x];
+            if(color==0)continue;
+            line->elements[s->x+x] = palette->elements[color];
             ");
-            if(color <= 0)continue;
-            line[s.x+x]=palette[color];
         }
     }
     
     void fillFlip(ushort[] line, int y, SpriteData s, int startX, int endX, int color) {
         int adjustedY = 2+(s.h-1-(y-s.y))*s.w;
+        var img = s.frame+adjustedY;
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame+adjustedY)[x];
+            color = ((unsigned char*)img)[x];
+            if(color==0)continue;
+            line->elements[s->x+x] = palette->elements[color];
             ");
-            if(color <= 0)continue;
-            line[s.x+x]=palette[color];
         }
     }
     
     void fill(ushort[] line, int y, SpriteData s, int startX, int endX, int color) {
         var indexY = 2+(y-s.y)*s.w;
+        var img = s.frame+indexY;
         for(int x = startX; x < endX; ++x){
             __inline_cpp__("
-            color = ((char*)s->frame+indexY)[x];
+            color = ((unsigned char*)img)[x];
+            if(color==0)continue;
+            line->elements[s->x+x] = palette->elements[color];
             ");
-            if(color <= 0)continue;
-            line[s.x+x]=palette[color];
         }
     }
 }

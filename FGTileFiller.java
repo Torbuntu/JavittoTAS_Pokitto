@@ -8,7 +8,7 @@ public class FGTileFiller implements LineFiller {
     ushort[] palette;
     int mapWidth;
     int mapHeight;
-    int color;
+    // int color;
     int cameraX = 0;
     int cameraY = 0;
     int adjustedY;
@@ -96,10 +96,10 @@ public class FGTileFiller implements LineFiller {
             // Loop over the Tile color IDs and put them in the line array.
             for (int t = 0; t < iter; t++) {
                 __inline_cpp__("
-                color = tile[tileX + t];
+                // color = tile[tileX + t];
+                if(tile[tileX + t] == 0) continue;
+                line->elements[i + t] = palette->elements[tile[tileX + t]];
                 ");
-                if(color == 0) continue;
-                line[i + t] = palette[color];
             }
             i += iter;
             tileX = 0;
