@@ -1,0 +1,25 @@
+{ "frames": {
+   "Text.ase": {
+    "frame": { "x": 0, "y": 0, "w": 200, "h": 10 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 200, "h": 10 },
+    "sourceSize": { "w": 200, "h": 10 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://github.com/LibreSprite/LibreSprite/",
+  "version": "1.0",
+  "image": "Text.png",
+  "format": "RGBA8888",
+  "size": { "w": 200, "h": 10 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "endDayEarly", "from": 0, "to": 0, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

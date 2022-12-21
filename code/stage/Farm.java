@@ -14,6 +14,7 @@ import sprites.Tools;
 import sprites.DialogCorner;
 
 import sprites.Sun;
+import sprites.Text;
 
 public class Farm extends State {
     
@@ -32,6 +33,7 @@ public class Farm extends State {
     Guy guy;
     Tools tools;
     Sun sun;
+    Text text;
     
     ubyte movement = 0, direction = 0, selected = 0, use = 0, water = 0;
     
@@ -77,6 +79,8 @@ public class Farm extends State {
         
         sun = new Sun();
         sun.idle();
+        
+        text = new Text();
         
         tools = new Tools();
         
@@ -142,6 +146,8 @@ public class Farm extends State {
     }
     
     void updateEndOfDay() {
+        text.setPosition(3, 3);
+        text.endDayEarly();
         
     }
     
@@ -165,7 +171,9 @@ public class Farm extends State {
         }
         // TODO - End Day Dialog. Do not update time in dialog.
         if(dayEnd) {
+            text.draw(screen);
             drawDialogBox();
+            
             if(Button.A.justPressed()) {
                 dayEnd = false;
                 cropManager.update();
@@ -205,6 +213,7 @@ public class Farm extends State {
             if(py == 44 && px >= 159 && px <= 169) {
                 // End day dialog
                 dayEnd = true;
+                updateEndOfDay();
             }
             if(py == 52 && px >= 189 && px <= 199) {
                 // Talk to the tree 
